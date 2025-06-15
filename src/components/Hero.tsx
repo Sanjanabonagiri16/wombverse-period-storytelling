@@ -188,7 +188,7 @@ const Hero = () => {
                 Share Your Story
               </Button>
             </Link>
-            <Link to="/stories">
+            <Link to="/explore-stories">
               <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white animate-scale-in">
                 <BookOpen className="w-5 h-5 mr-2" />
                 Explore Stories
