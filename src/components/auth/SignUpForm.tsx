@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
@@ -136,7 +135,8 @@ const SignUpForm = () => {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full btn-primary h-12 text-base font-medium border-2 border-[#FFD700] hover:border-[#FFD700]/80"
+        style={{ borderColor: '#C2891A' }}
+        className="w-full btn-primary h-12 text-base font-medium"
       >
         {isLoading ? "Creating your account..." : "Create Account"}
       </Button>

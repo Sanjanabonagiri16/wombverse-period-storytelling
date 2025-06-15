@@ -38,7 +38,7 @@ const Auth = () => {
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#FFD700] to-womb-softgray rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-gold to-womb-softgray rounded-full flex items-center justify-center">
               <Heart className="w-7 h-7 text-white" />
             </div>
           </div>
@@ -54,7 +54,7 @@ const Auth = () => {
         </div>
 
         {/* Auth Form */}
-        <div className="bg-womb-deepgrey rounded-lg p-6 border-2 border-[#FFD700]">
+        <div className="bg-womb-deepgrey rounded-lg p-6 border-2" style={{ borderColor: '#C2891A' }}>
           {isSignUp ? <SignUpForm /> : <SignInForm />}
           
           {/* Toggle between sign in/up */}
@@ -64,7 +64,8 @@ const Auth = () => {
             </p>
             <button
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-[#FFD700] hover:text-[#FFD700]/80 font-medium text-sm mt-1 transition-colors"
+              style={{ color: '#C2891A' }}
+              className="hover:opacity-80 font-medium text-sm mt-1 transition-colors"
             >
               {isSignUp ? "Sign in here" : "Create your account"}
             </button>

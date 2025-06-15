@@ -74,11 +74,17 @@
   }
   
   .btn-primary {
-    @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40 border-2 border-[#FFD700];
+    @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40;
+    border: 2px solid #C2891A !important;
   }
   
   .btn-secondary {
-    @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40 border-2 border-womb-border;
+    @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40;
+    border: 2px solid #444444;
+  }
+
+  .gold-border {
+    border-color: #C2891A !important;
   }
 
   /* Enhanced Animation Classes */
