@@ -87,7 +87,7 @@ const FeaturedStories = () => {
         </div>
 
         {/* Stories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {stories.map((story, index) => (
             <article 
               key={story.id} 
@@ -95,31 +95,34 @@ const FeaturedStories = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Story Header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center space-x-2 text-sm text-womb-warmgrey">
-                  <User className="w-4 h-4" />
-                  <span>{story.author}</span>
-                  <span>•</span>
-                  <Calendar className="w-4 h-4" />
-                  <span>{story.date}</span>
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
+                <div className="flex items-center space-x-2 text-xs sm:text-sm text-womb-warmgrey">
+                  <User className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="truncate">{story.author}</span>
+                  <span className="hidden sm:inline">•</span>
+                  <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 hidden sm:inline" />
+                  <span className="hidden sm:inline">{story.date}</span>
                 </div>
-                <Badge variant="secondary" className="bg-womb-plum/20 text-womb-plum border-womb-plum/30">
-                  {story.readTime}
-                </Badge>
+                <div className="flex items-center justify-between sm:justify-end gap-2">
+                  <span className="text-xs text-womb-warmgrey sm:hidden">{story.date}</span>
+                  <Badge variant="secondary" className="bg-womb-plum/20 text-womb-plum border-womb-plum/30 text-xs">
+                    {story.readTime}
+                  </Badge>
+                </div>
               </div>
 
               {/* Story Title */}
-              <h3 className="text-xl font-playfair font-semibold text-womb-softwhite mb-3 line-clamp-2 hover:text-womb-crimson transition-colors">
+              <h3 className="text-lg sm:text-xl font-playfair font-semibold text-womb-softwhite mb-3 line-clamp-2 hover:text-womb-crimson transition-colors">
                 {story.title}
               </h3>
 
               {/* Story Excerpt */}
-              <p className="text-womb-warmgrey mb-4 line-clamp-3 leading-relaxed">
+              <p className="text-sm sm:text-base text-womb-warmgrey mb-4 line-clamp-3 leading-relaxed">
                 {story.excerpt}
               </p>
 
               {/* Tags */}
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
                 {story.tags.slice(0, 3).map((tag) => (
                   <Badge 
                     key={tag} 
@@ -136,21 +139,31 @@ const FeaturedStories = () => {
                 )}
               </div>
 
-              {/* Story Footer */}
-              <div className="flex items-center justify-between pt-4 border-t border-womb-deepgrey">
-                <div className="flex items-center space-x-4 text-sm text-womb-warmgrey">
-                  <div className="flex items-center space-x-1 hover:text-womb-crimson transition-colors cursor-pointer">
-                    <Heart className="w-4 h-4" />
-                    <span>{story.reactions}</span>
+              {/* Story Footer - Mobile First Layout */}
+              <div className="pt-4 border-t border-womb-deepgrey">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  {/* Reactions and Comments */}
+                  <div className="flex items-center gap-4 text-sm text-womb-warmgrey">
+                    <div className="flex items-center gap-1 hover:text-womb-crimson transition-colors cursor-pointer">
+                      <Heart className="w-4 h-4" />
+                      <span>{story.reactions}</span>
+                    </div>
+                    <div className="flex items-center gap-1 hover:text-womb-plum transition-colors cursor-pointer">
+                      <MessageCircle className="w-4 h-4" />
+                      <span>{story.comments}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-1 hover:text-womb-plum transition-colors cursor-pointer">
-                    <MessageCircle className="w-4 h-4" />
-                    <span>{story.comments}</span>
-                  </div>
+                  
+                  {/* Read Story Button */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-womb-crimson hover:text-womb-crimson hover:bg-womb-crimson/10 p-2 h-auto w-full sm:w-auto justify-center sm:justify-start"
+                  >
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    Read Story
+                  </Button>
                 </div>
-                <Button variant="ghost" size="sm" className="text-womb-crimson hover:text-womb-crimson hover:bg-womb-crimson/10 p-2 h-auto">
-                  Read Story
-                </Button>
               </div>
             </article>
           ))}
@@ -158,7 +171,7 @@ const FeaturedStories = () => {
 
         {/* View More Button */}
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" className="border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white">
+          <Button variant="outline" size="lg" className="border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white w-full sm:w-auto">
             <BookOpen className="w-5 h-5 mr-2" />
             Explore All Stories
           </Button>
