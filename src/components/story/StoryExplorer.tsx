@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -32,6 +31,7 @@ const StoryExplorer = () => {
   const [emotionFilter, setEmotionFilter] = useState('');
   const [moodFilter, setMoodFilter] = useState('');
   const [page, setPage] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
   const { user } = useAuth();
 
   const ITEMS_PER_PAGE = 6;
@@ -60,6 +60,7 @@ const StoryExplorer = () => {
 
   useEffect(() => {
     fetchStories(true);
+    setTimeout(() => setIsVisible(true), 100);
   }, [emotionFilter, moodFilter]);
 
   const fetchStories = async (reset = false) => {
@@ -147,42 +148,45 @@ const StoryExplorer = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Popular Tags Section */}
-      <PopularTags />
+    <div className="space-y-6 relative">
+      {/* Popular Tags Section with entrance animation */}
+      <div className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+        <PopularTags />
+      </div>
 
-      {/* Filters */}
-      <div className="space-y-4">
-        <div className="flex items-center space-x-2">
-          <Filter className="w-5 h-5 text-white" />
-          <h3 className="text-lg font-medium text-white">Filter by feeling</h3>
+      {/* Filters with staggered animations */}
+      <div className={`space-y-4 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '200ms' }}>
+        <div className="flex items-center space-x-2 animate-slide-in-left">
+          <Filter className="w-5 h-5 text-white transition-all duration-300 hover:text-womb-maroon hover:scale-110" />
+          <h3 className="text-lg font-medium text-white transition-all duration-300 hover:text-womb-mediumgray">Filter by feeling</h3>
         </div>
         
         {/* Emotion Tags Filter */}
-        <div className="space-y-2">
-          <p className="text-sm text-white">Emotional tags:</p>
+        <div className="space-y-2 animate-fade-in" style={{ animationDelay: '400ms' }}>
+          <p className="text-sm text-white transition-all duration-300 hover:text-womb-softgray">Emotional tags:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setEmotionFilter('')}
-              className={`px-3 py-1 rounded-full text-sm transition-colors ${
+              className={`px-3 py-1 rounded-full text-sm transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 ${
                 emotionFilter === '' 
-                  ? 'bg-womb-maroon text-white' 
-                  : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray'
+                  ? 'bg-womb-maroon text-white shadow-lg shadow-womb-maroon/30' 
+                  : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray hover:shadow-lg'
               }`}
             >
               All
             </button>
-            {emotions.map(emotion => (
+            {emotions.map((emotion, index) => (
               <button
                 key={emotion.id}
                 onClick={() => setEmotionFilter(emotion.id)}
-                className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center space-x-1 ${
+                className={`px-3 py-1 rounded-full text-sm transition-all duration-300 flex items-center space-x-1 transform hover:scale-105 hover:-translate-y-1 ${
                   emotionFilter === emotion.id 
-                    ? 'bg-womb-maroon text-white' 
-                    : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray'
+                    ? 'bg-womb-maroon text-white shadow-lg shadow-womb-maroon/30' 
+                    : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray hover:shadow-lg'
                 }`}
+                style={{ animationDelay: `${500 + index * 50}ms` }}
               >
-                <span>{emotion.emoji}</span>
+                <span className="transition-transform duration-300 hover:scale-125">{emotion.emoji}</span>
                 <span>{emotion.label}</span>
               </button>
             ))}
@@ -190,30 +194,31 @@ const StoryExplorer = () => {
         </div>
 
         {/* Mood Filter */}
-        <div className="space-y-2">
-          <p className="text-sm text-white">Moods:</p>
+        <div className="space-y-2 animate-fade-in" style={{ animationDelay: '800ms' }}>
+          <p className="text-sm text-white transition-all duration-300 hover:text-womb-softgray">Moods:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setMoodFilter('')}
-              className={`px-3 py-1 rounded-full text-sm transition-colors ${
+              className={`px-3 py-1 rounded-full text-sm transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 ${
                 moodFilter === '' 
-                  ? 'bg-womb-mediumgray text-womb-charcoal' 
-                  : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray'
+                  ? 'bg-womb-mediumgray text-womb-charcoal shadow-lg shadow-womb-mediumgray/30' 
+                  : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray hover:shadow-lg'
               }`}
             >
               All
             </button>
-            {moods.map(mood => (
+            {moods.map((mood, index) => (
               <button
                 key={mood.id}
                 onClick={() => setMoodFilter(mood.id)}
-                className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center space-x-1 ${
+                className={`px-3 py-1 rounded-full text-sm transition-all duration-300 flex items-center space-x-1 transform hover:scale-105 hover:-translate-y-1 ${
                   moodFilter === mood.id 
-                    ? 'bg-womb-mediumgray text-womb-charcoal' 
-                    : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray'
+                    ? 'bg-womb-mediumgray text-womb-charcoal shadow-lg shadow-womb-mediumgray/30' 
+                    : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray hover:shadow-lg'
                 }`}
+                style={{ animationDelay: `${900 + index * 50}ms` }}
               >
-                <span>{mood.emoji}</span>
+                <span className="transition-transform duration-300 hover:scale-125">{mood.emoji}</span>
                 <span>{mood.label}</span>
               </button>
             ))}
@@ -221,30 +226,36 @@ const StoryExplorer = () => {
         </div>
       </div>
 
-      {/* Stories Grid */}
+      {/* Stories Grid with smooth animations */}
       {stories.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-white text-lg mb-4">No stories found</p>
-          <p className="text-white text-sm">
+        <div className={`text-center py-12 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '600ms' }}>
+          <p className="text-white text-lg mb-4 transition-all duration-300 hover:text-womb-mediumgray">No stories found</p>
+          <p className="text-white text-sm transition-all duration-300 hover:text-womb-softgray">
             Try adjusting your filters or be the first to share a story with these tags!
           </p>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {stories.map((story) => (
-              <StoryCard key={story.id} story={story} />
+            {stories.map((story, index) => (
+              <div
+                key={story.id}
+                className={`transition-all duration-700 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+                style={{ transitionDelay: `${1000 + index * 100}ms` }}
+              >
+                <StoryCard story={story} />
+              </div>
             ))}
           </div>
 
           {/* Load More Button */}
           {hasMore && (
-            <div className="text-center pt-6">
+            <div className={`text-center pt-6 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '1200ms' }}>
               <Button
                 onClick={loadMore}
                 disabled={loadingMore}
                 variant="outline"
-                className="border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
+                className="border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white transition-all duration-500 hover:scale-110 hover:-translate-y-2 hover:shadow-lg hover:shadow-womb-maroon/30 transform"
               >
                 {loadingMore ? (
                   <>
