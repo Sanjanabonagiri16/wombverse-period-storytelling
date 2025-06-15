@@ -93,7 +93,10 @@ const Layout = ({ children }: LayoutProps) => {
                 <>
                   {user ? (
                     <>
-                      <Button className="btn-primary" onClick={handleShareStory}>
+                      <Button 
+                        className="bg-gradient-to-r from-womb-crimson to-womb-plum hover:from-womb-crimson/80 hover:to-womb-plum/80 text-white border-0" 
+                        onClick={handleShareStory}
+                      >
                         <PenTool className="w-4 h-4 mr-2" />
                         Share Story
                       </Button>
@@ -178,7 +181,7 @@ const Layout = ({ children }: LayoutProps) => {
                   {user ? (
                     <>
                       <Button 
-                        className="w-full btn-primary" 
+                        className="w-full bg-gradient-to-r from-womb-crimson to-womb-plum hover:from-womb-crimson/80 hover:to-womb-plum/80 text-white border-0" 
                         onClick={() => {
                           handleShareStory();
                           setIsMenuOpen(false);
