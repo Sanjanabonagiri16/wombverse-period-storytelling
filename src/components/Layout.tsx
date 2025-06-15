@@ -278,8 +278,19 @@ const Layout = ({ children }: LayoutProps) => {
               </ul>
             </div>
           </div>
-          <div className="border-t border-womb-deepgrey mt-8 pt-8 text-center text-sm text-womb-warmgrey">
-            <p>&copy; 2024 WombVerse. Made with ❤️ for the menstrual community.</p>
+          <div className="border-t border-womb-deepgrey mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-center text-sm text-womb-warmgrey mb-4 md:mb-0">
+              &copy; 2024 WombVerse. Made with ❤️ for the menstrual community.
+            </p>
+            <div className="text-xs text-womb-warmgrey">
+              <button 
+                onClick={() => window.location.href = '/admin'}
+                className="hover:text-womb-crimson transition-colors"
+                style={{ opacity: 0.3 }}
+              >
+                Admin Access
+              </button>
+            </div>
           </div>
         </div>
       </footer>
