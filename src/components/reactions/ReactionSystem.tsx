@@ -4,31 +4,38 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import EmojiReactionButton from './EmojiReactionButton';
 
+interface ReactionCount {
+  type: string;
+  count: number;
+}
+
+interface UserReaction {
+  type: string;
+}
+
 interface ReactionSystemProps {
   storyId: string;
 }
 
 const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
   const { user } = useAuth();
-  const [reactions, setReactions] = useState<Record<string, number>>({});
-  const [userReaction, setUserReaction] = useState<string | null>(null);
+  const [reactionCounts, setReactionCounts] = useState<ReactionCount[]>([]);
+  const [userReactions, setUserReactions] = useState<UserReaction[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const emojiReactions = [
-    { type: 'heart', emoji: '❤️', label: 'Love & Support' },
-    { type: 'support', emoji: '🥺', label: 'Sending Hugs' },
-    { type: 'strong', emoji: '💪', label: 'You\'re Strong' },
-    { type: 'tears', emoji: '😭', label: 'Feel Your Pain' },
-    { type: 'grateful', emoji: '🙏', label: 'Grateful for Sharing' },
-    { type: 'empathy', emoji: '🤗', label: 'I Understand' },
-    { type: 'hope', emoji: '✨', label: 'Hopeful' },
-    { type: 'strength', emoji: '🌟', label: 'Inspiring' },
+  const reactionTypes = [
+    { type: 'heart', emoji: '❤️', label: 'Love' },
+    { type: 'support', emoji: '🤗', label: 'Support' },
+    { type: 'strength', emoji: '💪', label: 'Strength' },
+    { type: 'hope', emoji: '✨', label: 'Hope' },
+    { type: 'gratitude', emoji: '🙏', label: 'Gratitude' },
+    { type: 'understanding', emoji: '🤝', label: 'Understanding' },
   ];
 
   useEffect(() => {
     fetchReactions();
     if (user) {
-      fetchUserReaction();
+      fetchUserReactions();
     }
 
     // Set up real-time subscription for reactions
@@ -44,6 +51,9 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
         },
         () => {
           fetchReactions();
+          if (user) {
+            fetchUserReactions();
+          }
         }
       )
       .subscribe();
@@ -55,25 +65,19 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
 
   const fetchReactions = async () => {
     try {
-      const { data } = await supabase
-        .from('reactions')
-        .select('type')
-        .eq('story_id', storyId);
-
-      const reactionCounts: Record<string, number> = {};
-      data?.forEach(reaction => {
-        reactionCounts[reaction.type] = (reactionCounts[reaction.type] || 0) + 1;
+      const { data } = await supabase.rpc('get_reaction_counts', {
+        story_uuid: storyId
       });
-
-      setReactions(reactionCounts);
+      
+      setReactionCounts(data || []);
     } catch (error) {
-      console.error('Error fetching reactions:', error);
+      console.error('Error fetching reaction counts:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchUserReaction = async () => {
+  const fetchUserReactions = async () => {
     if (!user) return;
 
     try {
@@ -81,88 +85,85 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
         .from('reactions')
         .select('type')
         .eq('story_id', storyId)
-        .eq('user_id', user.id)
-        .single();
+        .eq('user_id', user.id);
 
-      setUserReaction(data?.type || null);
+      setUserReactions(data || []);
     } catch (error) {
-      // User hasn't reacted yet
-      setUserReaction(null);
+      console.error('Error fetching user reactions:', error);
     }
   };
 
-  const toggleReaction = async (type: string) => {
+  const handleReactionToggle = async (type: string) => {
     if (!user) return;
 
     try {
-      if (userReaction === type) {
+      const existingReaction = userReactions.find(r => r.type === type);
+
+      if (existingReaction) {
         // Remove reaction
         await supabase
           .from('reactions')
           .delete()
-          .eq('user_id', user.id)
           .eq('story_id', storyId)
+          .eq('user_id', user.id)
           .eq('type', type);
-        
-        setUserReaction(null);
       } else {
-        // Remove existing reaction first if any
-        if (userReaction) {
-          await supabase
-            .from('reactions')
-            .delete()
-            .eq('user_id', user.id)
-            .eq('story_id', storyId);
-        }
-
-        // Add new reaction
+        // Add reaction
         await supabase
           .from('reactions')
           .insert({
-            user_id: user.id,
             story_id: storyId,
-            type: type,
+            user_id: user.id,
+            type: type
           });
-        
-        setUserReaction(type);
+
+        // Track analytics
+        await supabase.rpc('track_analytics_event', {
+          event_type_param: 'reaction_added',
+          user_id_param: user.id,
+          story_id_param: storyId,
+          reaction_type_param: type
+        });
       }
     } catch (error) {
       console.error('Error toggling reaction:', error);
+      throw error;
     }
+  };
+
+  const getReactionCount = (type: string) => {
+    const reaction = reactionCounts.find(r => r.type === type);
+    return reaction ? reaction.count : 0;
+  };
+
+  const isReactionActive = (type: string) => {
+    return userReactions.some(r => r.type === type);
   };
 
   if (loading) {
     return (
-      <div className="flex space-x-2">
-        {emojiReactions.slice(0, 4).map(reaction => (
-          <div key={reaction.type} className="w-12 h-8 bg-womb-deepgrey/30 rounded-full animate-pulse" />
+      <div className="flex items-center space-x-2 animate-pulse">
+        {reactionTypes.map(reaction => (
+          <div key={reaction.type} className="w-12 h-8 bg-womb-deepgrey rounded-full" />
         ))}
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap gap-2">
-        {emojiReactions.map(reaction => (
-          <EmojiReactionButton
-            key={reaction.type}
-            storyId={storyId}
-            type={reaction.type}
-            emoji={reaction.emoji}
-            label={reaction.label}
-            count={reactions[reaction.type] || 0}
-            isActive={userReaction === reaction.type}
-            onReactionToggle={toggleReaction}
-          />
-        ))}
-      </div>
-      
-      {Object.keys(reactions).length > 0 && (
-        <div className="text-xs text-womb-warmgrey">
-          {Object.values(reactions).reduce((a, b) => a + b, 0)} reaction{Object.values(reactions).reduce((a, b) => a + b, 0) !== 1 ? 's' : ''}
-        </div>
-      )}
+    <div className="flex flex-wrap items-center gap-2">
+      {reactionTypes.map(reaction => (
+        <EmojiReactionButton
+          key={reaction.type}
+          storyId={storyId}
+          type={reaction.type}
+          emoji={reaction.emoji}
+          label={reaction.label}
+          count={getReactionCount(reaction.type)}
+          isActive={isReactionActive(reaction.type)}
+          onReactionToggle={handleReactionToggle}
+        />
+      ))}
     </div>
   );
 };

@@ -1,15 +1,15 @@
 
 import Layout from '@/components/Layout';
-import CommunityWallPage from '@/components/community/CommunityWallPage';
+import MoodBasedStories from '@/components/mood/MoodBasedStories';
 
-const Community = () => {
+const MoodStories = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <CommunityWallPage />
+        <MoodBasedStories />
       </div>
     </Layout>
   );
 };
 
-export default Community;
+export default MoodStories;

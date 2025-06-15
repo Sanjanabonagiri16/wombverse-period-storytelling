@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from 'react';
-import { Bookmark, Share2 } from 'lucide-react';
+import { Bookmark, Share2, Flag } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -120,23 +119,67 @@ const StoryCard = ({ story }: StoryCardProps) => {
     return colorMap[tag] || 'text-womb-warmgrey bg-womb-warmgrey/20';
   };
 
+  const handleFlag = async () => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to flag content.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await supabase
+        .from('content_moderation')
+        .insert({
+          content_type: 'stories',
+          content_id: story.id,
+          flagged_by: user.id,
+          flag_reason: 'User reported inappropriate content',
+          flag_type: 'manual'
+        });
+
+      toast({
+        title: "Story flagged",
+        description: "Thank you for reporting. Our moderators will review this story.",
+      });
+    } catch (error) {
+      console.error('Error flagging story:', error);
+      toast({
+        title: "Error",
+        description: "Failed to flag story.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="story-card p-4 md:p-6 hover:shadow-lg hover:shadow-womb-plum/5 transition-all duration-300">
       {/* Author Info */}
-      <div className="flex items-center space-x-3 mb-4">
-        <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center">
-          <span className="text-white font-medium text-sm md:text-base">
-            {story.is_anonymous ? '?' : story.profiles?.display_name?.charAt(0) || 'U'}
-          </span>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center">
+            <span className="text-white font-medium text-sm md:text-base">
+              {story.is_anonymous ? '?' : story.profiles?.display_name?.charAt(0) || 'U'}
+            </span>
+          </div>
+          <div>
+            <p className="text-womb-softwhite font-medium text-sm md:text-base">
+              {story.is_anonymous ? 'Anonymous' : story.profiles?.display_name || 'User'}
+            </p>
+            <p className="text-womb-warmgrey text-xs md:text-sm">
+              {formatDistanceToNow(new Date(story.created_at), { addSuffix: true })}
+            </p>
+          </div>
         </div>
-        <div>
-          <p className="text-womb-softwhite font-medium text-sm md:text-base">
-            {story.is_anonymous ? 'Anonymous' : story.profiles?.display_name || 'User'}
-          </p>
-          <p className="text-womb-warmgrey text-xs md:text-sm">
-            {formatDistanceToNow(new Date(story.created_at), { addSuffix: true })}
-          </p>
-        </div>
+        
+        <button
+          onClick={handleFlag}
+          className="text-womb-warmgrey hover:text-red-400 transition-colors"
+        >
+          <Flag className="w-4 h-4" />
+        </button>
       </div>
 
       {/* Story Content */}

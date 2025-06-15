@@ -12,6 +12,8 @@ import Stories from "./pages/Stories";
 import Whispers from "./pages/Whispers";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
+import MoodStories from "./pages/MoodStories";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +32,8 @@ const App = () => (
             <Route path="/stories" element={<Stories />} />
             <Route path="/whispers" element={<Whispers />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/mood-stories" element={<MoodStories />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
