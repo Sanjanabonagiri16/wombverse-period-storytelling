@@ -1,9 +1,39 @@
 
-import { PenTool, BookOpen, Heart } from 'lucide-react';
+import { PenTool, BookOpen, Heart, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const Hero = () => {
+  const [showMoreWisdom, setShowMoreWisdom] = useState(false);
+
+  const wisdomQuotes = [
+    {
+      text: "Your period is not a weakness, it's a superpower that connects you to the rhythm of life.",
+      author: "Maya, 24"
+    },
+    {
+      text: "Every month, our bodies remind us of our incredible capacity for renewal and strength.",
+      author: "Sarah, 28"
+    },
+    {
+      text: "Periods taught me to listen to my body and honor its natural cycles.",
+      author: "Priya, 22"
+    },
+    {
+      text: "There's nothing shameful about something so natural and powerful.",
+      author: "Emma, 26"
+    },
+    {
+      text: "My period is my monthly reminder that my body is capable of amazing things.",
+      author: "Zara, 30"
+    },
+    {
+      text: "Normalizing period talk starts with us - one conversation at a time.",
+      author: "Lisa, 25"
+    }
+  ];
+
   return (
     <section className="relative py-20 lg:py-32 overflow-hidden">
       {/* Background gradient */}
@@ -44,7 +74,7 @@ const Hero = () => {
           </div>
           
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto mb-12">
             <div className="text-center animate-fade-in">
               <div className="text-3xl font-playfair font-bold text-womb-crimson mb-2">1,247</div>
               <div className="text-womb-warmgrey">Stories Shared</div>
@@ -57,6 +87,47 @@ const Hero = () => {
               <div className="text-3xl font-playfair font-bold text-womb-crimson mb-2">Safe</div>
               <div className="text-womb-warmgrey">Space Always</div>
             </div>
+          </div>
+
+          {/* More Wisdom Section */}
+          <div className="max-w-3xl mx-auto">
+            <Button
+              onClick={() => setShowMoreWisdom(!showMoreWisdom)}
+              variant="ghost"
+              className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey mb-6 text-base sm:text-lg px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto transition-all duration-300"
+            >
+              <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              More Wisdom
+              <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 ml-2 transition-transform duration-300 ${showMoreWisdom ? 'rotate-180' : ''}`} />
+            </Button>
+
+            {/* Wisdom Content */}
+            {showMoreWisdom && (
+              <div className="animate-fade-in space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {wisdomQuotes.map((quote, index) => (
+                    <div
+                      key={index}
+                      className="bg-womb-deepgrey/50 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-womb-deepgrey hover:border-womb-crimson/30 transition-all duration-300 animate-scale-in"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <blockquote className="text-womb-softwhite text-sm sm:text-base mb-3 leading-relaxed italic">
+                        "{quote.text}"
+                      </blockquote>
+                      <cite className="text-womb-crimson text-xs sm:text-sm font-medium">
+                        — {quote.author}
+                      </cite>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="text-center pt-4">
+                  <p className="text-womb-warmgrey text-sm sm:text-base">
+                    Share your own wisdom and inspire others in our community 💫
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
