@@ -14,7 +14,7 @@ interface AnalyticsEvent {
   user_id: string;
   created_at: string;
   metadata: any;
-  ip_address: string;
+  ip_address: unknown; // This matches the database type (inet)
 }
 
 interface RateLimit {
@@ -23,7 +23,7 @@ interface RateLimit {
   action_type: string;
   count: number;
   window_start: string;
-  ip_address: string;
+  ip_address: unknown; // This matches the database type (inet)
 }
 
 const SecurityLogs = () => {
@@ -165,7 +165,7 @@ const SecurityLogs = () => {
                       <TableCell className="font-mono text-xs">
                         {event.user_id ? event.user_id.substring(0, 8) + '...' : 'Anonymous'}
                       </TableCell>
-                      <TableCell>{event.ip_address || 'N/A'}</TableCell>
+                      <TableCell>{event.ip_address ? String(event.ip_address) : 'N/A'}</TableCell>
                       <TableCell>
                         {new Date(event.created_at).toLocaleString()}
                       </TableCell>
@@ -220,7 +220,7 @@ const SecurityLogs = () => {
                       <TableCell className="font-mono text-xs">
                         {limit.user_id ? 
                           limit.user_id.substring(0, 8) + '...' : 
-                          limit.ip_address
+                          String(limit.ip_address)
                         }
                       </TableCell>
                       <TableCell>
