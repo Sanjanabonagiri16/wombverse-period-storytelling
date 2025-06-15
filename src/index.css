@@ -47,6 +47,7 @@
     --sidebar-ring: 136 136 136; /* #888888 */
 
     --gold: 194, 137, 26; /* #C2891A - True metallic gold */
+    --maroon: 5C, 09, 23; /* #5C0923 - Maroon */
   }
 }
 
@@ -83,6 +84,14 @@
   .btn-secondary {
     @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40;
     border: 2px solid #444444;
+  }
+
+  .maroon-border {
+    border-color: #5C0923 !important;
+  }
+  
+  .bg-womb-maroon {
+    background-color: #5C0923 !important;
   }
 
   .gold-border {

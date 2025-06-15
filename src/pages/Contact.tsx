@@ -1,4 +1,3 @@
-
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,7 +14,7 @@ const Contact = () => (
         </p>
       </div>
       <div className="grid md:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
-        <div className="bg-womb-deepgrey border border-womb-plum rounded-lg p-8 space-y-6">
+        <div className="bg-womb-deepgrey border maroon-border rounded-lg p-8 space-y-6">
           <h2 className="text-2xl font-bold text-womb-softwhite font-playfair">Contact Information</h2>
           <div className="flex items-start space-x-4">
             <Mail className="w-6 h-6 text-primary mt-1" />
@@ -41,7 +40,7 @@ const Contact = () => (
             </div>
           </div>
         </div>
-        <div className="bg-womb-deepgrey border border-womb-plum rounded-lg p-8">
+        <div className="bg-womb-deepgrey border maroon-border rounded-lg p-8">
           <h2 className="text-2xl font-bold text-womb-softwhite font-playfair mb-6">Send a Message</h2>
           <form className="space-y-4">
             <div>
@@ -56,7 +55,7 @@ const Contact = () => (
               <label htmlFor="message" className="block text-sm font-medium text-womb-softwhite mb-1">Message</label>
               <Textarea id="message" placeholder="Your message..." rows={5} className="bg-womb-charcoal border-womb-deepgrey" />
             </div>
-            <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white">Send Message</Button>
+            <Button type="submit" className="w-full bg-womb-maroon hover:bg-womb-maroon/90 text-white">Send Message</Button>
           </form>
         </div>
       </div>

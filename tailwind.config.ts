@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -62,6 +61,7 @@ export default {
 					softgray: '#888888', // Accent (10%)
 					lightgray: '#E0E0E0', // Text
 					secondarytext: '#B0B0B0', // Secondary text
+					maroon: '#5C0923', // Add dark maroon
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
