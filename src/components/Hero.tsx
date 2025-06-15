@@ -77,6 +77,26 @@ const Hero = () => {
       text: "It's okay to cancel plans when your period needs you to rest and recharge.",
       author: "Self-Care Advocate Sam",
       category: "Permission to Rest"
+    },
+    {
+      text: "Menstrual cups can be worn for up to 12 hours - they're eco-friendly and cost-effective!",
+      author: "Environmental Health Advocate",
+      category: "Eco Tips"
+    },
+    {
+      text: "Dark chocolate can actually help reduce period cramps due to its magnesium content.",
+      author: "Nutritionist Kelly",
+      category: "Nutrition Facts"
+    },
+    {
+      text: "Exercise during your period can help reduce cramps and boost your mood naturally.",
+      author: "Fitness Coach Sam",
+      category: "Wellness Tips"
+    },
+    {
+      text: "Your period doesn't make you 'emotional' - it makes you more in tune with your feelings.",
+      author: "Therapist Jordan",
+      category: "Mental Health"
     }
   ];
 
@@ -135,35 +155,35 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* More Wisdom Section */}
-          <div className="max-w-4xl mx-auto">
+          {/* More Wisdom Section - Enhanced and Responsive */}
+          <div className="max-w-6xl mx-auto">
             <Button
               onClick={() => setShowMoreWisdom(!showMoreWisdom)}
               variant="ghost"
-              className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey/50 mb-8 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto transition-all duration-300 border border-womb-deepgrey hover:border-womb-crimson/50"
+              className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey/50 mb-8 text-sm sm:text-base md:text-lg px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 w-full sm:w-auto transition-all duration-300 border border-womb-deepgrey hover:border-womb-crimson/50 rounded-lg"
             >
-              <Heart className="w-5 h-5 mr-2" />
-              {showMoreWisdom ? 'Hide Wisdom' : 'More Wisdom'}
-              <ChevronDown className={`w-5 h-5 ml-2 transition-transform duration-300 ${showMoreWisdom ? 'rotate-180' : ''}`} />
+              <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              {showMoreWisdom ? 'Hide Wisdom' : 'More Wisdom & Facts'}
+              <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 ml-2 transition-transform duration-300 ${showMoreWisdom ? 'rotate-180' : ''}`} />
             </Button>
 
-            {/* Wisdom Content */}
+            {/* Wisdom Content - Fully Responsive */}
             <div className={`transition-all duration-500 overflow-hidden ${showMoreWisdom ? 'opacity-100 max-h-none' : 'opacity-0 max-h-0'}`}>
               {showMoreWisdom && (
                 <div className="animate-fade-in space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                     {wisdomQuotes.map((quote, index) => (
                       <div
                         key={index}
-                        className="bg-womb-deepgrey/60 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-womb-deepgrey hover:border-womb-crimson/40 transition-all duration-300 hover:shadow-lg hover:shadow-womb-crimson/10"
-                        style={{ animationDelay: `${index * 0.1}s` }}
+                        className="bg-womb-deepgrey/60 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-6 border border-womb-deepgrey hover:border-womb-crimson/40 transition-all duration-300 hover:shadow-lg hover:shadow-womb-crimson/10 hover:scale-105"
+                        style={{ animationDelay: `${index * 0.05}s` }}
                       >
                         {quote.category && (
-                          <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold text-womb-crimson bg-womb-crimson/10 rounded-full border border-womb-crimson/20">
+                          <div className="inline-block px-2 sm:px-3 py-1 mb-2 sm:mb-3 text-xs font-semibold text-womb-crimson bg-womb-crimson/10 rounded-full border border-womb-crimson/20">
                             {quote.category}
                           </div>
                         )}
-                        <blockquote className="text-womb-softwhite text-sm sm:text-base mb-3 leading-relaxed italic font-medium">
+                        <blockquote className="text-womb-softwhite text-xs sm:text-sm md:text-base mb-2 sm:mb-3 leading-relaxed italic font-medium">
                           "{quote.text}"
                         </blockquote>
                         <cite className="text-womb-crimson text-xs sm:text-sm font-semibold">
@@ -173,8 +193,8 @@ const Hero = () => {
                     ))}
                   </div>
                   
-                  <div className="text-center pt-6">
-                    <p className="text-womb-warmgrey text-sm sm:text-base font-medium">
+                  <div className="text-center pt-4 sm:pt-6">
+                    <p className="text-womb-warmgrey text-xs sm:text-sm md:text-base font-medium px-4">
                       Share your own wisdom and inspire others in our community 💫
                     </p>
                   </div>
