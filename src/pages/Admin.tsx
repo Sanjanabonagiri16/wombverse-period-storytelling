@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -20,7 +19,7 @@ import PromptPerformance from '@/components/admin/PromptPerformance';
 import SafeWordsPanel from '@/components/admin/SafeWordsPanel';
 import RollbackSystem from '@/components/admin/RollbackSystem';
 import ExperimentalFeatures from '@/components/admin/ExperimentalFeatures';
-import { Shield, TrendingUp, Users, Star, Activity, Settings, Bell, FileText, Brain, AlertTriangle, UserCheck, Lightbulb, RotateCcw, Flask } from 'lucide-react';
+import { Shield, TrendingUp, Users, Star, Activity, Settings, Bell, FileText, Brain, AlertTriangle, UserCheck, Lightbulb, RotateCcw, Beaker } from 'lucide-react';
 
 const Admin = () => {
   const { user } = useAuth();
@@ -138,7 +137,7 @@ const Admin = () => {
                   value="experimental" 
                   className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
                 >
-                  <Flask className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <Beaker className="w-3 h-3 lg:w-4 lg:h-4" />
                   <span className="hidden sm:inline">Features</span>
                 </TabsTrigger>
                 <TabsTrigger 

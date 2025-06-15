@@ -13,8 +13,8 @@ interface AdminLoginProps {
 
 const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
   const { toast } = useToast();
-  const [email, setEmail] = useState('admin@wombverse.com');
-  const [password, setPassword] = useState('WombVerse2025!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -87,6 +87,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite"
                 required
+                placeholder="Enter your admin email"
               />
             </div>
             <div className="space-y-2">
@@ -101,6 +102,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite pr-10"
                   required
+                  placeholder="Enter your password"
                 />
                 <Button
                   type="button"
@@ -108,6 +110,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                   size="sm"
                   className="absolute right-0 top-0 h-full px-3 text-womb-warmgrey hover:text-womb-softwhite"
                   onClick={() => setShowPassword(!showPassword)}
+                  tabIndex={-1}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </Button>
@@ -128,3 +131,4 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
 };
 
 export default AdminLogin;
+
