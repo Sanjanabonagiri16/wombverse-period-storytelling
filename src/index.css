@@ -45,6 +45,8 @@
     --sidebar-accent-foreground: 224 224 224; /* #E0E0E0 */
     --sidebar-border: 68 68 68; /* #444444 */
     --sidebar-ring: 136 136 136; /* #888888 */
+
+    --gold: 194, 137, 26; /* #C2891A - True metallic gold */
   }
 }
 

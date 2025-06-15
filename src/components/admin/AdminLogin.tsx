@@ -11,6 +11,8 @@ interface AdminLoginProps {
   onLoginSuccess: () => void;
 }
 
+const GOLD = '#C2891A';
+
 const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
   const { toast } = useToast();
   const [email, setEmail] = useState('');
@@ -60,10 +62,16 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-womb-charcoal via-womb-deepgrey to-womb-charcoal flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-womb-deepgrey/90 border-[2px]" style={{ borderColor: '#C2891A', backdropFilter:'blur(4px)' }}>
+      <Card
+        className="w-full max-w-md bg-womb-deepgrey/90 border-[2px]"
+        style={{ borderColor: GOLD, backdropFilter: 'blur(4px)' }}
+      >
         <CardHeader className="text-center">
           <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#C2891A 0%,#888888 100%)' }}>
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              style={{ background: `linear-gradient(135deg, ${GOLD} 0%, #888888 100%)` }}
+            >
               <Shield className="w-6 h-6 text-white" />
             </div>
           </div>
@@ -118,7 +126,11 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
             </div>
             <Button
               type="submit"
-              style={{ background: 'linear-gradient(to right, #C2891A, #888888)', borderColor: '#C2891A', color: '#121212' }}
+              style={{
+                background: `linear-gradient(to right, ${GOLD}, #888888)`,
+                borderColor: GOLD,
+                color: '#121212'
+              }}
               className="w-full font-medium"
               disabled={loading}
             >

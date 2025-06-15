@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
+const GOLD = '#C2891A';
+
 const SignUpForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -135,7 +137,7 @@ const SignUpForm = () => {
       <Button
         type="submit"
         disabled={isLoading}
-        style={{ borderColor: '#C2891A' }}
+        style={{ borderColor: GOLD }}
         className="w-full btn-primary h-12 text-base font-medium"
       >
         {isLoading ? "Creating your account..." : "Create Account"}

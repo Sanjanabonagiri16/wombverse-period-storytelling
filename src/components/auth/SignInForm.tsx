@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
+const GOLD = '#C2891A';
+
 const SignInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -103,7 +105,7 @@ const SignInForm = () => {
       <div className="text-right">
         <button
           type="button"
-          style={{ color: '#C2891A' }}
+          style={{ color: GOLD }}
           className="hover:opacity-80 text-sm transition-colors"
         >
           Forgot your password?
@@ -114,7 +116,7 @@ const SignInForm = () => {
       <Button
         type="submit"
         disabled={isLoading}
-        style={{ borderColor: '#C2891A' }}
+        style={{ borderColor: GOLD }}
         className="w-full btn-primary h-12 text-base font-medium"
       >
         {isLoading ? "Signing you in..." : "Sign In"}
