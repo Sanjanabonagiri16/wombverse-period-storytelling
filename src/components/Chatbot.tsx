@@ -9,19 +9,19 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<{ sender: "user" | "bot"; text: string }[]>([
     {
       sender: "bot",
-      text: "Hi! I'm WombBot. Ask me anything about WombVerse, periods, stories, or community resources!"
+      text: "Hi! I'm WombBot, your supportive companion for women's health questions. Ask me anything about periods, wellness, or community support!"
     }
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Send user message and fetch AI response
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
     if (!input.trim()) return;
+
     const userMsg = { sender: "user" as "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
     setLoading(true);
@@ -36,49 +36,56 @@ const Chatbot: React.FC = () => {
         { role: "user", content: input },
       ];
 
+      console.log('Sending request to chatbot function...');
+
       const res = await fetch(
         `https://zxcczifkldwuelhibbwm.functions.supabase.co/chatbot`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
           body: JSON.stringify({ messages: chatHistory }),
         }
       );
 
+      console.log('Response status:', res.status);
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
       const data = await res.json();
+      console.log('Response data:', data);
 
       if (data.answer) {
         setMessages((prev) => [
           ...prev,
           { sender: "bot", text: data.answer }
         ]);
-      } else {
-        // Show specific error from backend if present
-        const errMsg = data.error
-          ? `WombBot Error: ${data.error}${
-              data.apiResponse ? "\n(API Raw: " + JSON.stringify(data.apiResponse) + ")" : ""
-            }`
-          : "Sorry, I couldn't find an answer. Please try again later.";
+      } else if (data.error) {
+        console.error('API Error:', data.error);
         setMessages((prev) => [
           ...prev,
-          { sender: "bot", text: errMsg }
+          { sender: "bot", text: `I apologize, but I encountered an issue: ${data.error}` }
         ]);
-        setError(errMsg);
+        setError(data.error);
+      } else {
+        throw new Error('No answer or error in response');
       }
     } catch (err: any) {
-      setError("Connection problem: Unable to reach the AI bot. Try again later or contact support.");
+      console.error('Chatbot error:', err);
+      const errorMessage = "I'm having trouble connecting right now. Please try again in a moment.";
+      setError(errorMessage);
       setMessages((prev) => [
         ...prev,
-        {
-          sender: "bot",
-          text: "There was a problem connecting to the AI. Please try again later."
-        }
+        { sender: "bot", text: errorMessage }
       ]);
     }
     setLoading(false);
   };
 
-  // Scroll to the bottom on new messages
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
@@ -89,8 +96,8 @@ const Chatbot: React.FC = () => {
       <div className="fixed bottom-8 right-8 z-50">
         <Button
           size="icon"
-          className={`bg-gradient-to-tr from-womb-crimson via-womb-plum to-red-600 shadow-xl text-white rounded-full p-0 w-14 h-14 border-4 border-white ${
-            isOpen ? "ring-4 ring-womb-crimson" : ""
+          className={`bg-gradient-to-tr from-indigo-600 via-slate-700 to-red-600 shadow-xl text-white rounded-full p-0 w-14 h-14 border-4 border-white ${
+            isOpen ? "ring-4 ring-indigo-500" : ""
           }`}
           onClick={() => setIsOpen((o) => !o)}
           aria-label="Open Chatbot"
@@ -98,14 +105,15 @@ const Chatbot: React.FC = () => {
           <Bot size={32} className="text-white" />
         </Button>
       </div>
+      
       {/* Chat Window */}
       {isOpen && (
         <div className="fixed bottom-32 right-8 z-50 w-full max-w-xs sm:max-w-sm drop-shadow-2xl">
-          <div className="bg-gradient-to-br from-slate-900 via-womb-plum/70 to-womb-crimson/80 rounded-xl border border-womb-plum flex flex-col h-96 overflow-hidden">
+          <div className="bg-gradient-to-br from-slate-900 via-indigo-900/70 to-slate-800 rounded-xl border border-slate-600 flex flex-col h-96 overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-womb-plum bg-slate-900/70">
+            <div className="flex items-center justify-between p-4 border-b border-slate-600 bg-slate-900/70">
               <div className="flex items-center gap-2">
-                <Bot className="text-womb-crimson w-6 h-6" />
+                <Bot className="text-red-400 w-6 h-6" />
                 <span className="font-playfair font-bold text-lg text-white">WombBot</span>
               </div>
               <button
@@ -116,6 +124,7 @@ const Chatbot: React.FC = () => {
                 ×
               </button>
             </div>
+            
             {/* Messages */}
             <div className="flex-1 overflow-y-auto px-4 py-2 text-sm bg-transparent custom-scrollbar">
               {messages.map((msg, i) => (
@@ -126,8 +135,8 @@ const Chatbot: React.FC = () => {
                   <div
                     className={`max-w-[80%] rounded-xl px-4 py-2 ${
                       msg.sender === "bot"
-                        ? "bg-womb-plum/30 text-womb-softwhite rounded-bl-none"
-                        : "bg-red-500/30 text-white rounded-br-none"
+                        ? "bg-indigo-900/40 text-white rounded-bl-none"
+                        : "bg-red-600/30 text-white rounded-br-none"
                     }`}
                   >
                     {msg.text}
@@ -136,24 +145,26 @@ const Chatbot: React.FC = () => {
               ))}
               {loading && (
                 <div className="flex justify-start mb-2">
-                  <div className="bg-womb-plum/20 text-womb-softwhite max-w-[60%] rounded-xl px-4 py-2 animate-pulse">
+                  <div className="bg-indigo-900/30 text-white max-w-[60%] rounded-xl px-4 py-2 animate-pulse">
                     Typing...
                   </div>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
-            {/* Error */}
+            
+            {/* Error Display */}
             {error && (
-              <div className="px-4 py-2 text-xs text-red-400 bg-red-900/30">
+              <div className="px-4 py-2 text-xs text-red-300 bg-red-900/20 border-t border-red-800/30">
                 {error}
               </div>
             )}
+            
             {/* Input */}
-            <form onSubmit={sendMessage} className="flex border-t border-womb-plum bg-slate-800/80 px-2 py-2 gap-2">
+            <form onSubmit={sendMessage} className="flex border-t border-slate-600 bg-slate-800/80 px-2 py-2 gap-2">
               <input
                 className="flex-1 bg-transparent border-none text-white outline-none font-inter px-2 py-1 placeholder:text-gray-400"
-                placeholder="Ask me anytime…"
+                placeholder="Ask me anything about health..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={loading}
@@ -161,7 +172,7 @@ const Chatbot: React.FC = () => {
               <Button
                 size="sm"
                 type="submit"
-                className="bg-gradient-to-r from-womb-plum to-red-500 text-white font-bold rounded-lg px-4 py-1 hover:from-red-500 hover:to-womb-plum disabled:opacity-50"
+                className="bg-gradient-to-r from-indigo-600 to-red-500 text-white font-bold rounded-lg px-4 py-1 hover:from-red-500 hover:to-indigo-600 disabled:opacity-50"
                 disabled={loading || !input.trim()}
               >
                 Send
@@ -170,18 +181,19 @@ const Chatbot: React.FC = () => {
           </div>
         </div>
       )}
-      {/* Add scrollbar styles for nice appearance */}
+      
+      {/* Scrollbar styles */}
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 8px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #7D5BA6;
+          background: #4F46E5;
           border-radius: 4px;
         }
         .custom-scrollbar {
           scrollbar-width: thin;
-          scrollbar-color: #7D5BA6 #2d2d2d;
+          scrollbar-color: #4F46E5 #2d2d2d;
         }
       `}</style>
     </>
