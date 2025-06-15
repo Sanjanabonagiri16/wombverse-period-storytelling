@@ -22,15 +22,15 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
     e.preventDefault();
     setLoading(true);
 
-    console.log('Login attempt with:', { email, password });
+    console.log('Login attempt with:', { email: email.trim() });
 
     try {
       // Check for demo credentials
       if (email.trim() === 'admin@wombverse.com' && password.trim() === 'WombVerse2025!') {
         console.log('Demo credentials validated successfully');
         toast({
-          title: "Demo Login Successful",
-          description: "Welcome to the admin dashboard (demo mode).",
+          title: "Login Successful",
+          description: "Welcome to the WombVerse admin dashboard.",
         });
         setTimeout(() => {
           onLoginSuccess();
@@ -59,25 +59,25 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-womb-charcoal flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-womb-deepgrey border-womb-deepgrey">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-gray-900/80 border-gray-800 backdrop-blur-sm">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-purple-600 rounded-full flex items-center justify-center">
               <Shield className="w-6 h-6 text-white" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-womb-softwhite">
+          <CardTitle className="text-2xl font-bold text-white">
             Admin Access
           </CardTitle>
-          <p className="text-womb-warmgrey text-sm">
-            Secure administrator login
+          <p className="text-gray-400 text-sm">
+            Secure administrator portal
           </p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-womb-softwhite">
+              <Label htmlFor="email" className="text-gray-200">
                 Email Address
               </Label>
               <Input
@@ -85,13 +85,13 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite"
+                className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500"
                 required
-                placeholder="Enter your admin email"
+                placeholder="Enter your email"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-womb-softwhite">
+              <Label htmlFor="password" className="text-gray-200">
                 Password
               </Label>
               <div className="relative">
@@ -100,7 +100,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite pr-10"
+                  className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 pr-10"
                   required
                   placeholder="Enter your password"
                 />
@@ -108,7 +108,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-full px-3 text-womb-warmgrey hover:text-womb-softwhite"
+                  className="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-gray-200"
                   onClick={() => setShowPassword(!showPassword)}
                   tabIndex={-1}
                 >
@@ -118,12 +118,15 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
             </div>
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-womb-crimson to-womb-plum hover:from-womb-crimson/80 hover:to-womb-plum/80"
+              className="w-full bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700 text-white font-medium"
               disabled={loading}
             >
               {loading ? 'Authenticating...' : 'Access Dashboard'}
             </Button>
           </form>
+          <div className="mt-4 text-center text-xs text-gray-500">
+            Demo: admin@wombverse.com / WombVerse2025!
+          </div>
         </CardContent>
       </Card>
     </div>
@@ -131,4 +134,3 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
 };
 
 export default AdminLogin;
-
