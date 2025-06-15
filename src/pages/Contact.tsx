@@ -1,24 +1,65 @@
 
 import Layout from '@/components/Layout';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 const Contact = () => (
   <Layout>
-    <div className="container mx-auto px-4 py-12 max-w-xl">
-      <h1 className="text-3xl font-bold text-primary mb-4 font-playfair">Contact Us</h1>
-      <p className="text-womb-warmgrey mb-8">
-        Have questions, need support, or want to collaborate with WombVerse? Reach out!
-      </p>
-      <div className="bg-womb-deepgrey border border-womb-plum rounded-lg p-6">
-        <p className="mb-2 text-womb-softwhite font-medium">Email:</p>
-        <a href="mailto:contact@wombverse.org" className="text-primary hover:underline">contact@wombverse.org</a>
-        <p className="mt-4 text-womb-softwhite font-medium">Mailing Address:</p>
-        <span className="text-womb-warmgrey">
-          WombVerse, 555 Menstrual Health Ave, New York, NY 10001
-        </span>
+    <div className="container mx-auto px-4 py-16">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-womb-softwhite mb-4 font-playfair">Get in Touch</h1>
+        <p className="text-lg text-womb-warmgrey mb-12">
+          We're here to help and answer any question you might have. We look forward to hearing from you.
+        </p>
       </div>
-      <p className="mt-8 text-womb-warmgrey text-xs">
-        Please allow up to 2 business days for replies.
-      </p>
+      <div className="grid md:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
+        <div className="bg-womb-deepgrey border border-womb-plum rounded-lg p-8 space-y-6">
+          <h2 className="text-2xl font-bold text-womb-softwhite font-playfair">Contact Information</h2>
+          <div className="flex items-start space-x-4">
+            <Mail className="w-6 h-6 text-primary mt-1" />
+            <div>
+              <h3 className="font-semibold text-womb-softwhite">Email Us</h3>
+              <p className="text-womb-warmgrey">For general inquiries, support, or feedback.</p>
+              <a href="mailto:contact@wombverse.org" className="text-primary hover:underline">contact@wombverse.org</a>
+            </div>
+          </div>
+          <div className="flex items-start space-x-4">
+            <Phone className="w-6 h-6 text-primary mt-1" />
+            <div>
+              <h3 className="font-semibold text-womb-softwhite">Call Us</h3>
+              <p className="text-womb-warmgrey">For urgent matters.</p>
+              <a href="tel:+1-234-567-890" className="text-primary hover:underline">+1 (234) 567-890</a>
+            </div>
+          </div>
+          <div className="flex items-start space-x-4">
+            <MapPin className="w-6 h-6 text-primary mt-1" />
+            <div>
+              <h3 className="font-semibold text-womb-softwhite">Our Office</h3>
+              <p className="text-womb-warmgrey">WombVerse Headquarters<br/>555 Menstrual Health Ave, New York, NY 10001</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-womb-deepgrey border border-womb-plum rounded-lg p-8">
+          <h2 className="text-2xl font-bold text-womb-softwhite font-playfair mb-6">Send a Message</h2>
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-womb-softwhite mb-1">Full Name</label>
+              <Input id="name" placeholder="Your Name" className="bg-womb-charcoal border-womb-deepgrey" />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-womb-softwhite mb-1">Email Address</label>
+              <Input id="email" type="email" placeholder="you@example.com" className="bg-womb-charcoal border-womb-deepgrey" />
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-womb-softwhite mb-1">Message</label>
+              <Textarea id="message" placeholder="Your message..." rows={5} className="bg-womb-charcoal border-womb-deepgrey" />
+            </div>
+            <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white">Send Message</Button>
+          </form>
+        </div>
+      </div>
     </div>
   </Layout>
 );

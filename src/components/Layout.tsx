@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles, Home, Mail, Instagram, Twitter, Facebook, Youtube, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -270,7 +271,7 @@ const Layout = ({ children }: LayoutProps) => {
                 </div>
                 <span className="font-playfair text-xl font-bold text-white">WombVerse</span>
               </div>
-              <p className="mb-4 text-sm">
+              <p className="mb-4 text-sm text-womb-warmgrey">
                 WombVerse is a professional community dedicated to sharing accurate, science-backed knowledge and real stories about menstrual health and wellbeing, with a focus on creating informed belonging.
               </p>
               <p className="text-xs text-womb-warmgrey">&copy; 2025 WombVerse. All rights reserved.</p>
@@ -280,16 +281,16 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Explore</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/featured-stories" className="hover:text-primary transition-colors">Featured Stories</a>
+                  <Link to="/featured-stories" className="text-womb-warmgrey hover:text-primary transition-colors">Featured Stories</Link>
                 </li>
                 <li>
-                  <a href="/recent-stories" className="hover:text-primary transition-colors">Recent Stories</a>
+                  <Link to="/recent-stories" className="text-womb-warmgrey hover:text-primary transition-colors">Recent Stories</Link>
                 </li>
                 <li>
-                  <a href="/resources" className="hover:text-primary transition-colors">Resources</a>
+                  <Link to="/resources" className="text-womb-warmgrey hover:text-primary transition-colors">Resources</Link>
                 </li>
                 <li>
-                  <a href="/support" className="hover:text-primary transition-colors">Support</a>
+                  <Link to="/support" className="text-womb-warmgrey hover:text-primary transition-colors">Support</Link>
                 </li>
               </ul>
             </div>
@@ -298,13 +299,13 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Community</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/guidelines" className="hover:text-primary transition-colors">Community Guidelines</a>
+                  <Link to="/guidelines" className="text-womb-warmgrey hover:text-primary transition-colors">Community Guidelines</Link>
                 </li>
                 <li>
-                  <a href="/about-us" className="hover:text-primary transition-colors">About Us</a>
+                  <Link to="/about-us" className="text-womb-warmgrey hover:text-primary transition-colors">About Us</Link>
                 </li>
                 <li>
-                  <a href="/contact" className="hover:text-primary transition-colors">Contact</a>
+                  <Link to="/contact" className="text-womb-warmgrey hover:text-primary transition-colors">Contact</Link>
                 </li>
               </ul>
             </div>
@@ -313,7 +314,7 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Legal</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
+                  <Link to="/privacy" className="text-womb-warmgrey hover:text-primary transition-colors">Privacy Policy</Link>
                 </li>
               </ul>
             </div>
