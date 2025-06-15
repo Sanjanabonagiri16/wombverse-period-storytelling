@@ -32,6 +32,18 @@ const Layout = ({ children }: LayoutProps) => {
     }
   };
 
+  const handleShareStory = () => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to share your story.",
+        variant: "destructive",
+      });
+      return;
+    }
+    window.location.href = '/create-story';
+  };
+
   return (
     <div className="min-h-screen bg-womb-charcoal">
       {/* Header */}
@@ -44,7 +56,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <Heart className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-2xl font-playfair font-bold text-womb-softwhite">
-                WombVerse
+                <a href="/">WombVerse</a>
               </h1>
             </div>
 
@@ -72,7 +84,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <>
                   {user ? (
                     <>
-                      <Button className="btn-primary">
+                      <Button className="btn-primary" onClick={handleShareStory}>
                         <PenTool className="w-4 h-4 mr-2" />
                         Share Story
                       </Button>
@@ -137,7 +149,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <div className="pt-4 border-t border-womb-deepgrey space-y-2">
                   {user ? (
                     <>
-                      <Button className="w-full btn-primary">
+                      <Button className="w-full btn-primary" onClick={handleShareStory}>
                         <PenTool className="w-4 h-4 mr-2" />
                         Share Your Story
                       </Button>

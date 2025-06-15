@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import CreateStory from "./pages/CreateStory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
