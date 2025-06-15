@@ -94,23 +94,20 @@ const FeaturedStories = () => {
               className="story-card animate-fade-in cursor-pointer"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Story Header - Improved Responsive Layout */}
+              {/* Story Header - Mobile Optimized */}
               <div className="mb-4">
-                {/* Author and Date - Mobile First */}
-                <div className="flex flex-col space-y-2 mb-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2 text-xs text-womb-warmgrey min-w-0 flex-1">
-                      <User className="w-3 h-3 flex-shrink-0" />
-                      <span className="truncate">{story.author}</span>
-                    </div>
-                    <Badge variant="secondary" className="bg-womb-plum/20 text-womb-plum border-womb-plum/30 text-xs flex-shrink-0 ml-2">
-                      {story.readTime}
-                    </Badge>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                  <div className="flex items-center space-x-2 text-xs text-womb-warmgrey min-w-0 flex-1">
+                    <User className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate font-medium">{story.author}</span>
                   </div>
-                  <div className="flex items-center space-x-1 text-xs text-womb-warmgrey">
-                    <Calendar className="w-3 h-3 flex-shrink-0" />
-                    <span>{story.date}</span>
-                  </div>
+                  <Badge variant="secondary" className="bg-womb-plum/20 text-womb-plum border-womb-plum/30 text-xs self-start">
+                    {story.readTime}
+                  </Badge>
+                </div>
+                <div className="flex items-center space-x-1 text-xs text-womb-warmgrey">
+                  <Calendar className="w-3 h-3 flex-shrink-0" />
+                  <span>{story.date}</span>
                 </div>
               </div>
 
@@ -120,24 +117,24 @@ const FeaturedStories = () => {
               </h3>
 
               {/* Story Excerpt */}
-              <p className="text-sm text-womb-warmgrey mb-4 line-clamp-3 leading-relaxed">
+              <p className="text-sm sm:text-base text-womb-warmgrey mb-4 line-clamp-3 leading-relaxed">
                 {story.excerpt}
               </p>
 
-              {/* Tags - Responsive Layout */}
+              {/* Tags - Mobile Responsive */}
               <div className="mb-4">
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1.5">
                   {story.tags.slice(0, 2).map((tag) => (
                     <Badge 
                       key={tag} 
                       variant="secondary" 
-                      className="bg-womb-deepgrey text-womb-warmgrey border-womb-deepgrey hover:border-womb-crimson hover:text-womb-crimson transition-colors text-xs"
+                      className="bg-womb-deepgrey text-womb-warmgrey border-womb-deepgrey hover:border-womb-crimson hover:text-womb-crimson transition-colors text-xs px-2 py-1"
                     >
                       #{tag}
                     </Badge>
                   ))}
                   {story.tags.length > 2 && (
-                    <Badge variant="secondary" className="bg-womb-deepgrey text-womb-warmgrey border-womb-deepgrey text-xs">
+                    <Badge variant="secondary" className="bg-womb-deepgrey text-womb-warmgrey border-womb-deepgrey text-xs px-2 py-1">
                       +{story.tags.length - 2}
                     </Badge>
                   )}
@@ -145,40 +142,44 @@ const FeaturedStories = () => {
               </div>
 
               {/* Story Footer - Enhanced Mobile Layout */}
-              <div className="pt-4 border-t border-womb-deepgrey">
-                {/* Reactions and Comments - Compact Mobile Layout */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1 text-xs text-womb-warmgrey hover:text-womb-crimson transition-colors cursor-pointer">
+              <div className="pt-4 border-t border-womb-deepgrey space-y-3">
+                {/* Reactions and Comments - Mobile First */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3 sm:space-x-4">
+                    <div className="flex items-center space-x-1 text-xs sm:text-sm text-womb-warmgrey hover:text-womb-crimson transition-colors cursor-pointer">
                       <Heart className="w-4 h-4" />
                       <span className="font-medium">{story.reactions}</span>
                     </div>
-                    <div className="flex items-center space-x-1 text-xs text-womb-warmgrey hover:text-womb-plum transition-colors cursor-pointer">
+                    <div className="flex items-center space-x-1 text-xs sm:text-sm text-womb-warmgrey hover:text-womb-plum transition-colors cursor-pointer">
                       <MessageCircle className="w-4 h-4" />
                       <span className="font-medium">{story.comments}</span>
                     </div>
                   </div>
                 </div>
                 
-                {/* Read Story Button - Full Width on Mobile */}
+                {/* Read Story Button - Fully Responsive */}
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-womb-crimson hover:text-womb-crimson hover:bg-womb-crimson/10 w-full justify-center py-2 text-sm font-medium"
+                  className="text-womb-crimson hover:text-womb-crimson hover:bg-womb-crimson/10 w-full justify-center py-2.5 text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Read Story
+                  <BookOpen className="w-4 h-4 mr-2 flex-shrink-0" />
+                  <span className="truncate">Read Story</span>
                 </Button>
               </div>
             </article>
           ))}
         </div>
 
-        {/* View More Button */}
+        {/* View More Button - Responsive */}
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" className="border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white w-full sm:w-auto">
-            <BookOpen className="w-5 h-5 mr-2" />
-            Explore All Stories
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white w-full sm:w-auto px-6 py-3 transition-all duration-200 hover:scale-[1.02]"
+          >
+            <BookOpen className="w-5 h-5 mr-2 flex-shrink-0" />
+            <span>Explore All Stories</span>
           </Button>
         </div>
       </div>
