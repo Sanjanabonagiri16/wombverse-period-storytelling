@@ -19,6 +19,9 @@ const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Check if we're on the homepage for transparent navbar
+  const isHomepage = location.pathname === '/';
+
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -83,8 +86,8 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="min-h-screen bg-womb-navy">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-womb-navy/95 backdrop-blur-sm border-b border-womb-charcoal">
+      {/* Header with conditional transparency */}
+      <header className={`sticky top-0 z-50 ${isHomepage ? 'bg-transparent backdrop-blur-sm' : 'bg-womb-navy/95 backdrop-blur-sm'} border-b ${isHomepage ? 'border-transparent' : 'border-womb-charcoal'} transition-all duration-500`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo with updated colors */}
@@ -256,8 +259,8 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
 
-      {/* Professional Footer with updated colors */}
-      <footer className="bg-womb-navy border-t border-womb-emerald relative z-10 bg-mesh-gradient">
+      {/* Professional Footer with updated colors - removed border lines */}
+      <footer className="bg-womb-navy border-transparent relative z-10 bg-mesh-gradient">
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-womb-white">
             {/* Brand & About */}

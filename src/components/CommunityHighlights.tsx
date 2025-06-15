@@ -2,6 +2,7 @@
 import { TrendingUp, Users, MessageSquare, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const CommunityHighlights = () => {
   const trendingTags = [
@@ -14,9 +15,9 @@ const CommunityHighlights = () => {
   ];
 
   return (
-    <section className="py-16 bg-womb-darkgray relative overflow-hidden">
-      {/* Smooth background transition overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-womb-charcoal/20 via-transparent to-womb-charcoal/20 animate-gradient-shift"></div>
+    <section className="py-16 bg-transparent relative overflow-hidden">
+      {/* Smooth background transition overlay - removed lines */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-womb-charcoal/10 to-transparent animate-gradient-shift"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header with slide-in animation */}
@@ -31,7 +32,7 @@ const CommunityHighlights = () => {
 
         <div className="max-w-2xl mx-auto">
           {/* Trending Tags with staggered animations */}
-          <div className="bg-womb-charcoal rounded-lg p-6 animate-fade-in opacity-0 [animation-delay:400ms] [animation-fill-mode:forwards] shadow-2xl transition-all duration-500 hover:shadow-womb-maroon/10 hover:shadow-3xl">
+          <div className="bg-womb-charcoal/80 backdrop-blur-sm rounded-lg p-6 animate-fade-in opacity-0 [animation-delay:400ms] [animation-fill-mode:forwards] shadow-2xl transition-all duration-500 hover:shadow-womb-maroon/10 hover:shadow-3xl border-transparent">
             <div className="flex items-center space-x-2 mb-6 animate-slide-in-left opacity-0 [animation-delay:600ms] [animation-fill-mode:forwards]">
               <TrendingUp className="w-5 h-5 text-white animate-pulse" />
               <h3 className="text-xl font-playfair font-semibold text-white">
@@ -42,7 +43,7 @@ const CommunityHighlights = () => {
               {trendingTags.map((tag, index) => (
                 <div 
                   key={tag.name}
-                  className="flex items-center justify-between p-3 bg-womb-darkgray rounded-lg transition-all duration-500 cursor-pointer hover:-translate-y-2 hover:shadow-xl hover:shadow-womb-maroon/20 hover:bg-womb-darkgray/80 animate-fade-in opacity-0 hover:scale-105 group"
+                  className="flex items-center justify-between p-3 bg-womb-darkgray/50 backdrop-blur-sm rounded-lg transition-all duration-500 cursor-pointer hover:-translate-y-2 hover:shadow-xl hover:shadow-womb-maroon/20 hover:bg-womb-darkgray/80 animate-fade-in opacity-0 hover:scale-105 group border-transparent"
                   style={{ 
                     animationDelay: `${800 + index * 100}ms`,
                     animationFillMode: 'forwards'
@@ -68,9 +69,11 @@ const CommunityHighlights = () => {
               ))}
             </div>
             <div className="text-center mt-6 animate-slide-in-up opacity-0 [animation-delay:1400ms] [animation-fill-mode:forwards]">
-              <Button className="bg-gradient-to-r from-womb-mediumgray to-white hover:from-gray-500 hover:to-gray-400 text-womb-charcoal px-8 py-3 rounded-lg transition-all duration-500 hover:scale-110 shadow-lg shadow-gray-600/25 border-2 border-womb-maroon hover:shadow-2xl hover:shadow-womb-maroon/30 hover:-translate-y-1 transform">
-                Explore All Tags
-              </Button>
+              <Link to="/stories">
+                <Button className="bg-gradient-to-r from-womb-mediumgray to-white hover:from-gray-500 hover:to-gray-400 text-womb-charcoal px-8 py-3 rounded-lg transition-all duration-500 hover:scale-110 shadow-lg shadow-gray-600/25 border-2 border-womb-maroon hover:shadow-2xl hover:shadow-womb-maroon/30 hover:-translate-y-1 transform">
+                  Explore All Stories
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
