@@ -65,7 +65,7 @@ const Resources = () => {
         {resources && !isLoading && !isError && (
           <dl className="space-y-6">
             {resources.map((r) => (
-              <div key={r.id} className="bg-womb-deepgrey border border-womb-plum rounded-lg p-6">
+              <div key={r.id} className="bg-womb-deepgrey border border-womb-plum rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-womb-crimson">
                 <dt className="font-bold text-womb-softwhite text-lg">{r.name}</dt>
                 <dd className="text-womb-warmgrey">{r.description}</dd>
                 <a className="mt-2 inline-block text-primary hover:underline" href={r.url} target="_blank" rel="noopener noreferrer">Visit resource</a>

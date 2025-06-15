@@ -71,7 +71,7 @@
   }
   
   .story-card {
-    @apply bg-womb-deepgrey border border-womb-deepgrey rounded-lg p-6 hover:border-womb-plum/30 transition-all duration-300 hover:shadow-lg hover:shadow-womb-plum/10;
+    @apply bg-womb-deepgrey border border-womb-deepgrey rounded-lg p-6 hover:border-womb-plum/30 transition-all duration-300 hover:shadow-lg hover:shadow-womb-plum/10 hover:-translate-y-1;
   }
   
   .btn-primary {

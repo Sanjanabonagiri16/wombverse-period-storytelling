@@ -1,3 +1,4 @@
+
 import Layout from '@/components/Layout';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
@@ -65,7 +66,7 @@ const Support = () => {
         {resources && !isLoading && !isError && (
           <ul className="space-y-6">
             {resources.map((r) => (
-              <li key={r.id} className="bg-womb-deepgrey border border-womb-plum rounded-lg p-6">
+              <li key={r.id} className="bg-womb-deepgrey border border-womb-plum rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-womb-crimson">
                 <h2 className="font-bold text-womb-softwhite text-lg">{r.name}</h2>
                 <p className="text-womb-warmgrey">{r.description}</p>
                 <a className="mt-2 inline-block text-primary hover:underline" href={r.url} target="_blank" rel="noopener noreferrer">
