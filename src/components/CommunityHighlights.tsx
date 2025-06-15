@@ -55,14 +55,14 @@ const CommunityHighlights = () => {
                       </div>
                     </div>
                   </div>
-                  <Badge className="bg-white/20 text-white border-white/30">
+                  <Badge className="bg-womb-maroon/20 text-womb-maroon border-womb-maroon/30">
                     {tag.growth}
                   </Badge>
                 </div>
               ))}
             </div>
             <div className="text-center mt-6">
-              <Button className="bg-gradient-to-r from-womb-mediumgray to-white hover:from-gray-500 hover:to-gray-400 text-womb-charcoal px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-gray-600/25">
+              <Button className="bg-gradient-to-r from-womb-mediumgray to-white hover:from-gray-500 hover:to-gray-400 text-womb-charcoal px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-gray-600/25 border-2 border-womb-maroon">
                 Explore All Tags
               </Button>
             </div>

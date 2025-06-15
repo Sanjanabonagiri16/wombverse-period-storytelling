@@ -83,9 +83,9 @@ const CommunityWall = () => {
   const getItemColor = (type: string) => {
     const colors = {
       affirmation: 'from-womb-maroon/10 to-womb-maroon/20 border-womb-maroon/30',
-      poll: 'from-white/10 to-white/20 border-white/30',
-      art: 'from-womb-mediumgray/10 to-womb-mediumgray/20 border-womb-mediumgray/30',
-      wisdom: 'from-womb-softgray/10 to-womb-softgray/20 border-womb-softgray/30',
+      poll: 'from-womb-mediumgray/10 to-womb-mediumgray/20 border-womb-mediumgray/30',
+      art: 'from-womb-softgray/10 to-womb-softgray/20 border-womb-softgray/30',
+      wisdom: 'from-white/10 to-white/20 border-white/30',
     };
     return colors[type as keyof typeof colors] || 'from-gray-500/10 to-gray-600/10 border-gray-500/20';
   };
@@ -117,7 +117,7 @@ const CommunityWall = () => {
                 </div>
                 <div className="w-full bg-womb-deepgrey rounded-full h-2">
                   <div
-                    className="bg-gradient-to-r from-womb-darkgray to-womb-maroon h-2 rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-womb-mediumgray to-womb-maroon h-2 rounded-full transition-all duration-500"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
@@ -181,7 +181,7 @@ const CommunityWall = () => {
               {/* Footer */}
               <div className="flex items-center justify-between pt-3 border-t border-womb-deepgrey/50">
                 <div className="flex items-center space-x-1">
-                  <div className="w-6 h-6 bg-gradient-to-br from-womb-darkgray to-womb-maroon rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 bg-gradient-to-br from-womb-mediumgray to-womb-maroon rounded-full flex items-center justify-center">
                     <span className="text-white text-xs">
                       {item.author?.charAt(0) || 'C'}
                     </span>
@@ -214,7 +214,7 @@ const CommunityWall = () => {
 
       {/* Add Content Button */}
       <div className="text-center pt-8">
-        <Button className="btn-primary">
+        <Button className="bg-gradient-to-r from-womb-mediumgray to-white hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40 border-2 border-womb-maroon">
           Share with Community ✨
         </Button>
       </div>

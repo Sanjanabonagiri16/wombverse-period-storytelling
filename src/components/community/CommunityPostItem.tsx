@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -153,7 +154,7 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
           {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-womb-darkgray to-womb-maroon rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-womb-mediumgray to-womb-maroon rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-medium">
                   {post.profiles?.display_name?.charAt(0) || 'U'}
                 </span>
@@ -249,7 +250,7 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
               variant="secondary" 
               className={`${
                 post.type === 'affirmation' ? 'bg-womb-maroon/20 text-womb-maroon' :
-                post.type === 'poll' ? 'bg-white/20 text-white' :
+                post.type === 'poll' ? 'bg-womb-mediumgray/20 text-womb-mediumgray' :
                 'bg-white/20 text-white'
               }`}
             >
