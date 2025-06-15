@@ -1,3 +1,4 @@
+
 import Layout from '@/components/Layout';
 import { Star, Calendar, Heart, BookOpen, Quote, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -68,12 +69,13 @@ const FeaturedStories = () => {
                 </p>
               </div>
               
-              {/* Explore All Stories Button */}
+              {/* Explore All Stories Button - Fixed Navigation */}
               <div className="mb-8">
-                <Link to="/stories">
-                  <button className="bg-gradient-to-r from-purple-700 to-purple-600 hover:from-purple-600 hover:to-purple-500 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-900/30 border border-purple-600/50 text-base">
-                    📖 Explore All Stories
-                  </button>
+                <Link 
+                  to="/stories"
+                  className="inline-block bg-gradient-to-r from-purple-700 to-purple-600 hover:from-purple-600 hover:to-purple-500 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-900/30 border border-purple-600/50 text-base no-underline"
+                >
+                  📖 Explore All Stories
                 </Link>
               </div>
               
@@ -178,10 +180,11 @@ const FeaturedStories = () => {
                   </div>
                 </div>
                 
-                <Link to="/auth">
-                  <button className="bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-white font-semibold px-10 py-4 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-slate-900/30 border border-slate-600/50 text-lg">
-                    Start Writing Today
-                  </button>
+                <Link 
+                  to="/auth"
+                  className="inline-block bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-white font-semibold px-10 py-4 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-slate-900/30 border border-slate-600/50 text-lg no-underline"
+                >
+                  Start Writing Today
                 </Link>
                 
                 <div className="flex items-center justify-center space-x-8 text-slate-500 text-sm">

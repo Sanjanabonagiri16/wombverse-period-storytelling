@@ -1,22 +1,120 @@
 
 import Layout from '@/components/Layout';
 import { Tag, TrendingUp, Hash, Search } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { Link } from 'react-router-dom';
+
+interface TagCount {
+  tag: string;
+  count: number;
+  trending: boolean;
+  color: string;
+}
 
 const PopularTags = () => {
-  const popularTags = [
-    { name: 'First Period', count: 234, trending: true, color: 'from-womb-crimson to-red-500' },
-    { name: 'Self Care', count: 189, trending: true, color: 'from-womb-plum to-purple-500' },
-    { name: 'Period Products', count: 156, trending: false, color: 'from-blue-500 to-blue-600' },
-    { name: 'Body Positivity', count: 145, trending: true, color: 'from-pink-500 to-pink-600' },
-    { name: 'PCOS', count: 134, trending: false, color: 'from-green-500 to-green-600' },
-    { name: 'Endometriosis', count: 123, trending: false, color: 'from-orange-500 to-orange-600' },
-    { name: 'Period Pain', count: 112, trending: false, color: 'from-red-500 to-red-600' },
-    { name: 'Mental Health', count: 98, trending: true, color: 'from-indigo-500 to-indigo-600' },
-    { name: 'Workplace', count: 87, trending: false, color: 'from-teal-500 to-teal-600' },
-    { name: 'Cultural', count: 76, trending: false, color: 'from-yellow-500 to-yellow-600' },
-    { name: 'Teen Period', count: 65, trending: false, color: 'from-cyan-500 to-cyan-600' },
-    { name: 'Period Poverty', count: 54, trending: true, color: 'from-gray-500 to-gray-600' }
+  const [popularTags, setPopularTags] = useState<TagCount[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const tagColors = [
+    'from-womb-crimson to-red-500',
+    'from-womb-plum to-purple-500',
+    'from-blue-500 to-blue-600',
+    'from-pink-500 to-pink-600',
+    'from-green-500 to-green-600',
+    'from-orange-500 to-orange-600',
+    'from-red-500 to-red-600',
+    'from-indigo-500 to-indigo-600',
+    'from-teal-500 to-teal-600',
+    'from-yellow-500 to-yellow-600',
+    'from-cyan-500 to-cyan-600',
+    'from-gray-500 to-gray-600'
   ];
+
+  useEffect(() => {
+    fetchPopularTags();
+
+    // Set up real-time subscription
+    const channel = supabase
+      .channel('tags-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'stories'
+        },
+        () => {
+          fetchPopularTags();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const fetchPopularTags = async () => {
+    try {
+      const { data: stories, error } = await supabase
+        .from('stories')
+        .select('emotion_tags, category, created_at')
+        .eq('is_draft', false);
+
+      if (error) throw error;
+
+      // Count tags from emotion_tags and categories
+      const tagCounts: { [key: string]: { count: number; recentCount: number } } = {};
+      const now = new Date();
+      const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      stories?.forEach(story => {
+        const storyDate = new Date(story.created_at);
+        const isRecent = storyDate >= oneWeekAgo;
+
+        // Count emotion tags
+        story.emotion_tags?.forEach(tag => {
+          if (!tagCounts[tag]) {
+            tagCounts[tag] = { count: 0, recentCount: 0 };
+          }
+          tagCounts[tag].count++;
+          if (isRecent) tagCounts[tag].recentCount++;
+        });
+
+        // Count category as a tag
+        if (story.category) {
+          if (!tagCounts[story.category]) {
+            tagCounts[story.category] = { count: 0, recentCount: 0 };
+          }
+          tagCounts[story.category].count++;
+          if (isRecent) tagCounts[story.category].recentCount++;
+        }
+      });
+
+      // Convert to array and sort by count
+      const tagArray: TagCount[] = Object.entries(tagCounts)
+        .map(([tag, data], index) => ({
+          tag,
+          count: data.count,
+          trending: data.recentCount >= 3, // Consider trending if 3+ uses in last week
+          color: tagColors[index % tagColors.length]
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 20); // Top 20 tags
+
+      setPopularTags(tagArray);
+    } catch (error) {
+      console.error('Error fetching popular tags:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredTags = popularTags.filter(tag =>
+    tag.tag.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const trendingCategories = [
     { name: 'Health & Wellness', description: 'Stories about period health, symptoms, and medical experiences' },
@@ -24,6 +122,16 @@ const PopularTags = () => {
     { name: 'Social Impact', description: 'Workplace, school, and social situations involving periods' },
     { name: 'Education & Awareness', description: 'Learning, teaching, and spreading period knowledge' }
   ];
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-br from-womb-charcoal via-womb-deepgrey/20 to-womb-charcoal flex items-center justify-center">
+          <div className="text-womb-softwhite text-lg">Loading popular tags...</div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -56,41 +164,54 @@ const PopularTags = () => {
               <input
                 type="text"
                 placeholder="Search tags..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-womb-deepgrey/50 border border-womb-deepgrey rounded-lg text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson focus:outline-none transition-colors"
               />
             </div>
 
             {/* Popular Tags Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-16">
-              {popularTags.map((tag, index) => (
-                <div
-                  key={tag.name}
-                  className="group relative bg-gradient-to-br from-womb-deepgrey/60 to-womb-deepgrey/40 backdrop-blur-sm rounded-xl p-6 border border-womb-deepgrey hover:border-womb-crimson/30 transition-all duration-300 hover:shadow-lg hover:shadow-womb-crimson/10 cursor-pointer animate-fade-in"
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  {tag.trending && (
-                    <div className="absolute -top-2 -right-2 bg-gradient-to-r from-womb-crimson to-womb-plum text-white text-xs px-2 py-1 rounded-full flex items-center space-x-1">
-                      <TrendingUp className="w-3 h-3" />
-                      <span>Trending</span>
-                    </div>
-                  )}
-                  
-                  <div className="text-center">
-                    <div className={`w-12 h-12 bg-gradient-to-r ${tag.color} rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300`}>
-                      <Tag className="w-6 h-6 text-white" />
-                    </div>
+            {filteredTags.length === 0 ? (
+              <div className="text-center py-12 mb-16">
+                <p className="text-womb-warmgrey text-lg mb-4">
+                  {searchTerm ? 'No tags found matching your search' : 'No tags available yet'}
+                </p>
+                <p className="text-womb-warmgrey text-sm">
+                  {searchTerm ? 'Try a different search term' : 'Be the first to share a story and create tags!'}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-16">
+                {filteredTags.map((tag, index) => (
+                  <div
+                    key={tag.tag}
+                    className="group relative bg-gradient-to-br from-womb-deepgrey/60 to-womb-deepgrey/40 backdrop-blur-sm rounded-xl p-6 border border-womb-deepgrey hover:border-womb-crimson/30 transition-all duration-300 hover:shadow-lg hover:shadow-womb-crimson/10 cursor-pointer animate-fade-in"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    {tag.trending && (
+                      <div className="absolute -top-2 -right-2 bg-gradient-to-r from-womb-crimson to-womb-plum text-white text-xs px-2 py-1 rounded-full flex items-center space-x-1">
+                        <TrendingUp className="w-3 h-3" />
+                        <span>Trending</span>
+                      </div>
+                    )}
                     
-                    <h3 className="font-semibold text-womb-softwhite mb-2 group-hover:text-womb-crimson transition-colors">
-                      {tag.name}
-                    </h3>
-                    
-                    <p className="text-womb-warmgrey text-sm">
-                      {tag.count} stories
-                    </p>
+                    <div className="text-center">
+                      <div className={`w-12 h-12 bg-gradient-to-r ${tag.color} rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300`}>
+                        <Tag className="w-6 h-6 text-white" />
+                      </div>
+                      
+                      <h3 className="font-semibold text-womb-softwhite mb-2 group-hover:text-womb-crimson transition-colors capitalize">
+                        {tag.tag}
+                      </h3>
+                      
+                      <p className="text-womb-warmgrey text-sm">
+                        {tag.count} {tag.count === 1 ? 'story' : 'stories'}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             {/* Categories Section */}
             <div className="mb-12">
@@ -124,9 +245,18 @@ const PopularTags = () => {
               <p className="text-womb-warmgrey mb-6 max-w-2xl mx-auto">
                 Start a new conversation! Share your story and create new tags that represent your unique experience.
               </p>
-              <button className="bg-gradient-to-r from-womb-crimson to-womb-plum hover:from-womb-crimson/90 hover:to-womb-plum/90 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105">
-                Share Your Story
-              </button>
+              <div className="space-y-4">
+                <Link to="/auth">
+                  <button className="bg-gradient-to-r from-womb-crimson to-womb-plum hover:from-womb-crimson/90 hover:to-womb-plum/90 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 mr-4">
+                    Share Your Story
+                  </button>
+                </Link>
+                <Link to="/stories">
+                  <button className="bg-gradient-to-r from-womb-plum to-womb-crimson hover:from-womb-plum/90 hover:to-womb-crimson/90 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105">
+                    📖 Explore All Stories
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
