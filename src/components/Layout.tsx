@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -5,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ const Layout = ({ children }: LayoutProps) => {
   const { user, loading } = useAuth();
   const { toast } = useToast();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
@@ -40,8 +42,10 @@ const Layout = ({ children }: LayoutProps) => {
         description: "Please sign in to share your story.",
         variant: "destructive",
       });
+      navigate('/auth');
       return;
     }
+    navigate('/create-story');
   };
 
   const isActivePage = (path: string) => location.pathname === path;
@@ -89,12 +93,10 @@ const Layout = ({ children }: LayoutProps) => {
                 <>
                   {user ? (
                     <>
-                      <Link to="/create-story">
-                        <Button className="btn-primary" onClick={handleShareStory}>
-                          <PenTool className="w-4 h-4 mr-2" />
-                          Share Story
-                        </Button>
-                      </Link>
+                      <Button className="btn-primary" onClick={handleShareStory}>
+                        <PenTool className="w-4 h-4 mr-2" />
+                        Share Story
+                      </Button>
                       <Link
                         to="/profile"
                         className={`transition-colors ${
@@ -175,12 +177,16 @@ const Layout = ({ children }: LayoutProps) => {
                 <div className="pt-4 border-t border-womb-deepgrey space-y-2">
                   {user ? (
                     <>
-                      <Link to="/create-story" onClick={() => setIsMenuOpen(false)}>
-                        <Button className="w-full btn-primary" onClick={handleShareStory}>
-                          <PenTool className="w-4 h-4 mr-2" />
-                          Share Your Story
-                        </Button>
-                      </Link>
+                      <Button 
+                        className="w-full btn-primary" 
+                        onClick={() => {
+                          handleShareStory();
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <PenTool className="w-4 h-4 mr-2" />
+                        Share Your Story
+                      </Button>
                       <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
                         <Button 
                           variant="outline" 
