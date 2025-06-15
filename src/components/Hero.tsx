@@ -1,4 +1,3 @@
-
 import { PenTool, BookOpen, Heart, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -197,22 +196,6 @@ const Hero = () => {
             </Link>
           </div>
           
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto mb-12">
-            <div className="text-center animate-fade-in">
-              <div className="text-3xl font-playfair font-bold text-womb-crimson mb-2">1,247</div>
-              <div className="text-womb-warmgrey">Stories Shared</div>
-            </div>
-            <div className="text-center animate-fade-in">
-              <div className="text-3xl font-playfair font-bold text-womb-plum mb-2">23,891</div>
-              <div className="text-womb-warmgrey">Hearts Given</div>
-            </div>
-            <div className="text-center animate-fade-in">
-              <div className="text-3xl font-playfair font-bold text-womb-crimson mb-2">12,047</div>
-              <div className="text-womb-warmgrey">Community Members</div>
-            </div>
-          </div>
-
           {/* More Wisdom Section - Enhanced and Responsive */}
           <div className="max-w-6xl mx-auto">
             <Button
