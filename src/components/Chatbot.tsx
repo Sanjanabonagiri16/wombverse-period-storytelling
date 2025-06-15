@@ -46,20 +46,27 @@ const Chatbot: React.FC = () => {
       );
 
       const data = await res.json();
+
       if (data.answer) {
         setMessages((prev) => [
           ...prev,
           { sender: "bot", text: data.answer }
         ]);
       } else {
+        // Show specific error from backend if present
+        const errMsg = data.error
+          ? `WombBot Error: ${data.error}${
+              data.apiResponse ? "\n(API Raw: " + JSON.stringify(data.apiResponse) + ")" : ""
+            }`
+          : "Sorry, I couldn't find an answer. Please try again later.";
         setMessages((prev) => [
           ...prev,
-          { sender: "bot", text: "Sorry, I couldn't find an answer. Please try again later." }
+          { sender: "bot", text: errMsg }
         ]);
-        if (data.error) setError(data.error);
+        setError(errMsg);
       }
     } catch (err: any) {
-      setError("Something went wrong connecting to the AI.");
+      setError("Connection problem: Unable to reach the AI bot. Try again later or contact support.");
       setMessages((prev) => [
         ...prev,
         {

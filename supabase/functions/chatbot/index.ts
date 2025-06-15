@@ -10,7 +10,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -19,14 +18,14 @@ serve(async (req) => {
     const { messages } = await req.json();
 
     if (!openAIApiKey) {
-      return new Response(JSON.stringify({ error: "API key missing" }), {
+      return new Response(JSON.stringify({ error: "OpenAI API key is missing from Edge Function environment." }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
     if (!Array.isArray(messages) || messages.length === 0) {
-      return new Response(JSON.stringify({ error: "messages array missing" }), {
+      return new Response(JSON.stringify({ error: "Messages array missing in request." }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -49,12 +48,19 @@ serve(async (req) => {
       }),
     });
 
+    if (!response.ok) {
+      const text = await response.text();
+      return new Response(JSON.stringify({ error: `OpenAI API error: ${response.status} - ${text}` }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const data = await response.json();
     const answer = data?.choices?.[0]?.message?.content;
 
     if (!answer) {
-      console.error("OpenAI API error/response:", data);
-      return new Response(JSON.stringify({ error: "No answer received" }), {
+      return new Response(JSON.stringify({ error: "OpenAI did not return an answer. Please check your API key/quota and try again later.", apiResponse: data }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -65,8 +71,7 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error("Error in chatbot function:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: "Edge Function error: " + (error?.message || error?.toString() || "Unknown error"), details: error }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
