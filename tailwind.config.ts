@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -188,7 +187,17 @@ export default {
 						transform: 'scale(1)',
 						opacity: '1'
 					}
-				}
+				},
+        'slide-in-up': {
+            '0%': {
+                transform: 'translateY(50px)',
+                opacity: '0'
+            },
+            '100%': {
+                transform: 'translateY(0)',
+                opacity: '1'
+            }
+        }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -203,7 +212,8 @@ export default {
 				'pulse-glow': 'pulse-glow 1.5s ease-in-out infinite',
 				'slide-in-left': 'slide-in-left 0.5s ease-out',
 				'slide-in-right': 'slide-in-right 0.5s ease-out',
-				'zoom-in': 'zoom-in 0.4s ease-out'
+				'zoom-in': 'zoom-in 0.4s ease-out',
+        'slide-in-up': 'slide-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
 			},
 			fontFamily: {
 				'playfair': ['Playfair Display', 'serif'],

@@ -17,8 +17,8 @@ const Index = () => {
         <div className="absolute top-0 left-0 w-full h-56 bg-gradient-to-b from-indigo-800/20 via-transparent to-transparent"></div>
         <div className="absolute bottom-0 right-0 w-full h-72 bg-gradient-to-t from-womb-crimson/15 via-transparent to-transparent"></div>
         {/* Animated color orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-indigo-700/25 to-womb-crimson/20 rounded-full blur-3xl animate-pulse opacity-50"></div>
-        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-womb-crimson/30 to-indigo-700/20 rounded-full blur-3xl animate-pulse opacity-40" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-indigo-700/25 to-womb-crimson/20 rounded-full blur-3xl animate-float opacity-50" style={{ animationDuration: '12s' }}></div>
+        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-womb-crimson/30 to-indigo-700/20 rounded-full blur-3xl animate-float opacity-40" style={{ animationDelay: '1s', animationDuration: '15s' }}></div>
         {/* Mesh pattern overlay for extra polish */}
         <div className="absolute inset-0 opacity-15 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/10 via-transparent to-womb-crimson/10"></div>
