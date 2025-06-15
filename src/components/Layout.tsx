@@ -36,7 +36,12 @@ const Layout = ({ children }: LayoutProps) => {
   };
 
   const handleShareStory = () => {
+    console.log('Share Story button clicked');
+    console.log('User:', user);
+    console.log('Loading:', loading);
+    
     if (!user) {
+      console.log('No user, showing toast and navigating to auth');
       toast({
         title: "Sign in required",
         description: "Please sign in to share your story.",
@@ -45,6 +50,8 @@ const Layout = ({ children }: LayoutProps) => {
       navigate('/auth');
       return;
     }
+    
+    console.log('User authenticated, navigating to create-story');
     navigate('/create-story');
   };
 
