@@ -47,8 +47,7 @@
     --sidebar-border: 68 68 68; /* #444444 */
     --sidebar-ring: 136 136 136; /* #888888 */
 
-    --gold: 194, 137, 26; /* #C2891A - True metallic gold */
-    --maroon: 5C, 09, 23; /* #5C0923 - Maroon */
+    --maroon: 92, 9, 35; /* #5C0923 - Maroon */
   }
 }
 
@@ -79,7 +78,7 @@
   
   .btn-primary {
     @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40;
-    border: 2px solid #C2891A !important;
+    border: 2px solid #5C0923 !important;
   }
   
   .btn-secondary {
@@ -93,10 +92,6 @@
   
   .bg-womb-maroon {
     background-color: #5C0923 !important;
-  }
-
-  .gold-border {
-    border-color: #C2891A !important;
   }
 
   /* Enhanced Animation Classes */
