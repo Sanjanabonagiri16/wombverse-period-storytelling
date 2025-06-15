@@ -16,142 +16,110 @@ import { Card, CardContent } from '@/components/ui/card';
 const Admin = () => {
   const { user } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
 
   useEffect(() => {
-    checkAdminAccess();
+    // For demo purposes, we'll always show the login first
+    // In a real app, you'd check user roles here
+    console.log('Admin page loaded, user:', user);
   }, [user]);
 
-  const checkAdminAccess = async () => {
-    if (!user) {
-      setIsAuthorized(false);
-      return;
-    }
-
-    try {
-      const { data } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .in('role', ['admin', 'moderator']);
-
-      setIsAuthorized(data && data.length > 0);
-    } catch (error) {
-      console.error('Error checking admin access:', error);
-      setIsAuthorized(false);
-    }
-  };
-
   const handleLoginSuccess = () => {
+    console.log('Login success callback triggered');
     setShowLogin(false);
-    checkAdminAccess();
+    setIsAuthorized(true);
   };
 
-  if (showLogin || (!user && isAuthorized === false)) {
+  // Always show login screen first for demo
+  if (showLogin) {
     return <AdminLogin onLoginSuccess={handleLoginSuccess} />;
   }
 
-  if (isAuthorized === null) {
+  // Show admin dashboard after successful login
+  if (isAuthorized) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <p className="text-womb-warmgrey">Checking permissions...</p>
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-womb-softwhite mb-2">
+              WombVerse Admin Dashboard
+            </h1>
+            <p className="text-womb-warmgrey">
+              Comprehensive platform management and analytics (Demo Mode)
+            </p>
+          </div>
+
+          <Tabs defaultValue="moderation" className="w-full">
+            <TabsList className="grid w-full grid-cols-6">
+              <TabsTrigger value="moderation" className="flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                Moderation
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4" />
+                Analytics
+              </TabsTrigger>
+              <TabsTrigger value="users" className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                Users
+              </TabsTrigger>
+              <TabsTrigger value="content" className="flex items-center gap-2">
+                <Star className="w-4 h-4" />
+                Content
+              </TabsTrigger>
+              <TabsTrigger value="security" className="flex items-center gap-2">
+                <Activity className="w-4 h-4" />
+                Security
+              </TabsTrigger>
+              <TabsTrigger value="settings" className="flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                Settings
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="moderation">
+              <ModerationDashboard />
+            </TabsContent>
+
+            <TabsContent value="analytics">
+              <AnalyticsDashboard />
+            </TabsContent>
+
+            <TabsContent value="users">
+              <UserManagement />
+            </TabsContent>
+
+            <TabsContent value="content">
+              <ContentManagement />
+            </TabsContent>
+
+            <TabsContent value="security">
+              <SecurityLogs />
+            </TabsContent>
+
+            <TabsContent value="settings">
+              <Card>
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold text-womb-softwhite mb-4">
+                    Platform Settings
+                  </h3>
+                  <p className="text-womb-warmgrey">
+                    Advanced configuration options coming soon...
+                  </p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </Layout>
     );
   }
 
-  if (!isAuthorized) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <Card className="bg-womb-deepgrey border-womb-deepgrey">
-            <CardContent className="p-8 text-center">
-              <Shield className="w-16 h-16 text-womb-warmgrey mx-auto mb-4" />
-              <h2 className="text-xl font-bold text-womb-softwhite mb-2">Access Denied</h2>
-              <p className="text-womb-warmgrey">
-                You don't have permission to access the admin dashboard.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </Layout>
-    );
-  }
-
+  // Fallback loading state
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-womb-softwhite mb-2">
-            WombVerse Admin Dashboard
-          </h1>
-          <p className="text-womb-warmgrey">
-            Comprehensive platform management and analytics
-          </p>
-        </div>
-
-        <Tabs defaultValue="moderation" className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="moderation" className="flex items-center gap-2">
-              <Shield className="w-4 h-4" />
-              Moderation
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" />
-              Analytics
-            </TabsTrigger>
-            <TabsTrigger value="users" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Users
-            </TabsTrigger>
-            <TabsTrigger value="content" className="flex items-center gap-2">
-              <Star className="w-4 h-4" />
-              Content
-            </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
-              <Activity className="w-4 h-4" />
-              Security
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Settings
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="moderation">
-            <ModerationDashboard />
-          </TabsContent>
-
-          <TabsContent value="analytics">
-            <AnalyticsDashboard />
-          </TabsContent>
-
-          <TabsContent value="users">
-            <UserManagement />
-          </TabsContent>
-
-          <TabsContent value="content">
-            <ContentManagement />
-          </TabsContent>
-
-          <TabsContent value="security">
-            <SecurityLogs />
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-womb-softwhite mb-4">
-                  Platform Settings
-                </h3>
-                <p className="text-womb-warmgrey">
-                  Advanced configuration options coming soon...
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        <p className="text-womb-warmgrey">Loading admin dashboard...</p>
       </div>
     </Layout>
   );

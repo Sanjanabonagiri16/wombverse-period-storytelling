@@ -26,47 +26,27 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
     try {
       // Check for demo credentials first
       if (email === 'admin@wombverse.com' && password === 'WombVerse2025!') {
-        // Simulate successful admin login for demo
-        onLoginSuccess();
+        console.log('Demo credentials validated, calling onLoginSuccess');
         toast({
-          title: "Login successful",
-          description: "Welcome to the admin dashboard.",
+          title: "Demo Login Successful",
+          description: "Welcome to the admin dashboard (demo mode).",
         });
+        onLoginSuccess();
         return;
       }
 
-      // If not demo credentials, try actual authentication
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      // If not demo credentials, show error about using demo credentials
+      toast({
+        title: "Invalid Credentials",
+        description: "Please use the demo credentials: admin@wombverse.com / WombVerse2025!",
+        variant: "destructive",
       });
 
-      if (error) throw error;
-
-      if (data.user) {
-        // Check if user has admin role
-        const { data: roleData } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', data.user.id)
-          .in('role', ['admin', 'moderator']);
-
-        if (roleData && roleData.length > 0) {
-          onLoginSuccess();
-          toast({
-            title: "Login successful",
-            description: "Welcome to the admin dashboard.",
-          });
-        } else {
-          await supabase.auth.signOut();
-          throw new Error('Insufficient permissions');
-        }
-      }
     } catch (error: any) {
       console.error('Login error:', error);
       toast({
         title: "Login failed",
-        description: "Invalid credentials or insufficient permissions. Use demo credentials: admin@wombverse.com / WombVerse2025!",
+        description: "Please use demo credentials: admin@wombverse.com / WombVerse2025!",
         variant: "destructive",
       });
     } finally {
@@ -87,7 +67,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
             Admin Access
           </CardTitle>
           <p className="text-womb-warmgrey text-sm">
-            Confidential - Authorized Personnel Only
+            Use demo credentials for access
           </p>
         </CardHeader>
         <CardContent>
@@ -102,6 +82,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite"
+                placeholder="admin@wombverse.com"
                 required
               />
             </div>
@@ -116,6 +97,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite pr-10"
+                  placeholder="WombVerse2025!"
                   required
                 />
                 <Button
@@ -140,7 +122,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
           
           <div className="mt-6 p-3 bg-womb-charcoal rounded-lg border border-womb-deepgrey">
             <p className="text-xs text-womb-warmgrey text-center">
-              <strong>Demo Credentials (Use these for access):</strong><br />
+              <strong>Demo Credentials:</strong><br />
               Email: admin@wombverse.com<br />
               Password: WombVerse2025!
             </p>
