@@ -6,8 +6,9 @@ import { useState } from 'react';
 
 const Hero = () => {
   const [showMoreWisdom, setShowMoreWisdom] = useState(false);
+  const [loadedWisdomCount, setLoadedWisdomCount] = useState(10);
 
-  const wisdomQuotes = [
+  const allWisdomQuotes = [
     {
       text: "Your period is not a weakness, it's a superpower that connects you to the rhythm of life.",
       author: "Maya, 24"
@@ -97,8 +98,65 @@ const Hero = () => {
       text: "Your period doesn't make you 'emotional' - it makes you more in tune with your feelings.",
       author: "Therapist Jordan",
       category: "Mental Health"
+    },
+    {
+      text: "Periods have been happening for millions of years - you're part of an ancient sisterhood.",
+      author: "Anthropologist Dr. Chen",
+      category: "Historical Facts"
+    },
+    {
+      text: "The average woman will have around 400 periods in her lifetime - that's a lot of strength!",
+      author: "Medical Researcher",
+      category: "Body Facts"
+    },
+    {
+      text: "Your first period is called menarche - it's a celebration, not a burden.",
+      author: "Health Educator",
+      category: "Educational"
+    },
+    {
+      text: "Period poverty affects millions - talking openly helps break the stigma.",
+      author: "Social Activist Maria",
+      category: "Social Awareness"
+    },
+    {
+      text: "Iron-rich foods during your period can help combat fatigue and weakness.",
+      author: "Nutritionist Dr. Patel",
+      category: "Nutrition Facts"
+    },
+    {
+      text: "Your cervix changes position during your cycle - your body is constantly adapting.",
+      author: "Gynecologist Dr. Williams",
+      category: "Body Facts"
+    },
+    {
+      text: "Meditation and mindfulness can significantly reduce period-related anxiety.",
+      author: "Mindfulness Coach Lisa",
+      category: "Mental Health"
+    },
+    {
+      text: "Period tracking apps aren't just for pregnancy - they're tools for self-awareness.",
+      author: "Tech Health Advocate",
+      category: "Technology Tips"
+    },
+    {
+      text: "Every culture has period taboos - challenging them makes space for future generations.",
+      author: "Cultural Researcher",
+      category: "Social Change"
+    },
+    {
+      text: "Your period can actually boost creativity - hormonal changes enhance right-brain activity.",
+      author: "Neuroscientist Dr. Park",
+      category: "Science Facts"
     }
   ];
+
+  const displayedWisdom = allWisdomQuotes.slice(0, loadedWisdomCount);
+  const hasMoreWisdom = loadedWisdomCount < allWisdomQuotes.length;
+
+  const loadMoreWisdom = () => {
+    setLoadedWisdomCount(prev => Math.min(prev + 10, allWisdomQuotes.length));
+  };
 
   return (
     <section className="relative py-20 lg:py-32 overflow-hidden">
@@ -172,7 +230,7 @@ const Hero = () => {
               {showMoreWisdom && (
                 <div className="animate-fade-in space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-                    {wisdomQuotes.map((quote, index) => (
+                    {displayedWisdom.map((quote, index) => (
                       <div
                         key={index}
                         className="bg-womb-deepgrey/60 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-6 border border-womb-deepgrey hover:border-womb-crimson/40 transition-all duration-300 hover:shadow-lg hover:shadow-womb-crimson/10 hover:scale-105"
@@ -192,6 +250,19 @@ const Hero = () => {
                       </div>
                     ))}
                   </div>
+                  
+                  {/* Load More Button */}
+                  {hasMoreWisdom && (
+                    <div className="text-center pt-4 sm:pt-6">
+                      <Button
+                        onClick={loadMoreWisdom}
+                        variant="outline"
+                        className="border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 transition-all duration-300"
+                      >
+                        Load More Wisdom ✨
+                      </Button>
+                    </div>
+                  )}
                   
                   <div className="text-center pt-4 sm:pt-6">
                     <p className="text-womb-warmgrey text-xs sm:text-sm md:text-base font-medium px-4">
