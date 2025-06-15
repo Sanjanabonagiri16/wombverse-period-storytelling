@@ -55,8 +55,8 @@ const EmojiReactionButton = ({
       disabled={isLoading}
       className={`flex items-center space-x-1 px-3 py-2 rounded-full text-sm transition-all duration-200 hover:scale-105 ${
         isActive 
-          ? 'bg-womb-crimson/20 text-womb-crimson border border-womb-crimson/50 shadow-md' 
-          : 'bg-womb-deepgrey/50 text-womb-warmgrey hover:bg-womb-deepgrey hover:text-womb-softwhite border border-transparent'
+          ? 'bg-womb-softgray/20 text-womb-softgray border border-womb-softgray/50 shadow-md' 
+          : 'bg-womb-darkgray/50 text-womb-secondarytext hover:bg-womb-darkgray hover:text-womb-lightgray border border-transparent'
       } ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       title={label}
     >

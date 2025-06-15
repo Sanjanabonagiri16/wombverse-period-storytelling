@@ -35,15 +35,15 @@ const Support = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <h1 className="text-3xl font-bold text-womb-sapphire mb-4 font-playfair">Support Resources</h1>
-        <p className="text-womb-lightgrey mb-8">
+        <h1 className="text-3xl font-bold text-womb-mediumgray mb-4 font-playfair">Support Resources</h1>
+        <p className="text-womb-secondarytext mb-8">
           If you need help or support, these organizations provide reliable, confidential assistance in areas of menstrual, reproductive, and mental health. This list is updated in real-time to provide you with current information.
         </p>
         
         {isLoading && (
           <ul className="space-y-6">
             {[...Array(3)].map((_, i) => (
-              <li key={i} className="bg-womb-charcoal border border-womb-mediumgrey rounded-lg p-6">
+              <li key={i} className="bg-womb-darkgray border border-womb-border rounded-lg p-6">
                 <Skeleton className="h-6 w-1/2 mb-2" />
                 <Skeleton className="h-4 w-full mb-4" />
                 <Skeleton className="h-4 w-1/4" />
@@ -66,10 +66,10 @@ const Support = () => {
         {resources && !isLoading && !isError && (
           <ul className="space-y-6">
             {resources.map((r) => (
-              <li key={r.id} className="bg-womb-charcoal border border-womb-mediumgrey rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-womb-emerald/20">
-                <h2 className="font-bold text-womb-white text-lg">{r.name}</h2>
-                <p className="text-womb-lightgrey">{r.description}</p>
-                <a className="mt-2 inline-block text-womb-sapphire hover:underline" href={r.url} target="_blank" rel="noopener noreferrer">
+              <li key={r.id} className="bg-womb-darkgray border border-womb-border rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-womb-softgray/20">
+                <h2 className="font-bold text-womb-lightgray text-lg">{r.name}</h2>
+                <p className="text-womb-secondarytext">{r.description}</p>
+                <a className="mt-2 inline-block text-womb-mediumgray hover:underline" href={r.url} target="_blank" rel="noopener noreferrer">
                   Learn more
                 </a>
               </li>

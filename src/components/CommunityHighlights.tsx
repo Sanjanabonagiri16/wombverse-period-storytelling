@@ -14,24 +14,24 @@ const CommunityHighlights = () => {
   ];
 
   return (
-    <section className="py-16 bg-womb-charcoal">
+    <section className="py-16 bg-womb-darkgray">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-womb-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-womb-lightgray mb-4">
             Community Pulse
           </h2>
-          <p className="text-lg text-womb-lightgrey max-w-2xl mx-auto">
+          <p className="text-lg text-womb-secondarytext max-w-2xl mx-auto">
             See what's trending, discover popular conversations, and connect with our growing community.
           </p>
         </div>
 
         <div className="max-w-2xl mx-auto">
           {/* Trending Tags - Now Full Width */}
-          <div className="bg-womb-navy rounded-lg p-6 animate-fade-in">
+          <div className="bg-womb-charcoal rounded-lg p-6 animate-fade-in">
             <div className="flex items-center space-x-2 mb-6">
-              <TrendingUp className="w-5 h-5 text-womb-sapphire" />
-              <h3 className="text-xl font-playfair font-semibold text-womb-white">
+              <TrendingUp className="w-5 h-5 text-womb-mediumgray" />
+              <h3 className="text-xl font-playfair font-semibold text-womb-lightgray">
                 Trending Tags
               </h3>
             </div>
@@ -39,30 +39,30 @@ const CommunityHighlights = () => {
               {trendingTags.map((tag, index) => (
                 <div 
                   key={tag.name}
-                  className="flex items-center justify-between p-3 bg-womb-charcoal rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-womb-emerald/10 animate-fade-in"
+                  className="flex items-center justify-between p-3 bg-womb-darkgray rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-womb-softgray/10 animate-fade-in"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-center space-x-3">
-                    <span className="text-womb-lightgrey text-sm font-medium">
+                    <span className="text-womb-secondarytext text-sm font-medium">
                       #{index + 1}
                     </span>
                     <div>
-                      <div className="text-womb-white font-medium">
+                      <div className="text-womb-lightgray font-medium">
                         #{tag.name}
                       </div>
-                      <div className="text-womb-lightgrey text-sm">
+                      <div className="text-womb-secondarytext text-sm">
                         {tag.count} stories
                       </div>
                     </div>
                   </div>
-                  <Badge className="bg-womb-emerald/20 text-womb-emerald border-womb-emerald/30">
+                  <Badge className="bg-womb-softgray/20 text-womb-softgray border-womb-softgray/30">
                     {tag.growth}
                   </Badge>
                 </div>
               ))}
             </div>
             <div className="text-center mt-6">
-              <Button className="bg-gradient-to-r from-womb-sapphire to-womb-emerald hover:from-blue-700 hover:to-emerald-700 text-white px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-600/25">
+              <Button className="bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-gray-600/25">
                 Explore All Tags
               </Button>
             </div>
