@@ -256,126 +256,67 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
 
-      {/* Enhanced, comprehensive, and professional Footer */}
-      <footer className="relative bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 border-t border-slate-700">
-        {/* Subtle background effects */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20"></div>
-        </div>
-
-        <div className="container mx-auto px-4 py-12 relative z-10">
-          {/* Newsletter Section */}
-          <div className="text-center mb-12">
-            <h3 className="text-2xl md:text-3xl font-playfair font-bold text-white mb-4">
-              Stay Connected with WombVerse
-            </h3>
-            <p className="text-gray-400 mb-6 max-w-md mx-auto">
-              Get period wisdom, community updates, and inspiring stories delivered to your inbox
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-1 bg-slate-800 border-slate-600 text-white placeholder-gray-400 focus:border-blue-400"
-                required
-              />
-              <Button type="submit" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:scale-105">
-                Subscribe
-              </Button>
-            </form>
-          </div>
-
-          {/* Main Footer Content */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            {/* Brand Section */}
+      {/* Restored original, comprehensive Footer */}
+      <footer className="bg-gradient-to-br from-slate-900 via-womb-plum to-womb-crimson/60 border-t border-womb-plum relative z-10">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-gray-300">
+            {/* Brand & About */}
             <div>
-              <div className="flex items-center space-x-2 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                  <Heart className="w-5 h-5 text-white" />
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center">
+                  <span>
+                    <svg width="18" height="18" viewBox="0 0 20 20" className="w-5 h-5 text-white"><circle cx="10" cy="10" r="10" fill="currentColor"/></svg>
+                  </span>
                 </div>
-                <h3 className="text-2xl font-playfair font-bold text-white">
-                  WombVerse
-                </h3>
+                <span className="font-playfair text-xl font-bold text-white">WombVerse</span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                A safe, supportive space where period stories are shared, celebrated, and heard. 
-                Breaking the silence, building connection, creating belonging.
+              <p className="mb-4 text-sm">
+                A safe, supportive space where period stories are shared and celebrated. Breaking the silence, building connection, creating belonging.
               </p>
-              {/* Social Media Links */}
-              <div className="flex space-x-4">
-                {[
-                  { icon: Instagram, href: "#", color: "hover:text-pink-400" },
-                  { icon: Twitter, href: "#", color: "hover:text-blue-400" },
-                  { icon: Facebook, href: "#", color: "hover:text-blue-500" },
-                  { icon: Youtube, href: "#", color: "hover:text-red-400" }
-                ].map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.href}
-                    className={`text-gray-400 ${social.color} transition-colors duration-300 hover:scale-125 transform`}
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </a>
-                ))}
-              </div>
+              <p className="text-xs text-gray-400">&copy; 2025 WombVerse. All rights reserved.</p>
             </div>
-
-            {/* Quick Links */}
+            {/* Explore */}
             <div>
-              <h4 className="font-bold text-white mb-4 text-lg font-playfair">Quick Links</h4>
-              <ul className="space-y-3 text-sm">
-                {[
-                  { name: "Stories", href: "/stories" },
-                  { name: "Community", href: "/community" },
-                  { name: "Whispers", href: "/whispers" },
-                  { name: "Share Your Story", href: "/create-story" }
-                ].map((link, index) => (
-                  <li key={index}>
-                    <Link 
-                      to={link.href} 
-                      className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
+              <h4 className="font-playfair font-semibold text-lg text-white mb-4">Explore</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a href="/featured-stories" className="hover:text-womb-crimson transition-colors">Featured Stories</a>
+                </li>
+                <li>
+                  <a href="/recent-stories" className="hover:text-womb-crimson transition-colors">Recent Stories</a>
+                </li>
+                <li>
+                  <a href="/resources" className="hover:text-womb-crimson transition-colors">Resources</a>
+                </li>
+                <li>
+                  <a href="/support" className="hover:text-womb-crimson transition-colors">Support</a>
+                </li>
               </ul>
             </div>
-
-            {/* Contact Section */}
+            {/* Community */}
             <div>
-              <h4 className="font-bold text-white mb-4 text-lg font-playfair">Contact</h4>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center space-x-2 text-gray-400">
-                  <Mail className="w-4 h-4 text-blue-400" />
-                  <span>hello@wombverse.com</span>
-                </div>
-                <p className="text-gray-400 text-sm">
-                  We're here to support you on your journey.
-                </p>
-              </div>
+              <h4 className="font-playfair font-semibold text-lg text-white mb-4">Community</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a href="/community-guidelines" className="hover:text-womb-crimson transition-colors">Community Guidelines</a>
+                </li>
+                <li>
+                  <a href="/about-us" className="hover:text-womb-crimson transition-colors">About Us</a>
+                </li>
+                <li>
+                  <a href="/contact" className="hover:text-womb-crimson transition-colors">Contact</a>
+                </li>
+              </ul>
             </div>
-          </div>
-
-          {/* Bottom Section */}
-          <div className="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <div className="text-center md:text-left mb-4 md:mb-0">
-              <p className="text-sm text-gray-400">
-                &copy; 2025 WombVerse. Made with{' '}
-                <Heart className="inline w-4 h-4 text-red-400" />{' '}
-                for the menstrual community.
-              </p>
+            {/* Legal */}
+            <div>
+              <h4 className="font-playfair font-semibold text-lg text-white mb-4">Legal</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a href="/privacy" className="hover:text-womb-crimson transition-colors">Privacy Policy</a>
+                </li>
+              </ul>
             </div>
-            
-            <Button
-              onClick={scrollToTop}
-              size="sm"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full p-2 transition-all duration-300 hover:scale-110"
-            >
-              <ChevronUp className="w-4 h-4" />
-            </Button>
           </div>
         </div>
       </footer>

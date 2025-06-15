@@ -19,7 +19,7 @@ const Chatbot: React.FC = () => {
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-    const userMsg = { sender: "user", text: input };
+    const userMsg = { sender: "user" as "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
     setLoading(true);
     setInput("");
@@ -29,7 +29,7 @@ const Chatbot: React.FC = () => {
       setMessages((prev) => [
         ...prev,
         {
-          sender: "bot",
+          sender: "bot" as "bot",
           text:
             "This is an AI sample response. Integrate with an API for live answers!"
         }
