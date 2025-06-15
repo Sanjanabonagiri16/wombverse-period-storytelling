@@ -1,7 +1,7 @@
-
 import React, { useState, useRef } from "react";
 import { Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,27 +36,16 @@ const Chatbot: React.FC = () => {
         { role: "user", content: input },
       ];
 
-      console.log('Sending request to chatbot function...');
+      console.log('Invoking chatbot function...');
 
-      const res = await fetch(
-        `https://zxcczifkldwuelhibbwm.functions.supabase.co/chatbot`,
-        {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify({ messages: chatHistory }),
-        }
-      );
+      const { data, error: invokeError } = await supabase.functions.invoke('chatbot', {
+        body: { messages: chatHistory },
+      });
 
-      console.log('Response status:', res.status);
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+      if (invokeError) {
+        throw invokeError;
       }
-
-      const data = await res.json();
+      
       console.log('Response data:', data);
 
       if (data.answer) {
