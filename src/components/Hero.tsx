@@ -1,4 +1,3 @@
-
 import { PenTool, BookOpen, Heart, ChevronDown, Sparkles, Star, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -160,38 +159,38 @@ const Hero = () => {
 
   return (
     <section className="relative py-20 lg:py-32 overflow-hidden">
-      {/* Professional Background */}
+      {/* Enhanced Professional Background with Red Accents */}
       <div className="absolute inset-0">
-        {/* Clean gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800"></div>
-        <div className="absolute inset-0 bg-gradient-to-tl from-blue-900/20 via-transparent to-purple-900/20"></div>
+        {/* Professional gradient background with red themes */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-red-900/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-tl from-red-800/20 via-transparent to-slate-800"></div>
         
-        {/* Subtle decorative elements */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        {/* Professional red decorative elements */}
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-red-500/15 to-pink-500/15 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-gradient-to-r from-red-600/10 to-red-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         
-        {/* Professional floating icons */}
-        <div className="absolute top-20 right-1/4 animate-float opacity-20" style={{ animationDelay: '1s' }}>
-          <Heart className="w-8 h-8 text-blue-400" />
+        {/* Professional floating icons with red accents */}
+        <div className="absolute top-20 right-1/4 animate-float opacity-30" style={{ animationDelay: '1s' }}>
+          <Heart className="w-8 h-8 text-red-400" />
         </div>
-        <div className="absolute bottom-32 left-1/4 animate-float opacity-20" style={{ animationDelay: '3s' }}>
-          <Star className="w-6 h-6 text-purple-400" />
+        <div className="absolute bottom-32 left-1/4 animate-float opacity-25" style={{ animationDelay: '3s' }}>
+          <Star className="w-6 h-6 text-red-300" />
         </div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Professional heading */}
+          {/* Enhanced heading with red gradients */}
           <div className="animate-fade-in mb-8">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-playfair font-bold leading-tight">
               <span className="text-white">
                 Your Period.
               </span>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-500">
                 Your Story.
               </span>
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300">
                 Your Voice.
               </span>
             </h1>
@@ -202,42 +201,42 @@ const Hero = () => {
             <p className="text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto text-gray-300">
               Join a community where period stories are shared, celebrated, and heard.
               <br />
-              <span className="text-blue-300 font-medium">
+              <span className="text-red-300 font-medium">
                 Break the silence. Build connection. Belong.
               </span>
             </p>
           </div>
           
-          {/* Professional call to action buttons */}
+          {/* Enhanced call to action buttons with red gradients */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <Link to="/auth">
-              <Button size="lg" className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-blue-500/25">
+              <Button size="lg" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-red-500/25">
                 <PenTool className="w-6 h-6 mr-3 group-hover:rotate-6 transition-transform duration-300" />
                 <span className="font-semibold">Share Your Story</span>
               </Button>
             </Link>
             <Link to="/stories">
-              <Button size="lg" variant="outline" className="group border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover:scale-105">
+              <Button size="lg" variant="outline" className="group border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover:scale-105">
                 <BookOpen className="w-6 h-6 mr-3 group-hover:rotate-6 transition-transform duration-300" />
                 <span className="font-semibold">Explore Stories</span>
               </Button>
             </Link>
           </div>
           
-          {/* Wisdom Section with professional styling */}
+          {/* Wisdom Section with enhanced red styling */}
           <div className="max-w-6xl mx-auto animate-fade-in" style={{ animationDelay: '0.9s' }}>
             <Button
               onClick={() => setShowMoreWisdom(!showMoreWisdom)}
-              className="group bg-slate-800/80 hover:bg-slate-700/80 text-white border border-slate-600 hover:border-blue-400 mb-8 text-base px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+              className="group bg-slate-800/80 hover:bg-red-900/40 text-white border border-slate-600 hover:border-red-400 mb-8 text-base px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
             >
-              <Heart className="w-5 h-5 mr-3 text-blue-400" />
+              <Heart className="w-5 h-5 mr-3 text-red-400" />
               <span className="font-medium">
                 {showMoreWisdom ? 'Hide Community Wisdom' : 'Discover Community Wisdom'}
               </span>
               <ChevronDown className={`w-5 h-5 ml-3 transition-transform duration-300 ${showMoreWisdom ? 'rotate-180' : ''}`} />
             </Button>
 
-            {/* Wisdom content with professional styling */}
+            {/* Wisdom content with professional red styling */}
             <div className={`transition-all duration-500 overflow-hidden ${showMoreWisdom ? 'opacity-100 max-h-none' : 'opacity-0 max-h-0'}`}>
               {showMoreWisdom && (
                 <div className="space-y-8">
@@ -245,18 +244,18 @@ const Hero = () => {
                     {displayedWisdom.map((quote, index) => (
                       <div
                         key={index}
-                        className="group bg-slate-800/60 backdrop-blur-lg rounded-xl p-6 border border-slate-700 hover:border-blue-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in"
+                        className="group bg-slate-800/60 backdrop-blur-lg rounded-xl p-6 border border-slate-700 hover:border-red-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in"
                         style={{ animationDelay: `${index * 0.1}s` }}
                       >
                         {quote.category && (
-                          <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300">
+                          <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold rounded-full bg-red-500/20 border border-red-400/30 text-red-300">
                             {quote.category}
                           </div>
                         )}
                         <blockquote className="text-gray-300 text-sm md:text-base mb-3 leading-relaxed italic">
                           "{quote.text}"
                         </blockquote>
-                        <cite className="text-blue-400 text-sm font-semibold">
+                        <cite className="text-red-400 text-sm font-semibold">
                           — {quote.author}
                         </cite>
                       </div>
@@ -267,7 +266,7 @@ const Hero = () => {
                     <div className="text-center pt-6">
                       <Button
                         onClick={loadMoreWisdom}
-                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                        className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105"
                       >
                         <Sparkles className="w-4 h-4 mr-2" />
                         <span className="font-medium">Load More Wisdom</span>
