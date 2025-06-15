@@ -56,6 +56,7 @@ const Layout = ({ children }: LayoutProps) => {
   };
 
   const isActivePage = (path: string) => location.pathname === path;
+  const isHomePage = location.pathname === '/';
 
   const navigationItems = [
     { href: '/stories', label: 'Stories', icon: Book },
@@ -240,126 +241,130 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
 
-      {/* More Wisdom Section */}
-      <section className="bg-womb-deepgrey py-12 md:py-16 lg:py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-womb-softwhite mb-4 md:mb-6">
-              More Wisdom
-            </h2>
-            <p className="text-womb-warmgrey text-base md:text-lg mb-8 md:mb-12 max-w-2xl mx-auto">
-              Discover insights, tips, and resources to help you on your journey
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-              <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-crimson/30 transition-colors">
-                <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Period Health</h3>
-                <p className="text-womb-warmgrey text-sm md:text-base">
-                  Learn about menstrual health, cycle tracking, and wellness tips
-                </p>
+      {/* More Wisdom Section - Only on Home Page */}
+      {isHomePage && (
+        <section className="bg-womb-deepgrey py-12 md:py-16 lg:py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto text-center">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-womb-softwhite mb-4 md:mb-6">
+                More Wisdom
+              </h2>
+              <p className="text-womb-warmgrey text-base md:text-lg mb-8 md:mb-12 max-w-2xl mx-auto">
+                Discover insights, tips, and resources to help you on your journey
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-crimson/30 transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Period Health</h3>
+                  <p className="text-womb-warmgrey text-sm md:text-base">
+                    Learn about menstrual health, cycle tracking, and wellness tips
+                  </p>
+                </div>
+                <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Emotional Wellness</h3>
+                  <p className="text-womb-warmgrey text-sm md:text-base">
+                    Explore emotional support and mental health resources
+                  </p>
+                </div>
+                <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-crimson/30 transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Community Stories</h3>
+                  <p className="text-womb-warmgrey text-sm md:text-base">
+                    Read inspiring stories and experiences from our community
+                  </p>
+                </div>
+                <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Myth Busting</h3>
+                  <p className="text-womb-warmgrey text-sm md:text-base">
+                    Separate facts from fiction about periods and women's health
+                  </p>
+                </div>
+                <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-crimson/30 transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Cultural Insights</h3>
+                  <p className="text-womb-warmgrey text-sm md:text-base">
+                    Explore how different cultures view and celebrate menstruation
+                  </p>
+                </div>
+                <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Self-Care Tips</h3>
+                  <p className="text-womb-warmgrey text-sm md:text-base">
+                    Practical advice for managing symptoms and feeling your best
+                  </p>
+                </div>
+                <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Product Reviews</h3>
+                  <p className="text-womb-warmgrey text-sm md:text-base">
+                    Honest reviews of period products from real users
+                  </p>
+                </div>
+                <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Expert Advice</h3>
+                  <p className="text-womb-warmgrey text-sm md:text-base">
+                    Guidance from healthcare professionals and specialists
+                  </p>
+                </div>
               </div>
-              <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
-                <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Emotional Wellness</h3>
-                <p className="text-womb-warmgrey text-sm md:text-base">
-                  Explore emotional support and mental health resources
-                </p>
+              <div className="mt-8 md:mt-12">
+                <Link to="/resources">
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-womb-crimson to-womb-plum hover:from-womb-crimson/80 hover:to-womb-plum/80 text-white px-6 md:px-8 py-2 md:py-3 text-sm md:text-base"
+                  >
+                    Explore All Resources
+                  </Button>
+                </Link>
               </div>
-              <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-crimson/30 transition-colors">
-                <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Community Stories</h3>
-                <p className="text-womb-warmgrey text-sm md:text-base">
-                  Read inspiring stories and experiences from our community
-                </p>
-              </div>
-              <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
-                <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Myth Busting</h3>
-                <p className="text-womb-warmgrey text-sm md:text-base">
-                  Separate facts from fiction about periods and women's health
-                </p>
-              </div>
-              <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-crimson/30 transition-colors">
-                <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Cultural Insights</h3>
-                <p className="text-womb-warmgrey text-sm md:text-base">
-                  Explore how different cultures view and celebrate menstruation
-                </p>
-              </div>
-              <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
-                <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Self-Care Tips</h3>
-                <p className="text-womb-warmgrey text-sm md:text-base">
-                  Practical advice for managing symptoms and feeling your best
-                </p>
-              </div>
-              <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-crimson/30 transition-colors">
-                <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Product Reviews</h3>
-                <p className="text-womb-warmgrey text-sm md:text-base">
-                  Honest reviews of period products from real users
-                </p>
-              </div>
-              <div className="bg-womb-charcoal p-4 md:p-6 rounded-lg border border-womb-deepgrey hover:border-womb-plum/30 transition-colors">
-                <h3 className="text-lg md:text-xl font-semibold text-womb-softwhite mb-2 md:mb-3">Expert Advice</h3>
-                <p className="text-womb-warmgrey text-sm md:text-base">
-                  Guidance from healthcare professionals and specialists
-                </p>
-              </div>
-            </div>
-            <div className="mt-8 md:mt-12">
-              <Link to="/resources">
-                <Button 
-                  size="lg" 
-                  className="bg-gradient-to-r from-womb-crimson to-womb-plum hover:from-womb-crimson/80 hover:to-womb-plum/80 text-white px-6 md:px-8 py-2 md:py-3 text-sm md:text-base"
-                >
-                  Explore All Resources
-                </Button>
-              </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Join Community Section */}
-      <section className="bg-gradient-to-r from-womb-crimson to-womb-plum py-12 md:py-16 lg:py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-white mb-4 md:mb-6">
-              Join Our Community
-            </h2>
-            <p className="text-white/90 text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">
-              Connect with others, share your experiences, and be part of a supportive community that celebrates every journey
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
-              <div className="bg-white/10 backdrop-blur-sm p-4 md:p-6 rounded-lg">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">12K+</div>
-                <div className="text-white/80 text-sm md:text-base">Community Members</div>
+      {/* Join Community Section - Only on Home Page */}
+      {isHomePage && (
+        <section className="bg-gradient-to-r from-womb-crimson to-womb-plum py-12 md:py-16 lg:py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-white mb-4 md:mb-6">
+                Join Our Community
+              </h2>
+              <p className="text-white/90 text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">
+                Connect with others, share your experiences, and be part of a supportive community that celebrates every journey
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
+                <div className="bg-white/10 backdrop-blur-sm p-4 md:p-6 rounded-lg">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">12K+</div>
+                  <div className="text-white/80 text-sm md:text-base">Community Members</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm p-4 md:p-6 rounded-lg">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">1.2K+</div>
+                  <div className="text-white/80 text-sm md:text-base">Stories Shared</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm p-4 md:p-6 rounded-lg">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">24K+</div>
+                  <div className="text-white/80 text-sm md:text-base">Hearts Given</div>
+                </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 md:p-6 rounded-lg">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">1.2K+</div>
-                <div className="text-white/80 text-sm md:text-base">Stories Shared</div>
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center max-w-md mx-auto">
+                <Link to="/auth" className="flex-1">
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-white text-womb-crimson hover:bg-white/90 font-semibold px-6 md:px-8 py-2 md:py-3 text-sm md:text-base"
+                  >
+                    Get Started
+                  </Button>
+                </Link>
+                <Link to="/stories" className="flex-1">
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="w-full border-white text-white hover:bg-white hover:text-womb-crimson font-semibold px-6 md:px-8 py-2 md:py-3 text-sm md:text-base"
+                  >
+                    Explore Stories
+                  </Button>
+                </Link>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm p-4 md:p-6 rounded-lg">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">24K+</div>
-                <div className="text-white/80 text-sm md:text-base">Hearts Given</div>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center max-w-md mx-auto">
-              <Link to="/auth" className="flex-1">
-                <Button 
-                  size="lg" 
-                  className="w-full bg-white text-womb-crimson hover:bg-white/90 font-semibold px-6 md:px-8 py-2 md:py-3 text-sm md:text-base"
-                >
-                  Get Started
-                </Button>
-              </Link>
-              <Link to="/stories" className="flex-1">
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="w-full border-white text-white hover:bg-white hover:text-womb-crimson font-semibold px-6 md:px-8 py-2 md:py-3 text-sm md:text-base"
-                >
-                  Explore Stories
-                </Button>
-              </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="bg-womb-deepgrey border-t border-womb-deepgrey">
