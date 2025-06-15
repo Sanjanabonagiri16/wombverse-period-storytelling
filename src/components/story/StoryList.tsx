@@ -43,7 +43,7 @@ const StoryList = ({ searchQuery = '', categoryFilter = '', emotionFilter = '' }
         .from('stories')
         .select(`
           *,
-          profiles:user_id (
+          profiles!stories_user_id_fkey (
             display_name,
             avatar_url
           )
