@@ -1,4 +1,4 @@
-import { PenTool, BookOpen, Heart, ChevronDown, Sparkles, Star, Zap } from 'lucide-react';
+import { PenTool, BookOpen, Heart, ChevronDown, Sparkles, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -159,55 +159,53 @@ const Hero = () => {
 
   return (
     <section className="relative py-20 lg:py-32 overflow-hidden">
-      {/* Enhanced Professional Background with Red Accents */}
+      {/* Professional Background with waves and orbs */}
       <div className="absolute inset-0">
-        {/* Professional gradient background with red themes */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-red-900/30"></div>
-        <div className="absolute inset-0 bg-gradient-to-tl from-red-800/20 via-transparent to-slate-800"></div>
-        
-        {/* Professional red decorative elements */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-red-500/15 to-pink-500/15 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-gradient-to-r from-red-600/10 to-red-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        
-        {/* Professional floating icons with red accents */}
-        <div className="absolute top-20 right-1/4 animate-float opacity-30" style={{ animationDelay: '1s' }}>
-          <Heart className="w-8 h-8 text-red-400" />
+        {/* Main gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-womb-plum/80 to-womb-crimson/25"></div>
+        {/* Decorative accents */}
+        <div className="absolute top-1/4 left-1/3 w-32 h-32 bg-gradient-to-r from-womb-plum/20 to-womb-crimson/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-gradient-to-r from-womb-crimson/20 to-pink-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-10 left-1/4 w-14 h-14 bg-gradient-to-br from-womb-crimson/25 to-womb-plum/20 rounded-full blur-2xl animate-float"></div>
+        {/* Floating icons */}
+        <div className="absolute top-16 right-1/4 animate-float opacity-20" style={{ animationDelay: '1s' }}>
+          <Heart className="w-8 h-8 text-womb-crimson" />
         </div>
-        <div className="absolute bottom-32 left-1/4 animate-float opacity-25" style={{ animationDelay: '3s' }}>
-          <Star className="w-6 h-6 text-red-300" />
+        <div className="absolute bottom-32 left-1/4 animate-float opacity-15" style={{ animationDelay: '3s' }}>
+          <Star className="w-6 h-6 text-womb-plum" />
         </div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Enhanced heading with red gradients */}
+          {/* Tagline with professional color and font */}
           <div className="animate-fade-in mb-8">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-playfair font-bold leading-tight">
-              <span className="text-white">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-playfair font-extrabold leading-tight">
+              <span className="text-womb-softwhite drop-shadow-md">
                 Your Period.
               </span>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-500">
+              <span className="bg-gradient-to-r from-womb-crimson via-womb-plum to-pink-500 bg-clip-text text-transparent drop-shadow-lg">
                 Your Story.
               </span>
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300">
+              <span className="bg-gradient-to-r from-womb-plum via-womb-crimson to-womb-plum bg-clip-text text-transparent drop-shadow-md">
                 Your Voice.
               </span>
             </h1>
           </div>
           
-          {/* Professional subtitle */}
+          {/* Subtitle */}
           <div className="animate-fade-in mb-12" style={{ animationDelay: '0.3s' }}>
             <p className="text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto text-gray-300">
               Join a community where period stories are shared, celebrated, and heard.
               <br />
-              <span className="text-red-300 font-medium">
+              <span className="text-womb-crimson font-semibold font-inter tracking-wide">
                 Break the silence. Build connection. Belong.
               </span>
             </p>
           </div>
           
-          {/* Enhanced call to action buttons with red gradients */}
+          {/* Call to action */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <Link to="/auth">
               <Button size="lg" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-red-500/25">

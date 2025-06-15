@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles, Home, Mail, Instagram, Twitter, Facebook, Youtube, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -257,7 +256,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
 
-      {/* Clean Professional Footer */}
+      {/* Enhanced, comprehensive, and professional Footer */}
       <footer className="relative bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 border-t border-slate-700">
         {/* Subtle background effects */}
         <div className="absolute inset-0">
