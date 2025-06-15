@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles, Home, Mail, Instagram, Twitter, Facebook, Youtube, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -252,7 +253,7 @@ const Layout = ({ children }: LayoutProps) => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 animate-fade-in">
         {children}
       </main>
 
@@ -326,7 +327,7 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
         <button
           onClick={scrollToTop}
-          className="absolute bottom-8 right-8 bg-womb-plum p-3 rounded-full text-white hover:bg-womb-plum/80 transition-colors shadow-lg hover:scale-110 transform"
+          className="absolute bottom-4 right-4 md:bottom-8 md:right-8 bg-womb-plum p-3 rounded-full text-white hover:bg-womb-plum/80 transition-colors shadow-lg hover:scale-110 transform"
           aria-label="Back to top"
         >
           <ChevronUp className="w-6 h-6" />
