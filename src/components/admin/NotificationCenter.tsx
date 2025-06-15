@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Bell, Send, MessageSquare, Users, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { Bell, Send, MessageSquare, Users, AlertCircle, CheckCircle, Clock, Download, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Notification {
@@ -37,6 +37,7 @@ const NotificationCenter = () => {
   const { toast } = useToast();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [feedback, setFeedback] = useState<UserFeedback[]>([]);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [newNotification, setNewNotification] = useState({
     title: '',
     message: '',
@@ -45,7 +46,7 @@ const NotificationCenter = () => {
   });
 
   useEffect(() => {
-    // Mock data for demo
+    // Mock data for demo - in real app, this would come from Supabase
     setNotifications([
       {
         id: '1',
@@ -93,6 +94,13 @@ const NotificationCenter = () => {
         replies: 2
       }
     ]);
+
+    // Simulate real-time updates
+    const interval = setInterval(() => {
+      setLastUpdated(new Date());
+    }, 30000); // Update every 30 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleSendNotification = () => {
@@ -126,6 +134,51 @@ const NotificationCenter = () => {
     });
   };
 
+  const exportNotifications = () => {
+    const csv = convertToCSV(notifications);
+    downloadCSV(csv, `notifications_${new Date().toISOString().split('T')[0]}.csv`);
+    toast({
+      title: "Export successful",
+      description: "Notifications exported successfully."
+    });
+  };
+
+  const exportFeedback = () => {
+    const csv = convertToCSV(feedback);
+    downloadCSV(csv, `feedback_${new Date().toISOString().split('T')[0]}.csv`);
+    toast({
+      title: "Export successful",
+      description: "Feedback exported successfully."
+    });
+  };
+
+  const convertToCSV = (data: any[]) => {
+    if (data.length === 0) return '';
+    const headers = Object.keys(data[0]);
+    const csvContent = [
+      headers.join(','),
+      ...data.map(row => 
+        headers.map(header => {
+          const value = row[header];
+          return typeof value === 'object' ? JSON.stringify(value) : value;
+        }).join(',')
+      )
+    ].join('\n');
+    return csvContent;
+  };
+
+  const downloadCSV = (csv: string, filename: string) => {
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', filename);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const getNotificationTypeColor = (type: string) => {
     switch (type) {
       case 'announcement': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
@@ -156,30 +209,34 @@ const NotificationCenter = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <Bell className="w-6 h-6 text-blue-400" />
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+          <Bell className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
           Notification Center
         </h2>
+        <div className="flex items-center gap-2 text-xs md:text-sm text-slate-400">
+          <RefreshCw className="w-3 h-3" />
+          Last updated: {lastUpdated.toLocaleTimeString()}
+        </div>
       </div>
 
       <Tabs defaultValue="announcements" className="w-full">
         <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 border border-slate-700">
-          <TabsTrigger value="announcements" className="data-[state=active]:bg-slate-700">
+          <TabsTrigger value="announcements" className="data-[state=active]:bg-slate-700 text-xs md:text-sm">
             Admin Announcements
           </TabsTrigger>
-          <TabsTrigger value="feedback" className="data-[state=active]:bg-slate-700">
+          <TabsTrigger value="feedback" className="data-[state=active]:bg-slate-700 text-xs md:text-sm">
             User Feedback
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="announcements" className="space-y-6">
+        <TabsContent value="announcements" className="space-y-4 md:space-y-6">
           {/* Create New Announcement */}
           <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Send className="w-5 h-5 text-blue-400" />
+              <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                <Send className="w-4 h-4 md:w-5 md:h-5 text-blue-400" />
                 Send Announcement
               </CardTitle>
             </CardHeader>
@@ -192,7 +249,7 @@ const NotificationCenter = () => {
                   <select
                     value={newNotification.type}
                     onChange={(e) => setNewNotification(prev => ({ ...prev, type: e.target.value as any }))}
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white"
+                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm"
                   >
                     <option value="announcement">Announcement</option>
                     <option value="maintenance">Maintenance</option>
@@ -207,7 +264,7 @@ const NotificationCenter = () => {
                   <select
                     value={newNotification.recipient}
                     onChange={(e) => setNewNotification(prev => ({ ...prev, recipient: e.target.value as any }))}
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white"
+                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm"
                   >
                     <option value="all">All Users</option>
                     <option value="moderators">Moderators Only</option>
@@ -224,7 +281,7 @@ const NotificationCenter = () => {
                   value={newNotification.title}
                   onChange={(e) => setNewNotification(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="Enter notification title..."
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-slate-700 border-slate-600 text-white text-sm"
                 />
               </div>
               
@@ -237,11 +294,11 @@ const NotificationCenter = () => {
                   onChange={(e) => setNewNotification(prev => ({ ...prev, message: e.target.value }))}
                   placeholder="Enter your announcement message..."
                   rows={4}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-slate-700 border-slate-600 text-white text-sm"
                 />
               </div>
               
-              <Button onClick={handleSendNotification} className="bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleSendNotification} className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
                 <Send className="w-4 h-4 mr-2" />
                 Send Notification
               </Button>
@@ -251,17 +308,28 @@ const NotificationCenter = () => {
           {/* Notification History */}
           <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle className="text-white">Notification History</CardTitle>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <CardTitle className="text-white text-base md:text-lg">Notification History</CardTitle>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={exportNotifications}
+                  className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export CSV
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {notifications.map((notification) => (
                   <div
                     key={notification.id}
-                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                    className="bg-slate-700/50 rounded-lg p-3 md:p-4 border border-slate-600"
                   >
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-white">{notification.title}</h3>
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
+                      <h3 className="font-semibold text-white text-sm md:text-base">{notification.title}</h3>
                       <div className="flex items-center gap-2">
                         {getStatusIcon(notification.status)}
                         <Badge className={getNotificationTypeColor(notification.type)}>
@@ -269,8 +337,8 @@ const NotificationCenter = () => {
                         </Badge>
                       </div>
                     </div>
-                    <p className="text-slate-300 mb-3">{notification.message}</p>
-                    <div className="flex items-center justify-between text-sm text-slate-400">
+                    <p className="text-slate-300 mb-3 text-sm md:text-base">{notification.message}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm text-slate-400 gap-2">
                       <span>To: {notification.recipient}</span>
                       <span>{new Date(notification.createdAt).toLocaleDateString()}</span>
                     </div>
@@ -281,43 +349,54 @@ const NotificationCenter = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="feedback" className="space-y-6">
+        <TabsContent value="feedback" className="space-y-4 md:space-y-6">
           <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-green-400" />
-                User Feedback Inbox
-              </CardTitle>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                  <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-green-400" />
+                  User Feedback Inbox
+                </CardTitle>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={exportFeedback}
+                  className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export CSV
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {feedback.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600 hover:border-slate-500 transition-colors"
+                    className="bg-slate-700/50 rounded-lg p-3 md:p-4 border border-slate-600 hover:border-slate-500 transition-colors"
                   >
-                    <div className="flex items-start justify-between mb-2">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
                       <div>
-                        <h3 className="font-semibold text-white">{item.subject}</h3>
-                        <p className="text-sm text-slate-400">From: {item.userName}</p>
+                        <h3 className="font-semibold text-white text-sm md:text-base">{item.subject}</h3>
+                        <p className="text-xs md:text-sm text-slate-400">From: {item.userName}</p>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
                         <Badge className={getPriorityColor(item.priority)}>
                           {item.priority}
                         </Badge>
-                        <Badge variant="outline" className="border-slate-600 text-slate-300">
+                        <Badge variant="outline" className="border-slate-600 text-slate-300 text-xs">
                           {item.category}
                         </Badge>
                       </div>
                     </div>
-                    <p className="text-slate-300 mb-3">{item.message}</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm text-slate-400">
+                    <p className="text-slate-300 mb-3 text-sm md:text-base">{item.message}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex flex-wrap items-center gap-4 text-xs md:text-sm text-slate-400">
                         <span>Status: {item.status}</span>
                         <span>{item.replies} replies</span>
                         <span>{new Date(item.createdAt).toLocaleDateString()}</span>
                       </div>
-                      <Button size="sm" variant="outline" className="border-slate-600 text-slate-300">
+                      <Button size="sm" variant="outline" className="border-slate-600 text-slate-300 w-full sm:w-auto">
                         Reply
                       </Button>
                     </div>

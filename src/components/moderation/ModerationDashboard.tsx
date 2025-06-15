@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Flag, Eye, X, Check, Clock } from 'lucide-react';
+import { Flag, Eye, X, Check, Clock, Download, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ModerationItem {
@@ -28,13 +28,16 @@ const ModerationDashboard = () => {
   const { toast } = useToast();
   const [flaggedContent, setFlaggedContent] = useState<ModerationItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [totalPending, setTotalPending] = useState(0);
+  const [totalProcessed, setTotalProcessed] = useState(0);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
   useEffect(() => {
     fetchFlaggedContent();
     
     // Real-time subscription for new flagged content
     const channel = supabase
-      .channel('moderation-updates')
+      .channel('moderation-realtime')
       .on(
         'postgres_changes',
         {
@@ -42,8 +45,17 @@ const ModerationDashboard = () => {
           schema: 'public',
           table: 'content_moderation'
         },
-        () => {
+        (payload) => {
+          console.log('Real-time moderation update:', payload);
           fetchFlaggedContent();
+          setLastUpdated(new Date());
+          
+          if (payload.eventType === 'INSERT') {
+            toast({
+              title: "New content flagged",
+              description: "A new item requires moderation review.",
+            });
+          }
         }
       )
       .subscribe();
@@ -55,15 +67,25 @@ const ModerationDashboard = () => {
 
   const fetchFlaggedContent = async () => {
     try {
-      const { data: moderationData } = await supabase
+      // Fetch pending items
+      const { data: pendingData, count: pendingCount } = await supabase
         .from('content_moderation')
-        .select('*')
+        .select('*', { count: 'exact' })
         .eq('status', 'pending')
         .order('created_at', { ascending: false });
 
-      if (moderationData) {
+      // Fetch total processed items
+      const { count: processedCount } = await supabase
+        .from('content_moderation')
+        .select('*', { count: 'exact' })
+        .neq('status', 'pending');
+
+      setTotalPending(pendingCount || 0);
+      setTotalProcessed(processedCount || 0);
+
+      if (pendingData) {
         const contentWithDetails = await Promise.all(
-          moderationData.map(async (item) => {
+          pendingData.map(async (item) => {
             let content = null;
             
             if (item.content_type === 'stories') {
@@ -122,6 +144,59 @@ const ModerationDashboard = () => {
     }
   };
 
+  const exportModerationData = async () => {
+    try {
+      const { data } = await supabase
+        .from('content_moderation')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1000);
+
+      if (data) {
+        const csv = convertToCSV(data);
+        downloadCSV(csv, `moderation_data_${new Date().toISOString().split('T')[0]}.csv`);
+        toast({
+          title: "Export successful",
+          description: "Moderation data exported successfully."
+        });
+      }
+    } catch (error) {
+      console.error('Error exporting data:', error);
+      toast({
+        title: "Export failed",
+        description: "Failed to export moderation data.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const convertToCSV = (data: any[]) => {
+    if (data.length === 0) return '';
+    const headers = Object.keys(data[0]);
+    const csvContent = [
+      headers.join(','),
+      ...data.map(row => 
+        headers.map(header => {
+          const value = row[header];
+          return typeof value === 'object' ? JSON.stringify(value) : value;
+        }).join(',')
+      )
+    ].join('\n');
+    return csvContent;
+  };
+
+  const downloadCSV = (csv: string, filename: string) => {
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', filename);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const getStatusBadge = (status: string) => {
     const statusMap = {
       pending: { color: 'bg-yellow-500', icon: Clock },
@@ -142,28 +217,70 @@ const ModerationDashboard = () => {
   };
 
   if (loading) {
-    return <div className="p-6">Loading moderation dashboard...</div>;
+    return (
+      <div className="p-4 md:p-6">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-slate-700 rounded w-1/3"></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-24 bg-slate-700 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center space-x-2">
-        <Flag className="w-6 h-6 text-womb-crimson" />
-        <h1 className="text-2xl font-bold text-womb-softwhite">Moderation Dashboard</h1>
+    <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center space-x-2">
+          <Flag className="w-5 h-5 md:w-6 md:h-6 text-womb-crimson" />
+          <h1 className="text-xl md:text-2xl font-bold text-womb-softwhite">Moderation Dashboard</h1>
+        </div>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-xs md:text-sm text-slate-400">
+          <span className="flex items-center gap-1">
+            <RefreshCw className="w-3 h-3" />
+            Last updated: {lastUpdated.toLocaleTimeString()}
+          </span>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={exportModerationData}
+            className="border-slate-600 text-slate-300 hover:bg-slate-700"
+          >
+            <Download className="w-4 h-4 mr-1" />
+            Export CSV
+          </Button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <Card className="bg-slate-800/50 border-slate-700">
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-womb-crimson">{flaggedContent.length}</div>
-            <div className="text-sm text-womb-warmgrey">Pending Review</div>
+            <div className="text-xl md:text-2xl font-bold text-yellow-400">{totalPending}</div>
+            <div className="text-xs md:text-sm text-womb-warmgrey">Pending Review</div>
+          </CardContent>
+        </Card>
+        <Card className="bg-slate-800/50 border-slate-700">
+          <CardContent className="p-4">
+            <div className="text-xl md:text-2xl font-bold text-green-400">{totalProcessed}</div>
+            <div className="text-xs md:text-sm text-womb-warmgrey">Total Processed</div>
+          </CardContent>
+        </Card>
+        <Card className="bg-slate-800/50 border-slate-700">
+          <CardContent className="p-4">
+            <div className="text-xl md:text-2xl font-bold text-blue-400">
+              {totalPending + totalProcessed}
+            </div>
+            <div className="text-xs md:text-sm text-womb-warmgrey">Total Reports</div>
           </CardContent>
         </Card>
       </div>
 
       <div className="space-y-4">
         {flaggedContent.length === 0 ? (
-          <Card>
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardContent className="p-6 text-center">
               <p className="text-womb-warmgrey">No content pending moderation</p>
             </CardContent>
@@ -171,36 +288,36 @@ const ModerationDashboard = () => {
         ) : (
           flaggedContent.map((item) => (
             <Card key={item.id} className="bg-womb-deepgrey border-womb-deepgrey">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-womb-softwhite flex items-center gap-2">
+              <CardHeader className="pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <CardTitle className="text-sm md:text-base text-womb-softwhite flex items-center gap-2">
                     <Flag className="w-4 h-4" />
                     {item.content_type === 'stories' ? 'Story' : 'Comment'} Flagged
                   </CardTitle>
                   {getStatusBadge(item.status)}
                 </div>
-                <div className="text-sm text-womb-warmgrey">
+                <div className="text-xs md:text-sm text-womb-warmgrey">
                   Reason: {item.flag_reason} | Type: {item.flag_type}
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="bg-womb-charcoal p-4 rounded-lg">
+                  <div className="bg-womb-charcoal p-3 md:p-4 rounded-lg">
                     {item.content?.title && (
-                      <h4 className="font-medium text-womb-softwhite mb-2">
+                      <h4 className="font-medium text-womb-softwhite mb-2 text-sm md:text-base">
                         {item.content.title}
                       </h4>
                     )}
-                    <p className="text-womb-warmgrey text-sm">
+                    <p className="text-womb-warmgrey text-xs md:text-sm break-words">
                       {item.content?.content || 'Content not found'}
                     </p>
                   </div>
                   
-                  <div className="flex space-x-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                      className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'approved')}
                     >
                       <Check className="w-4 h-4 mr-1" />
@@ -209,7 +326,7 @@ const ModerationDashboard = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white"
+                      className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'rejected')}
                     >
                       <X className="w-4 h-4 mr-1" />
@@ -218,7 +335,7 @@ const ModerationDashboard = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                      className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'removed')}
                     >
                       <X className="w-4 h-4 mr-1" />
