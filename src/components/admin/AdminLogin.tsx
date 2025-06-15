@@ -72,7 +72,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
               className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{ background: `linear-gradient(135deg, ${MAROON} 0%, #888888 100%)` }}
             >
-              <Shield className="w-6 h-6 text-white" />
+              <Shield className="w-6 h-6 text-womb-maroon" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-womb-softwhite">
@@ -116,7 +116,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-full px-3 text-womb-warmgrey hover:text-womb-softwhite"
+                  className="absolute right-0 top-0 h-full px-3 text-womb-maroon hover:text-womb-softwhite"
                   onClick={() => setShowPassword(!showPassword)}
                   tabIndex={-1}
                 >

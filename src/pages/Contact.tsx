@@ -17,23 +17,23 @@ const Contact = () => (
         <div className="bg-womb-deepgrey border maroon-border rounded-lg p-8 space-y-6">
           <h2 className="text-2xl font-bold text-womb-softwhite font-playfair">Contact Information</h2>
           <div className="flex items-start space-x-4">
-            <Mail className="w-6 h-6 text-primary mt-1" />
+            <Mail className="w-6 h-6 text-womb-maroon mt-1" />
             <div>
               <h3 className="font-semibold text-womb-softwhite">Email Us</h3>
               <p className="text-womb-warmgrey">For general inquiries, support, or feedback.</p>
-              <a href="mailto:contact@wombverse.org" className="text-primary hover:underline">contact@wombverse.org</a>
+              <a href="mailto:contact@wombverse.org" className="text-womb-maroon hover:underline">contact@wombverse.org</a>
             </div>
           </div>
           <div className="flex items-start space-x-4">
-            <Phone className="w-6 h-6 text-primary mt-1" />
+            <Phone className="w-6 h-6 text-womb-maroon mt-1" />
             <div>
               <h3 className="font-semibold text-womb-softwhite">Call Us</h3>
               <p className="text-womb-warmgrey">For urgent matters.</p>
-              <a href="tel:+1-800-555-0123" className="text-primary hover:underline">+1 (800) 555-0123</a>
+              <a href="tel:+1-800-555-0123" className="text-womb-maroon hover:underline">+1 (800) 555-0123</a>
             </div>
           </div>
           <div className="flex items-start space-x-4">
-            <MapPin className="w-6 h-6 text-primary mt-1" />
+            <MapPin className="w-6 h-6 text-womb-maroon mt-1" />
             <div>
               <h3 className="font-semibold text-womb-softwhite">Our Office</h3>
               <p className="text-womb-warmgrey">WombVerse Headquarters<br/>123 Wellness Way<br/>San Francisco, CA 94105, USA</p>
