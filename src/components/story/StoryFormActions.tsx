@@ -19,13 +19,13 @@ const StoryFormActions = ({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-womb-deepgrey">
-      <div className="flex gap-3">
+    <div className="flex flex-col space-y-3 pt-6 border-t border-womb-deepgrey md:flex-row md:space-y-0 md:space-x-4">
+      <div className="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-3">
         <Button
           type="button"
           variant="outline"
           onClick={onSaveDraft}
-          className="border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
+          className="w-full md:w-auto border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white text-sm md:text-base h-10 md:h-12"
         >
           <Save className="w-4 h-4 mr-2" />
           Save Draft
@@ -35,18 +35,18 @@ const StoryFormActions = ({
           type="button"
           variant="outline"
           onClick={onTogglePreview}
-          className="border-womb-warmgrey text-womb-warmgrey hover:bg-womb-warmgrey hover:text-womb-charcoal"
+          className="w-full md:w-auto border-womb-warmgrey text-womb-warmgrey hover:bg-womb-warmgrey hover:text-womb-charcoal text-sm md:text-base h-10 md:h-12"
         >
           {showPreview ? 'Edit' : 'Preview'}
         </Button>
       </div>
       
-      <div className="flex gap-3 sm:ml-auto">
+      <div className="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-3 md:ml-auto">
         <Button
           type="button"
           variant="ghost"
           onClick={() => navigate('/')}
-          className="text-womb-warmgrey hover:text-womb-softwhite"
+          className="w-full md:w-auto text-womb-warmgrey hover:text-womb-softwhite text-sm md:text-base h-10 md:h-12"
         >
           Cancel
         </Button>
@@ -54,7 +54,7 @@ const StoryFormActions = ({
         <Button
           type="submit"
           disabled={isSaving}
-          className="btn-primary"
+          className="w-full md:w-auto btn-primary text-sm md:text-base h-10 md:h-12"
         >
           <Send className="w-4 h-4 mr-2" />
           {isSaving ? 'Sharing...' : 'Share Story'}

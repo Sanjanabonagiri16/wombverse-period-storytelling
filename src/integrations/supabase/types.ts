@@ -9,24 +9,261 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      profiles: {
+      bookmarks: {
         Row: {
           created_at: string
-          display_name: string | null
           id: string
-          updated_at: string
+          story_id: string
+          user_id: string
         }
         Insert: {
           created_at?: string
-          display_name?: string | null
-          id: string
-          updated_at?: string
+          id?: string
+          story_id: string
+          user_id: string
         }
         Update: {
           created_at?: string
-          display_name?: string | null
           id?: string
+          story_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collection_stories: {
+        Row: {
+          added_at: string
+          collection_id: string
+          id: string
+          story_id: string
+        }
+        Insert: {
+          added_at?: string
+          collection_id: string
+          id?: string
+          story_id: string
+        }
+        Update: {
+          added_at?: string
+          collection_id?: string
+          id?: string
+          story_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_stories_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "user_collections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collection_stories_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_supportive: boolean
+          story_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_supportive?: boolean
+          story_id: string
           updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_supportive?: boolean
+          story_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          follower_count: number | null
+          following_count: number | null
+          id: string
+          is_verified: boolean | null
+          location: string | null
+          privacy_settings: Json | null
+          story_count: number | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          follower_count?: number | null
+          following_count?: number | null
+          id: string
+          is_verified?: boolean | null
+          location?: string | null
+          privacy_settings?: Json | null
+          story_count?: number | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          follower_count?: number | null
+          following_count?: number | null
+          id?: string
+          is_verified?: boolean | null
+          location?: string | null
+          privacy_settings?: Json | null
+          story_count?: number | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      reactions: {
+        Row: {
+          created_at: string
+          id: string
+          story_id: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          story_id: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          story_id?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reactions_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stories: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          emotion_tags: string[]
+          id: string
+          is_anonymous: boolean
+          is_draft: boolean
+          privacy: string
+          title: string
+          updated_at: string
+          user_id: string
+          view_count: number
+        }
+        Insert: {
+          category: string
+          content: string
+          created_at?: string
+          emotion_tags?: string[]
+          id?: string
+          is_anonymous?: boolean
+          is_draft?: boolean
+          privacy: string
+          title: string
+          updated_at?: string
+          user_id: string
+          view_count?: number
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          emotion_tags?: string[]
+          id?: string
+          is_anonymous?: boolean
+          is_draft?: boolean
+          privacy?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          view_count?: number
+        }
+        Relationships: []
+      }
+      user_collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_public: boolean
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          name?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

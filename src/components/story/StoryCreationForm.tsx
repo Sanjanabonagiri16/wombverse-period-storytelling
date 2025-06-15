@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import StoryFormFields from './StoryFormFields';
 import StoryFormActions from './StoryFormActions';
 import StoryPreview from './StoryPreview';
@@ -53,8 +54,20 @@ const StoryCreationForm = () => {
 
     setIsSaving(true);
     try {
-      // Here you would typically save to Supabase
-      console.log('Story data:', data);
+      const { error } = await supabase
+        .from('stories')
+        .insert({
+          user_id: user.id,
+          title: data.title,
+          content: data.content,
+          emotion_tags: data.emotionTags,
+          privacy: data.privacy,
+          category: data.category,
+          is_anonymous: data.isAnonymous,
+          is_draft: false,
+        });
+
+      if (error) throw error;
       
       toast({
         title: "Story shared successfully!",
@@ -63,6 +76,7 @@ const StoryCreationForm = () => {
       
       navigate('/');
     } catch (error) {
+      console.error('Error sharing story:', error);
       toast({
         title: "Error sharing story",
         description: "Something went wrong. Please try again.",
@@ -74,12 +88,45 @@ const StoryCreationForm = () => {
   };
 
   const saveDraft = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to save drafts.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const data = form.getValues();
-    // Save as draft logic would go here
-    toast({
-      title: "Draft saved",
-      description: "Your story has been saved as a draft.",
-    });
+    
+    try {
+      const { error } = await supabase
+        .from('stories')
+        .insert({
+          user_id: user.id,
+          title: data.title || 'Untitled Draft',
+          content: data.content || '',
+          emotion_tags: data.emotionTags,
+          privacy: data.privacy,
+          category: data.category || 'other',
+          is_anonymous: data.isAnonymous,
+          is_draft: true,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Draft saved",
+        description: "Your story has been saved as a draft.",
+      });
+    } catch (error) {
+      console.error('Error saving draft:', error);
+      toast({
+        title: "Error saving draft",
+        description: "Could not save your draft. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const getStoryPreviewData = () => {
@@ -95,9 +142,9 @@ const StoryCreationForm = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 lg:space-y-8">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 lg:space-y-6">
           {!showPreview ? (
             <StoryFormFields form={form} />
           ) : (

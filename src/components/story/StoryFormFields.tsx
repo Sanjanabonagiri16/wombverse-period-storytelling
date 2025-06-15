@@ -13,18 +13,18 @@ interface StoryFormFieldsProps {
 
 const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
   return (
-    <>
+    <div className="space-y-4 lg:space-y-6">
       {/* Story Title */}
       <FormField
         control={form.control}
         name="title"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-womb-softwhite">Story Title</FormLabel>
+            <FormLabel className="text-womb-softwhite text-sm md:text-base">Story Title</FormLabel>
             <FormControl>
               <Input
                 placeholder="Give your story a meaningful title..."
-                className="bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson"
+                className="bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson text-sm md:text-base h-10 md:h-12"
                 {...field}
               />
             </FormControl>
@@ -39,10 +39,10 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
         name="category"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-womb-softwhite">Category</FormLabel>
+            <FormLabel className="text-womb-softwhite text-sm md:text-base">Category</FormLabel>
             <FormControl>
               <select
-                className="w-full h-10 rounded-md border border-womb-deepgrey bg-womb-deepgrey px-3 py-2 text-womb-softwhite focus:border-womb-crimson focus:outline-none"
+                className="w-full h-10 md:h-12 rounded-md border border-womb-deepgrey bg-womb-deepgrey px-3 py-2 text-sm md:text-base text-womb-softwhite focus:border-womb-crimson focus:outline-none"
                 {...field}
               >
                 <option value="">Select a category</option>
@@ -67,15 +67,15 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
         name="content"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-womb-softwhite">Your Story</FormLabel>
+            <FormLabel className="text-womb-softwhite text-sm md:text-base">Your Story</FormLabel>
             <FormControl>
               <Textarea
                 placeholder="Share your experience, thoughts, or advice. Remember, your story matters and can help others feel less alone..."
-                className="min-h-[300px] bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson resize-none"
+                className="min-h-[250px] md:min-h-[300px] bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson resize-none text-sm md:text-base"
                 {...field}
               />
             </FormControl>
-            <div className="flex justify-between text-sm text-womb-warmgrey">
+            <div className="flex justify-between text-xs md:text-sm text-womb-warmgrey">
               <span>{field.value.length}/5000 characters</span>
               <FormMessage />
             </div>
@@ -89,7 +89,7 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
         name="emotionTags"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-womb-softwhite">How did this experience make you feel?</FormLabel>
+            <FormLabel className="text-womb-softwhite text-sm md:text-base">How did this experience make you feel?</FormLabel>
             <FormControl>
               <EmotionTags
                 selectedTags={field.value}
@@ -108,7 +108,7 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
           name="privacy"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-womb-softwhite">Privacy Settings</FormLabel>
+              <FormLabel className="text-womb-softwhite text-sm md:text-base">Privacy Settings</FormLabel>
               <FormControl>
                 <PrivacySelector
                   value={field.value}
@@ -124,23 +124,23 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
           control={form.control}
           name="isAnonymous"
           render={({ field }) => (
-            <FormItem className="flex items-center space-x-2">
+            <FormItem className="flex flex-row items-center space-x-3 space-y-0">
               <FormControl>
                 <input
                   type="checkbox"
-                  className="w-4 h-4 text-womb-crimson bg-womb-deepgrey border-womb-deepgrey rounded focus:ring-womb-crimson"
+                  className="w-4 h-4 text-womb-crimson bg-womb-deepgrey border-womb-deepgrey rounded focus:ring-womb-crimson focus:ring-2"
                   checked={field.value}
                   onChange={field.onChange}
                 />
               </FormControl>
-              <FormLabel className="text-womb-softwhite cursor-pointer">
+              <FormLabel className="text-womb-softwhite cursor-pointer text-sm md:text-base font-normal">
                 Post anonymously (your username won't be shown)
               </FormLabel>
             </FormItem>
           )}
         />
       </div>
-    </>
+    </div>
   );
 };
 
