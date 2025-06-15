@@ -52,16 +52,17 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Professional grayscale palette
+				// Professional grayscale palette - REMOVED ALL YELLOW/PINK COLORS
 				womb: {
 					charcoal: '#121212', // Background (60%)
 					darkgray: '#1E1E1E', // Secondary (30%)
+					deepgrey: '#2A2A2A', // Deeper grey for cards
 					border: '#444444', // Dark gray borders
 					mediumgray: '#B0B0B0', // Medium gray
 					softgray: '#888888', // Accent (10%)
 					lightgray: '#E0E0E0', // Text
-					secondarytext: '#B0B0B0', // Secondary text
-					maroon: '#5C0923', // Add dark maroon
+					softwhite: '#FFFFFF', // Pure white for text
+					maroon: '#5C0923', // Dark maroon
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

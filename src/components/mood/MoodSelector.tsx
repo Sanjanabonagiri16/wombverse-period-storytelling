@@ -69,7 +69,7 @@ const MoodSelector = ({ onMoodSelect, selectedMoods }: MoodSelectorProps) => {
     return (
       <Card>
         <CardContent className="p-4">
-          <p className="text-womb-warmgrey">Loading moods...</p>
+          <p className="text-white">Loading moods...</p>
         </CardContent>
       </Card>
     );
@@ -79,8 +79,8 @@ const MoodSelector = ({ onMoodSelect, selectedMoods }: MoodSelectorProps) => {
     <Card className="bg-womb-deepgrey border-womb-deepgrey">
       <CardContent className="p-4">
         <div className="space-y-3">
-          <h3 className="text-womb-softwhite font-medium">How are you feeling?</h3>
-          <p className="text-womb-warmgrey text-sm">
+          <h3 className="text-white font-medium">How are you feeling?</h3>
+          <p className="text-white text-sm">
             Select moods to find stories that match your current state
           </p>
           
@@ -92,8 +92,8 @@ const MoodSelector = ({ onMoodSelect, selectedMoods }: MoodSelectorProps) => {
                 size="sm"
                 className={`h-auto p-3 flex flex-col items-center space-y-1 transition-all ${
                   selectedMoods.includes(mood.name)
-                    ? 'border-womb-plum bg-womb-plum/20 text-womb-plum'
-                    : 'border-womb-deepgrey hover:border-womb-warmgrey text-womb-warmgrey hover:text-womb-softwhite'
+                    ? 'border-womb-maroon bg-womb-maroon/20 text-womb-maroon'
+                    : 'border-womb-deepgrey hover:border-womb-mediumgray text-white hover:text-white'
                 }`}
                 onClick={() => toggleMood(mood.name)}
               >
@@ -105,7 +105,7 @@ const MoodSelector = ({ onMoodSelect, selectedMoods }: MoodSelectorProps) => {
 
           {selectedMoods.length > 0 && (
             <div className="mt-4 p-3 bg-womb-charcoal rounded-lg">
-              <p className="text-womb-softwhite text-sm">
+              <p className="text-white text-sm">
                 <span className="font-medium">Selected moods:</span>{' '}
                 {selectedMoods.map((mood, index) => (
                   <span key={mood}>
