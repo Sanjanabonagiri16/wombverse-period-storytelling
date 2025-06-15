@@ -87,6 +87,18 @@ const StoryCreationForm = () => {
     });
   };
 
+  const getStoryPreviewData = () => {
+    const formData = form.getValues();
+    return {
+      title: formData.title || '',
+      content: formData.content || '',
+      emotionTags: formData.emotionTags || [],
+      privacy: formData.privacy || 'community',
+      category: formData.category || '',
+      isAnonymous: formData.isAnonymous || false,
+    };
+  };
+
   return (
     <div className="space-y-8">
       <Form {...form}>
@@ -221,7 +233,7 @@ const StoryCreationForm = () => {
               </div>
             </>
           ) : (
-            <StoryPreview story={form.getValues()} />
+            <StoryPreview story={getStoryPreviewData()} />
           )}
 
           {/* Action Buttons */}
