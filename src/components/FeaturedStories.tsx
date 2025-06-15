@@ -1,5 +1,5 @@
 
-import { Heart, MessageCircle, Calendar, User } from 'lucide-react';
+import { Heart, MessageCircle, Calendar, User, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
