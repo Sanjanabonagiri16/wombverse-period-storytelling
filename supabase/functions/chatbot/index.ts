@@ -1,8 +1,6 @@
 
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+import OpenAI from "https://esm.sh/openai@4.47.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,22 +13,30 @@ serve(async (req) => {
   }
 
   try {
-    const { messages } = await req.json();
-
-    console.log('Received request with messages:', messages?.length || 0);
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
     if (!openAIApiKey) {
-      console.error('API key is missing');
+      console.error('API key is missing from Supabase secrets.');
       return new Response(JSON.stringify({ 
-        error: "API key is not configured. Please contact support." 
+        error: "API key is not configured. Please add it to your Supabase project secrets." 
       }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+  
+    const openai = new OpenAI({
+      baseURL: "https://openrouter.ai/api/v1",
+      apiKey: openAIApiKey,
+      defaultHeaders: {
+        "HTTP-Referer": "https://wombwhispers.lovable.dev",
+        "X-Title": "WombWhispers",
+      },
+    });
+
+    const { messages } = await req.json();
 
     if (!Array.isArray(messages) || messages.length === 0) {
-      console.error('Invalid messages array:', messages);
       return new Response(JSON.stringify({ 
         error: "Invalid message format. Please try again." 
       }), {
@@ -39,67 +45,22 @@ serve(async (req) => {
       });
     }
 
-    console.log('Making OpenRouter API request...');
-    
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${openAIApiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://wombwhispers.lovable.dev",
-        "X-Title": "WombWhispers",
-      },
-      body: JSON.stringify({
-        model: "openai/gpt-4o-mini",
-        messages: [
-          { 
-            role: "system", 
-            content: "You are WombBot, a supportive and knowledgeable expert on women's health, periods, reproductive wellness, and community support. Provide helpful, accurate, and friendly advice. Always be empathetic and understanding. Keep responses conversational and supportive." 
-          },
-          ...messages
-        ],
-        max_tokens: 500,
-        temperature: 0.7,
-      }),
+    const completion = await openai.chat.completions.create({
+      model: "openai/gpt-4o-mini",
+      messages: [
+        { 
+          role: "system", 
+          content: "You are WombBot, a supportive and knowledgeable expert on women's health, periods, reproductive wellness, and community support. Provide helpful, accurate, and friendly advice. Always be empathetic and understanding. Keep responses conversational and supportive." 
+        },
+        ...messages
+      ],
+      max_tokens: 500,
+      temperature: 0.7,
     });
 
-    console.log('OpenRouter API response status:', response.status);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('OpenRouter API error:', response.status, errorText);
-      
-      if (response.status === 401) {
-        return new Response(JSON.stringify({ 
-          error: "API authentication failed. Please check your API key." 
-        }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      } else if (response.status === 429) {
-        return new Response(JSON.stringify({ 
-          error: "API rate limit exceeded. Please try again in a moment." 
-        }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      } else {
-        return new Response(JSON.stringify({ 
-          error: `API error: ${response.status}. Please try again later.` 
-        }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-    }
-
-    const data = await response.json();
-    console.log('OpenRouter response received, choices:', data?.choices?.length || 0);
-
-    const answer = data?.choices?.[0]?.message?.content;
+    const answer = completion.choices[0]?.message?.content;
 
     if (!answer) {
-      console.error('No answer in OpenRouter response:', data);
       return new Response(JSON.stringify({ 
         error: "I'm having trouble generating a response right now. Please try rephrasing your question." 
       }), {
@@ -108,15 +69,26 @@ serve(async (req) => {
       });
     }
 
-    console.log('Successfully returning answer');
     return new Response(JSON.stringify({ answer }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
 
   } catch (error) {
     console.error('Edge Function error:', error);
+    
+    let errorMessage = "I'm experiencing technical difficulties. Please try again in a moment.";
+    if (error instanceof OpenAI.APIError) {
+      if (error.status === 401) {
+        errorMessage = "Your API key seems to be invalid. Please check it in your Supabase secrets and try again.";
+      } else if (error.status === 429) {
+        errorMessage = "I'm receiving too many requests right now. Please try again in a moment.";
+      } else {
+        errorMessage = `An API error occurred: ${error.message}. Please try again later.`;
+      }
+    }
+
     return new Response(JSON.stringify({ 
-      error: "I'm experiencing technical difficulties. Please try again in a moment." 
+      error: errorMessage 
     }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
