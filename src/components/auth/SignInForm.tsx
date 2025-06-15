@@ -104,7 +104,7 @@ const SignInForm = () => {
       <div className="text-right">
         <button
           type="button"
-          className="text-womb-plum hover:text-womb-plum/80 text-sm transition-colors"
+          className="text-[#FFD700] hover:text-[#FFD700]/80 text-sm transition-colors"
         >
           Forgot your password?
         </button>
@@ -114,7 +114,7 @@ const SignInForm = () => {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full btn-primary h-12 text-base font-medium"
+        className="w-full btn-primary h-12 text-base font-medium border-2 border-[#FFD700] hover:border-[#FFD700]/80"
       >
         {isLoading ? "Signing you in..." : "Sign In"}
       </Button>

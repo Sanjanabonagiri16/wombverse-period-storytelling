@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
@@ -75,11 +74,11 @@
   }
   
   .btn-primary {
-    @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40;
+    @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40 border-2 border-[#FFD700];
   }
   
   .btn-secondary {
-    @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40;
+    @apply bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-gray-600/25 hover:shadow-xl hover:shadow-gray-600/40 border-2 border-womb-border;
   }
 
   /* Enhanced Animation Classes */

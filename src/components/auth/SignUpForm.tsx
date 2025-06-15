@@ -136,7 +136,7 @@ const SignUpForm = () => {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full btn-primary h-12 text-base font-medium"
+        className="w-full btn-primary h-12 text-base font-medium border-2 border-[#FFD700] hover:border-[#FFD700]/80"
       >
         {isLoading ? "Creating your account..." : "Create Account"}
       </Button>
