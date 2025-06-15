@@ -1,6 +1,6 @@
-
 import Layout from '@/components/Layout';
 import { Star, Calendar, Heart, BookOpen, Quote, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const FeaturedStories = () => {
   const featuredStories = [
@@ -169,9 +169,11 @@ const FeaturedStories = () => {
                   </div>
                 </div>
                 
-                <button className="bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-white font-semibold px-10 py-4 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-slate-900/30 border border-slate-600/50 text-lg">
-                  Start Writing Today
-                </button>
+                <Link to="/auth">
+                  <button className="bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-white font-semibold px-10 py-4 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-slate-900/30 border border-slate-600/50 text-lg">
+                    Start Writing Today
+                  </button>
+                </Link>
                 
                 <div className="flex items-center justify-center space-x-8 text-slate-500 text-sm">
                   <span className="flex items-center space-x-2">
