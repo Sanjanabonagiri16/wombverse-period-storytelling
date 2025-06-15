@@ -30,14 +30,14 @@ const Contact = () => (
             <div>
               <h3 className="font-semibold text-womb-softwhite">Call Us</h3>
               <p className="text-womb-warmgrey">For urgent matters.</p>
-              <a href="tel:+1-234-567-890" className="text-primary hover:underline">+1 (234) 567-890</a>
+              <a href="tel:+1-800-555-0123" className="text-primary hover:underline">+1 (800) 555-0123</a>
             </div>
           </div>
           <div className="flex items-start space-x-4">
             <MapPin className="w-6 h-6 text-primary mt-1" />
             <div>
               <h3 className="font-semibold text-womb-softwhite">Our Office</h3>
-              <p className="text-womb-warmgrey">WombVerse Headquarters<br/>555 Menstrual Health Ave, New York, NY 10001</p>
+              <p className="text-womb-warmgrey">WombVerse Headquarters<br/>123 Wellness Way<br/>San Francisco, CA 94105, USA</p>
             </div>
           </div>
         </div>
