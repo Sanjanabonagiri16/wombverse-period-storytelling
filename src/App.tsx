@@ -14,6 +14,15 @@ import Profile from "./pages/Profile";
 import MoodStories from "./pages/MoodStories";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import FeaturedStories from "./pages/FeaturedStories";
+import RecentStories from "./pages/RecentStories";
+import PopularTags from "./pages/PopularTags";
+import Guidelines from "./pages/Guidelines";
+import Support from "./pages/Support";
+import Resources from "./pages/Resources";
+import AboutUs from "./pages/AboutUs";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +42,15 @@ const App = () => (
           <Route path="/mood-stories" element={<MoodStories />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/featured-stories" element={<FeaturedStories />} />
+          <Route path="/recent-stories" element={<RecentStories />} />
+          <Route path="/popular-tags" element={<PopularTags />} />
+          <Route path="/guidelines" element={<Guidelines />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
