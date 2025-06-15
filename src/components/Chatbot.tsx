@@ -13,32 +13,65 @@ const Chatbot: React.FC = () => {
     }
   ]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Dummy bot response logic, replace with real API call as needed
+  // Send user message and fetch AI response
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
     if (!input.trim()) return;
     const userMsg = { sender: "user" as "user", text: input };
     setMessages((prev) => [...prev, userMsg]);
     setLoading(true);
     setInput("");
 
-    // Simulate a bot typing delay and reply
-    setTimeout(() => {
+    try {
+      const chatHistory = [
+        ...messages.map((m) => ({
+          role: m.sender === "user" ? "user" : "assistant",
+          content: m.text,
+        })),
+        { role: "user", content: input },
+      ];
+
+      const res = await fetch(
+        `https://zxcczifkldwuelhibbwm.functions.supabase.co/chatbot`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: chatHistory }),
+        }
+      );
+
+      const data = await res.json();
+      if (data.answer) {
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: data.answer }
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { sender: "bot", text: "Sorry, I couldn't find an answer. Please try again later." }
+        ]);
+        if (data.error) setError(data.error);
+      }
+    } catch (err: any) {
+      setError("Something went wrong connecting to the AI.");
       setMessages((prev) => [
         ...prev,
         {
-          sender: "bot" as "bot",
-          text:
-            "This is an AI sample response. Integrate with an API for live answers!"
+          sender: "bot",
+          text: "There was a problem connecting to the AI. Please try again later."
         }
       ]);
-      setLoading(false);
-    }, 1100);
+    }
+    setLoading(false);
   };
 
-  // Scroll to bottom of chat when messages change
+  // Scroll to the bottom on new messages
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
@@ -103,6 +136,12 @@ const Chatbot: React.FC = () => {
               )}
               <div ref={messagesEndRef} />
             </div>
+            {/* Error */}
+            {error && (
+              <div className="px-4 py-2 text-xs text-red-400 bg-red-900/30">
+                {error}
+              </div>
+            )}
             {/* Input */}
             <form onSubmit={sendMessage} className="flex border-t border-womb-plum bg-slate-800/80 px-2 py-2 gap-2">
               <input
@@ -143,4 +182,3 @@ const Chatbot: React.FC = () => {
 };
 
 export default Chatbot;
-
