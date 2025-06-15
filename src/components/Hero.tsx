@@ -47,6 +47,36 @@ const Hero = () => {
     {
       text: "Periods are a sign of health, strength, and the incredible power of the female body.",
       author: "Nina, 31"
+    },
+    {
+      text: "Did you know that period blood is actually cleaner than regular blood?",
+      author: "Dr. Kim, Medical Expert",
+      category: "Myth Buster"
+    },
+    {
+      text: "Cramps are caused by your uterus contracting to shed its lining - it's working hard!",
+      author: "Health Educator Sarah",
+      category: "Body Facts"
+    },
+    {
+      text: "Tracking your cycle can help you understand your energy patterns and mood changes.",
+      author: "Wellness Coach Alex",
+      category: "Self-Care Tip"
+    },
+    {
+      text: "Your menstrual cycle is unique to you - don't compare it to others.",
+      author: "Therapist Maria",
+      category: "Self-Love"
+    },
+    {
+      text: "Hot water bottles and gentle yoga can be your period's best friends.",
+      author: "Yoga Instructor Leah",
+      category: "Comfort Tips"
+    },
+    {
+      text: "It's okay to cancel plans when your period needs you to rest and recharge.",
+      author: "Self-Care Advocate Sam",
+      category: "Permission to Rest"
     }
   ];
 
@@ -96,12 +126,12 @@ const Hero = () => {
               <div className="text-womb-warmgrey">Stories Shared</div>
             </div>
             <div className="text-center animate-fade-in">
-              <div className="text-3xl font-playfair font-bold text-womb-plum mb-2">8,392</div>
-              <div className="text-womb-warmgrey">Supportive Hearts</div>
+              <div className="text-3xl font-playfair font-bold text-womb-plum mb-2">23,891</div>
+              <div className="text-womb-warmgrey">Hearts Given</div>
             </div>
             <div className="text-center animate-fade-in">
-              <div className="text-3xl font-playfair font-bold text-womb-crimson mb-2">Safe</div>
-              <div className="text-womb-warmgrey">Space Always</div>
+              <div className="text-3xl font-playfair font-bold text-womb-crimson mb-2">12,047</div>
+              <div className="text-womb-warmgrey">Community Members</div>
             </div>
           </div>
 
@@ -118,7 +148,7 @@ const Hero = () => {
             </Button>
 
             {/* Wisdom Content */}
-            <div className={`transition-all duration-500 ${showMoreWisdom ? 'opacity-100 max-h-none' : 'opacity-0 max-h-0 overflow-hidden'}`}>
+            <div className={`transition-all duration-500 overflow-hidden ${showMoreWisdom ? 'opacity-100 max-h-none' : 'opacity-0 max-h-0'}`}>
               {showMoreWisdom && (
                 <div className="animate-fade-in space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -128,6 +158,11 @@ const Hero = () => {
                         className="bg-womb-deepgrey/60 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-womb-deepgrey hover:border-womb-crimson/40 transition-all duration-300 hover:shadow-lg hover:shadow-womb-crimson/10"
                         style={{ animationDelay: `${index * 0.1}s` }}
                       >
+                        {quote.category && (
+                          <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold text-womb-crimson bg-womb-crimson/10 rounded-full border border-womb-crimson/20">
+                            {quote.category}
+                          </div>
+                        )}
                         <blockquote className="text-womb-softwhite text-sm sm:text-base mb-3 leading-relaxed italic font-medium">
                           "{quote.text}"
                         </blockquote>

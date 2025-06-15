@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles } from 'lucide-react';
+import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
@@ -58,6 +58,7 @@ const Layout = ({ children }: LayoutProps) => {
   const isActivePage = (path: string) => location.pathname === path;
 
   const navigationItems = [
+    { href: '/', label: 'Home', icon: Home },
     { href: '/stories', label: 'Stories', icon: Book },
     { href: '/whispers', label: 'Whispers', icon: MessageSquare },
     { href: '/community', label: 'Community', icon: Users },
