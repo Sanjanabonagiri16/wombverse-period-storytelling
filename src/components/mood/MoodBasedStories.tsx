@@ -99,7 +99,7 @@ const MoodBasedStories = () => {
         <h2 className="text-2xl md:text-3xl font-playfair font-bold text-womb-softwhite mb-2">
           Stories for Your Mood 💭
         </h2>
-        <p className="text-womb-warmgrey">
+        <p className="text-white">
           Find stories that resonate with how you're feeling right now
         </p>
       </div>
@@ -119,7 +119,7 @@ const MoodBasedStories = () => {
             size="sm"
             onClick={handleRefresh}
             disabled={loading}
-            className="border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
+            className="border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
           >
             <RefreshCw className={`w-4 h-4 mr-1 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -129,17 +129,17 @@ const MoodBasedStories = () => {
 
       {loading && (
         <div className="flex justify-center items-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-womb-plum" />
+          <Loader2 className="w-8 h-8 animate-spin text-womb-maroon" />
         </div>
       )}
 
       {!loading && hasSearched && stories.length === 0 && selectedMoods.length > 0 && (
         <Card className="bg-womb-deepgrey border-womb-deepgrey">
           <CardContent className="p-8 text-center">
-            <p className="text-womb-warmgrey text-lg mb-4">
+            <p className="text-white text-lg mb-4">
               No stories found matching your selected mood{selectedMoods.length > 1 ? 's' : ''}
             </p>
-            <p className="text-womb-warmgrey text-sm">
+            <p className="text-white text-sm">
               Try selecting different moods or be the first to share a story with these feelings!
             </p>
           </CardContent>
@@ -157,10 +157,10 @@ const MoodBasedStories = () => {
       {selectedMoods.length === 0 && !loading && (
         <Card className="bg-womb-deepgrey border-womb-deepgrey">
           <CardContent className="p-8 text-center">
-            <p className="text-womb-warmgrey text-lg mb-4">
+            <p className="text-white text-lg mb-4">
               Select your current mood to discover relevant stories
             </p>
-            <p className="text-womb-warmgrey text-sm">
+            <p className="text-white text-sm">
               Our mood-based matching helps you find stories that speak to your current emotional state
             </p>
           </CardContent>

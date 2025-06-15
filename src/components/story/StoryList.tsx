@@ -98,7 +98,7 @@ const StoryList = ({ searchQuery = '', categoryFilter = '', emotionFilter = '' }
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-womb-plum" />
+        <Loader2 className="w-8 h-8 animate-spin text-womb-maroon" />
       </div>
     );
   }
@@ -106,8 +106,8 @@ const StoryList = ({ searchQuery = '', categoryFilter = '', emotionFilter = '' }
   if (stories.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-womb-warmgrey text-lg mb-4">No stories found</p>
-        <p className="text-womb-warmgrey text-sm">
+        <p className="text-white text-lg mb-4">No stories found</p>
+        <p className="text-white text-sm">
           {searchQuery || categoryFilter || emotionFilter
             ? "Try adjusting your filters or search terms"
             : "Be the first to share your story!"}
