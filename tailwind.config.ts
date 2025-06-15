@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,15 +53,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Dark modern palette with maroon, black, grey, indigo, white
+				// Professional navy, charcoal, emerald, sapphire palette
 				womb: {
-					black: 'hsl(var(--background))', // #0A0A0A
-					indigo: 'hsl(var(--primary))', // #4F46E5
-					maroon: 'hsl(var(--secondary))', // #571845
-					white: 'hsl(var(--foreground))', // #FFFFFF
-					darkgrey: 'hsl(var(--card))', // #1C1917
-					mediumgrey: 'hsl(var(--muted))', // #44403C
-					lightgrey: 'hsl(var(--muted-foreground))', // #D1D5DB
+					navy: 'hsl(var(--background))', // #0C0C0F - Dominant (60%)
+					charcoal: 'hsl(var(--card))', // #1E293B - Secondary (30%)
+					mediumgrey: 'hsl(var(--muted))', // #334155 - Medium charcoal
+					sapphire: 'hsl(var(--primary))', // #1D4ED8 - Accent (10%)
+					emerald: 'hsl(var(--secondary))', // #10B981 - Accent
+					white: 'hsl(var(--foreground))', // #F8FAFC - Text
+					lightgrey: 'hsl(var(--muted-foreground))', // #94A3B8 - Muted text
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -125,10 +126,10 @@ export default {
 				},
 				'glow': {
 					'0%': {
-						boxShadow: '0 0 15px rgba(230, 57, 70, 0.2)'
+						boxShadow: '0 0 15px rgba(29, 78, 216, 0.2)'
 					},
 					'100%': {
-						boxShadow: '0 0 25px rgba(230, 57, 70, 0.4), 0 0 35px rgba(125, 91, 166, 0.2)'
+						boxShadow: '0 0 25px rgba(29, 78, 216, 0.4), 0 0 35px rgba(16, 185, 129, 0.2)'
 					}
 				},
 				'shimmer': {
@@ -153,10 +154,10 @@ export default {
 				},
 				'pulse-glow': {
 					'0%, 100%': {
-						boxShadow: '0 0 5px rgba(230, 57, 70, 0.4)'
+						boxShadow: '0 0 5px rgba(29, 78, 216, 0.4)'
 					},
 					'50%': {
-						boxShadow: '0 0 20px rgba(230, 57, 70, 0.8), 0 0 30px rgba(125, 91, 166, 0.4)'
+						boxShadow: '0 0 20px rgba(29, 78, 216, 0.8), 0 0 30px rgba(16, 185, 129, 0.4)'
 					}
 				},
 				'slide-in-left': {
@@ -222,9 +223,9 @@ export default {
 			},
 			backgroundImage: {
 				'mesh-gradient': `
-					radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 80% 20%, rgba(87, 24, 69, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 40% 40%, rgba(68, 64, 60, 0.1) 0%, transparent 50%)
+					radial-gradient(circle at 20% 80%, rgba(29, 78, 216, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(51, 65, 85, 0.1) 0%, transparent 50%)
 				`
 			}
 		}

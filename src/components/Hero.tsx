@@ -159,17 +159,17 @@ const Hero = () => {
 
   return (
     <section className="relative py-20 lg:py-32 overflow-hidden">
-      {/* Enhanced Professional Background with Dark Colors */}
-      <div className="absolute inset-0 bg-womb-black/50"></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-womb-maroon/30 via-womb-black/50 to-womb-indigo/20"></div>
-      <div className="absolute top-1/4 left-1/3 w-48 h-48 bg-gradient-to-r from-womb-indigo/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-gradient-to-r from-womb-maroon/25 to-womb-indigo/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute bottom-10 left-1/4 w-14 h-14 bg-gradient-to-br from-womb-maroon/25 to-womb-indigo/20 rounded-full blur-2xl animate-float"></div>
+      {/* Enhanced Professional Background with Navy & Sapphire */}
+      <div className="absolute inset-0 bg-womb-navy/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-womb-emerald/30 via-womb-navy/50 to-womb-sapphire/20"></div>
+      <div className="absolute top-1/4 left-1/3 w-48 h-48 bg-gradient-to-r from-womb-sapphire/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-gradient-to-r from-womb-emerald/25 to-womb-sapphire/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute bottom-10 left-1/4 w-14 h-14 bg-gradient-to-br from-womb-emerald/25 to-womb-sapphire/20 rounded-full blur-2xl animate-float"></div>
       <div className="absolute top-16 right-1/4 animate-float opacity-20" style={{ animationDelay: '1s' }}>
-        <Heart className="w-8 h-8 text-womb-maroon" />
+        <Heart className="w-8 h-8 text-womb-emerald" />
       </div>
       <div className="absolute bottom-32 left-1/4 animate-float opacity-15" style={{ animationDelay: '3s' }}>
-        <Star className="w-6 h-6 text-womb-indigo" />
+        <Star className="w-6 h-6 text-womb-sapphire" />
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
@@ -182,12 +182,12 @@ const Hero = () => {
                 </span>
               </span>
               <span className="block animate-slide-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.25s' }}>
-                <span className="bg-gradient-to-r from-womb-indigo via-womb-maroon to-womb-indigo bg-clip-text text-transparent drop-shadow-lg">
+                <span className="bg-gradient-to-r from-womb-sapphire via-womb-emerald to-womb-sapphire bg-clip-text text-transparent drop-shadow-lg">
                   Your Story.
                 </span>
               </span>
               <span className="block animate-slide-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.4s' }}>
-                <span className="bg-gradient-to-r from-womb-maroon via-womb-indigo to-womb-maroon bg-clip-text text-transparent drop-shadow-md">
+                <span className="bg-gradient-to-r from-womb-emerald via-womb-sapphire to-womb-emerald bg-clip-text text-transparent drop-shadow-md">
                   Your Voice.
                 </span>
               </span>
@@ -198,7 +198,7 @@ const Hero = () => {
             <p className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-womb-lightgrey">
               Join a community where period stories are shared, celebrated, and heard.
               <br />
-              <span className="block mt-4 text-2xl md:text-3xl font-bold font-inter tracking-wider text-womb-indigo drop-shadow-[0_2px_4px_rgba(79,70,229,0.4)]">
+              <span className="block mt-4 text-2xl md:text-3xl font-bold font-inter tracking-wider text-womb-sapphire drop-shadow-[0_2px_4px_rgba(29,78,216,0.4)]">
                 Break the silence. Build connection. Belong.
               </span>
             </p>
@@ -206,13 +206,13 @@ const Hero = () => {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-in opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.8s' }}>
             <Link to="/auth">
-              <Button size="lg" className="group bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-indigo-600/25 hover-glow">
+              <Button size="lg" className="group bg-gradient-to-r from-womb-sapphire to-womb-emerald hover:from-blue-700 hover:to-emerald-700 text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-blue-600/25 hover-glow">
                 <PenTool className="w-6 h-6 mr-3 group-hover:rotate-6 transition-transform duration-300" />
                 <span className="font-semibold">Share Your Story</span>
               </Button>
             </Link>
             <Link to="/stories">
-              <Button size="lg" variant="outline" className="group border-2 border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover-lift">
+              <Button size="lg" variant="outline" className="group border-2 border-womb-emerald text-womb-emerald hover:bg-womb-emerald hover:text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover-lift">
                 <BookOpen className="w-6 h-6 mr-3 group-hover:rotate-6 transition-transform duration-300" />
                 <span className="font-semibold">Explore Stories</span>
               </Button>
@@ -222,9 +222,9 @@ const Hero = () => {
           <div className="max-w-6xl mx-auto animate-fade-in opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '1s' }}>
             <Button
               onClick={() => setShowMoreWisdom(!showMoreWisdom)}
-              className="group bg-womb-darkgrey/80 hover:bg-womb-maroon/40 text-white border border-womb-mediumgrey hover:border-womb-maroon mb-8 text-base px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+              className="group bg-womb-charcoal/80 hover:bg-womb-emerald/40 text-white border border-womb-mediumgrey hover:border-womb-emerald mb-8 text-base px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
             >
-              <Heart className="w-5 h-5 mr-3 text-womb-maroon" />
+              <Heart className="w-5 h-5 mr-3 text-womb-emerald" />
               <span className="font-medium">
                 {showMoreWisdom ? 'Hide Community Wisdom' : 'Discover Community Wisdom'}
               </span>
@@ -238,18 +238,18 @@ const Hero = () => {
                     {displayedWisdom.map((quote, index) => (
                       <div
                         key={index}
-                        className="group bg-womb-darkgrey/60 backdrop-blur-lg rounded-xl p-6 border border-womb-mediumgrey hover:border-womb-maroon/50 transition-all duration-300 animate-slide-in-up hover-lift opacity-0"
+                        className="group bg-womb-charcoal/60 backdrop-blur-lg rounded-xl p-6 border border-womb-mediumgrey hover:border-womb-emerald/50 transition-all duration-300 animate-slide-in-up hover-lift opacity-0"
                         style={{ animationFillMode: 'forwards', animationDelay: `${1.2 + index * 0.08}s` }}
                       >
                         {quote.category && (
-                          <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold rounded-full bg-womb-maroon/20 border border-womb-maroon/30 text-womb-maroon">
+                          <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold rounded-full bg-womb-emerald/20 border border-womb-emerald/30 text-womb-emerald">
                             {quote.category}
                           </div>
                         )}
                         <blockquote className="text-womb-lightgrey text-sm md:text-base mb-3 leading-relaxed italic">
                           "{quote.text}"
                         </blockquote>
-                        <cite className="text-womb-indigo text-sm font-semibold">
+                        <cite className="text-womb-sapphire text-sm font-semibold">
                           — {quote.author}
                         </cite>
                       </div>
@@ -260,7 +260,7 @@ const Hero = () => {
                     <div className="text-center pt-6">
                       <Button
                         onClick={loadMoreWisdom}
-                        className="bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                        className="bg-gradient-to-r from-womb-sapphire to-womb-emerald hover:from-blue-700 hover:to-emerald-700 text-white px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105"
                       >
                         <Sparkles className="w-4 h-4 mr-2" />
                         <span className="font-medium">Load More Wisdom</span>

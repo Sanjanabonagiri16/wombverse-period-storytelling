@@ -82,14 +82,14 @@ const Layout = ({ children }: LayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-womb-black">
+    <div className="min-h-screen bg-womb-navy">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-womb-black/95 backdrop-blur-sm border-b border-womb-darkgrey">
+      <header className="sticky top-0 z-50 bg-womb-navy/95 backdrop-blur-sm border-b border-womb-charcoal">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo with updated colors */}
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-womb-indigo to-womb-maroon rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-womb-sapphire to-womb-emerald rounded-full flex items-center justify-center">
                 <Heart className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-2xl font-playfair font-bold text-womb-white">
@@ -105,8 +105,8 @@ const Layout = ({ children }: LayoutProps) => {
                   to={item.href}
                   className={`flex items-center space-x-2 transition-colors ${
                     isActivePage(item.href)
-                      ? 'text-womb-indigo font-medium'
-                      : 'text-womb-white hover:text-womb-indigo'
+                      ? 'text-womb-sapphire font-medium'
+                      : 'text-womb-white hover:text-womb-sapphire'
                   }`}
                 >
                   <item.icon className="w-4 h-4" />
@@ -119,7 +119,7 @@ const Layout = ({ children }: LayoutProps) => {
                   {user ? (
                     <>
                       <Button 
-                        className="bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white border-0" 
+                        className="bg-gradient-to-r from-womb-sapphire to-womb-emerald hover:from-blue-700 hover:to-emerald-700 text-white border-0" 
                         onClick={handleShareStory}
                       >
                         <PenTool className="w-4 h-4 mr-2" />
@@ -129,15 +129,15 @@ const Layout = ({ children }: LayoutProps) => {
                         to="/profile"
                         className={`transition-colors ${
                           isActivePage('/profile')
-                            ? 'text-womb-indigo'
-                            : 'text-womb-white hover:text-womb-indigo'
+                            ? 'text-womb-sapphire'
+                            : 'text-womb-white hover:text-womb-sapphire'
                         }`}
                       >
                         <User className="w-5 h-5" />
                       </Link>
                       <Button 
                         variant="ghost" 
-                        className="text-womb-white hover:text-womb-indigo hover:bg-womb-darkgrey"
+                        className="text-womb-white hover:text-womb-sapphire hover:bg-womb-charcoal"
                         onClick={handleSignOut}
                       >
                         <LogOut className="w-4 h-4" />
@@ -147,7 +147,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <Link to="/auth">
                       <Button 
                         variant="ghost" 
-                        className="text-womb-white hover:text-womb-indigo hover:bg-womb-darkgrey"
+                        className="text-womb-white hover:text-womb-sapphire hover:bg-womb-charcoal"
                       >
                         <User className="w-4 h-4 mr-2" />
                         Sign In
@@ -175,7 +175,7 @@ const Layout = ({ children }: LayoutProps) => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-womb-lightgrey w-4 h-4" />
               <Input
                 placeholder="Search stories..."
-                className="pl-10 bg-womb-darkgrey border-womb-darkgrey text-womb-white placeholder-womb-lightgrey focus:border-womb-indigo"
+                className="pl-10 bg-womb-charcoal border-womb-charcoal text-womb-white placeholder-womb-lightgrey focus:border-womb-sapphire"
               />
             </div>
           </div>
@@ -183,7 +183,7 @@ const Layout = ({ children }: LayoutProps) => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-womb-darkgrey border-t border-womb-darkgrey">
+          <div className="md:hidden bg-womb-charcoal border-t border-womb-charcoal">
             <nav className="container mx-auto px-4 py-4 space-y-4">
               {navigationItems.map(item => (
                 <Link
@@ -191,8 +191,8 @@ const Layout = ({ children }: LayoutProps) => {
                   to={item.href}
                   className={`flex items-center space-x-2 transition-colors ${
                     isActivePage(item.href)
-                      ? 'text-womb-indigo font-medium'
-                      : 'text-womb-white hover:text-womb-indigo'
+                      ? 'text-womb-sapphire font-medium'
+                      : 'text-womb-white hover:text-womb-sapphire'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -202,11 +202,11 @@ const Layout = ({ children }: LayoutProps) => {
               ))}
               
               {!loading && (
-                <div className="pt-4 border-t border-womb-darkgrey space-y-2">
+                <div className="pt-4 border-t border-womb-charcoal space-y-2">
                   {user ? (
                     <>
                       <Button 
-                        className="w-full bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white border-0" 
+                        className="w-full bg-gradient-to-r from-womb-sapphire to-womb-emerald hover:from-blue-700 hover:to-emerald-700 text-white border-0" 
                         onClick={() => {
                           handleShareStory();
                           setIsMenuOpen(false);
@@ -218,7 +218,7 @@ const Layout = ({ children }: LayoutProps) => {
                       <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
                         <Button 
                           variant="outline" 
-                          className="w-full border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
+                          className="w-full border-womb-emerald text-womb-emerald hover:bg-womb-emerald hover:text-white"
                         >
                           <User className="w-4 h-4 mr-2" />
                           Profile
@@ -226,7 +226,7 @@ const Layout = ({ children }: LayoutProps) => {
                       </Link>
                       <Button 
                         variant="outline" 
-                        className="w-full border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
+                        className="w-full border-womb-emerald text-womb-emerald hover:bg-womb-emerald hover:text-white"
                         onClick={handleSignOut}
                       >
                         <LogOut className="w-4 h-4 mr-2" />
@@ -237,7 +237,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                       <Button 
                         variant="outline" 
-                        className="w-full border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
+                        className="w-full border-womb-emerald text-womb-emerald hover:bg-womb-emerald hover:text-white"
                       >
                         <User className="w-4 h-4 mr-2" />
                         Sign In
@@ -257,13 +257,13 @@ const Layout = ({ children }: LayoutProps) => {
       </main>
 
       {/* Professional Footer with updated colors */}
-      <footer className="bg-womb-black border-t border-womb-maroon relative z-10 bg-mesh-gradient">
+      <footer className="bg-womb-navy border-t border-womb-emerald relative z-10 bg-mesh-gradient">
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-womb-white">
             {/* Brand & About */}
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-womb-maroon to-womb-black rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-womb-emerald to-womb-navy rounded-full flex items-center justify-center">
                   <span>
                     <svg width="18" height="18" viewBox="0 0 20 20" className="w-5 h-5 text-white"><circle cx="10" cy="10" r="10" fill="currentColor"/></svg>
                   </span>
@@ -323,10 +323,10 @@ const Layout = ({ children }: LayoutProps) => {
                   placeholder="Your email"
                   value={newsletterEmail}
                   onChange={(e) => setNewsletterEmail(e.target.value)}
-                  className="bg-womb-darkgrey border-womb-darkgrey text-womb-white placeholder-womb-lightgrey focus:border-womb-indigo"
+                  className="bg-womb-charcoal border-womb-charcoal text-womb-white placeholder-womb-lightgrey focus:border-womb-sapphire"
                   required
                 />
-                <Button type="submit" className="bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-indigo-600/25 shrink-0">
+                <Button type="submit" className="bg-gradient-to-r from-womb-sapphire to-womb-emerald hover:from-blue-700 hover:to-emerald-700 text-white px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-blue-600/25 shrink-0">
                   <Mail className="w-4 h-4" />
                 </Button>
               </form>
@@ -338,13 +338,13 @@ const Layout = ({ children }: LayoutProps) => {
               </div>
             </div>
           </div>
-          <div className="text-center text-xs text-womb-lightgrey pt-8 mt-8 border-t border-womb-darkgrey">
+          <div className="text-center text-xs text-womb-lightgrey pt-8 mt-8 border-t border-womb-charcoal">
             &copy; 2025 WombVerse. All rights reserved.
           </div>
         </div>
         <button
           onClick={scrollToTop}
-          className="absolute bottom-4 right-4 md:bottom-8 md:right-8 bg-womb-maroon p-3 rounded-full text-white hover:bg-red-900/80 transition-colors shadow-lg hover:scale-110 transform"
+          className="absolute bottom-4 right-4 md:bottom-8 md:right-8 bg-womb-emerald p-3 rounded-full text-white hover:bg-emerald-700/80 transition-colors shadow-lg hover:scale-110 transform"
           aria-label="Back to top"
         >
           <ChevronUp className="w-6 h-6" />

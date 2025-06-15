@@ -34,7 +34,7 @@ const Resources = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <h1 className="text-3xl font-bold text-womb-indigo mb-4 font-playfair">Resources</h1>
+        <h1 className="text-3xl font-bold text-womb-sapphire mb-4 font-playfair">Resources</h1>
         <p className="text-womb-lightgrey mb-8">
           Trusted, up-to-date resources for menstrual health education and support.
         </p>
@@ -42,7 +42,7 @@ const Resources = () => {
         {isLoading && (
           <div className="space-y-6">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="bg-womb-darkgrey border border-womb-mediumgrey rounded-lg p-6">
+              <div key={i} className="bg-womb-charcoal border border-womb-mediumgrey rounded-lg p-6">
                 <Skeleton className="h-6 w-1/2 mb-2" />
                 <Skeleton className="h-4 w-full mb-4" />
                 <Skeleton className="h-4 w-1/4" />
@@ -65,10 +65,10 @@ const Resources = () => {
         {resources && !isLoading && !isError && (
           <dl className="space-y-6">
             {resources.map((r) => (
-              <div key={r.id} className="bg-womb-darkgrey border border-womb-mediumgrey rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-womb-maroon/20">
+              <div key={r.id} className="bg-womb-charcoal border border-womb-mediumgrey rounded-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-womb-emerald/20">
                 <dt className="font-bold text-womb-white text-lg">{r.name}</dt>
                 <dd className="text-womb-lightgrey">{r.description}</dd>
-                <a className="mt-2 inline-block text-womb-indigo hover:underline" href={r.url} target="_blank" rel="noopener noreferrer">Visit resource</a>
+                <a className="mt-2 inline-block text-womb-sapphire hover:underline" href={r.url} target="_blank" rel="noopener noreferrer">Visit resource</a>
               </div>
             ))}
           </dl>
