@@ -3,17 +3,9 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { UseFormReturn } from 'react-hook-form';
+import { StoryFormData } from './StoryCreationForm';
 import EmotionTags from './EmotionTags';
 import PrivacySelector from './PrivacySelector';
-
-type StoryFormData = {
-  title: string;
-  content: string;
-  emotionTags: string[];
-  privacy: 'public' | 'community' | 'anonymous';
-  category: string;
-  isAnonymous: boolean;
-};
 
 interface StoryFormFieldsProps {
   form: UseFormReturn<StoryFormData>;

@@ -1,17 +1,9 @@
 
 import { Heart, MessageCircle, Share2 } from 'lucide-react';
-
-interface StoryData {
-  title: string;
-  content: string;
-  emotionTags: string[];
-  privacy: string;
-  category: string;
-  isAnonymous: boolean;
-}
+import { StoryFormData } from './StoryCreationForm';
 
 interface StoryPreviewProps {
-  story: StoryData;
+  story: StoryFormData;
 }
 
 const StoryPreview = ({ story }: StoryPreviewProps) => {

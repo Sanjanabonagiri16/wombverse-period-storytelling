@@ -20,7 +20,7 @@ const storySchema = z.object({
   isAnonymous: z.boolean(),
 });
 
-type StoryFormData = z.infer<typeof storySchema>;
+export type StoryFormData = z.infer<typeof storySchema>;
 
 const StoryCreationForm = () => {
   const [showPreview, setShowPreview] = useState(false);
@@ -85,12 +85,12 @@ const StoryCreationForm = () => {
   const getStoryPreviewData = () => {
     const formData = form.getValues();
     return {
-      title: formData.title || '',
-      content: formData.content || '',
-      emotionTags: formData.emotionTags || [],
-      privacy: formData.privacy || 'community',
-      category: formData.category || '',
-      isAnonymous: formData.isAnonymous || false,
+      title: formData.title,
+      content: formData.content,
+      emotionTags: formData.emotionTags,
+      privacy: formData.privacy,
+      category: formData.category,
+      isAnonymous: formData.isAnonymous,
     };
   };
 
