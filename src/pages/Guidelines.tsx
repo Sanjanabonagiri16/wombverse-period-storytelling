@@ -73,13 +73,13 @@ const Guidelines = () => {
   useEffect(() => {
     const fetchGuidelines = async () => {
       try {
-        // Try to fetch from a hypothetical guidelines table, fallback to default data
-        const { data: guidelinesData } = await supabase
+        // Try to fetch from the database tables using any type to bypass TypeScript errors temporarily
+        const { data: guidelinesData } = await (supabase as any)
           .from('community_guidelines')
           .select('*')
           .order('created_at', { ascending: true });
 
-        const { data: rulesData } = await supabase
+        const { data: rulesData } = await (supabase as any)
           .from('community_rules')
           .select('*')
           .order('created_at', { ascending: true });
@@ -87,7 +87,7 @@ const Guidelines = () => {
         setGuidelines(guidelinesData?.length ? guidelinesData : defaultGuidelines);
         setAdditionalRules(rulesData?.length ? rulesData : defaultRules);
       } catch (error) {
-        console.log('Using default guidelines data');
+        console.log('Using default guidelines data:', error);
         setGuidelines(defaultGuidelines);
         setAdditionalRules(defaultRules);
       } finally {
@@ -104,6 +104,13 @@ const Guidelines = () => {
         event: '*',
         schema: 'public',
         table: 'community_guidelines'
+      }, () => {
+        fetchGuidelines();
+      })
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'community_rules'
       }, () => {
         fetchGuidelines();
       })

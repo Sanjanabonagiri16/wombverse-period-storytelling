@@ -196,6 +196,36 @@ export type Database = {
           },
         ]
       }
+      community_guidelines: {
+        Row: {
+          color: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       community_posts: {
         Row: {
           content: string
@@ -241,6 +271,27 @@ export type Database = {
         }
         Relationships: []
       }
+      community_rules: {
+        Row: {
+          created_at: string
+          id: string
+          rule: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          rule: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          rule?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       content_moderation: {
         Row: {
           content_id: string
@@ -280,6 +331,129 @@ export type Database = {
           moderator_notes?: string | null
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      crisis_resources: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          number: string
+          service: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          number: string
+          service: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          number?: string
+          service?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      downloadable_resources: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          size: string
+          title: string
+          type: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          size?: string
+          title: string
+          type?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          size?: string
+          title?: string
+          type?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      external_organizations: {
+        Row: {
+          created_at: string
+          description: string
+          focus: string
+          id: string
+          name: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          focus?: string
+          id?: string
+          name: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          focus?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      external_resources: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          focus: string
+          id: string
+          name: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          focus?: string
+          id?: string
+          name: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          focus?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }
@@ -453,6 +627,71 @@ export type Database = {
           },
         ]
       }
+      resource_categories: {
+        Row: {
+          color: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      resource_topics: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          description: string
+          id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_topics_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "resource_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stories: {
         Row: {
           category: string
@@ -536,6 +775,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      support_categories: {
+        Row: {
+          color: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          items: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          items?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          items?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       user_collections: {
         Row: {

@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
-import { Heart, Brain, Phone, Mail, ExternalLink, Shield, Users, Book, Search } from 'lucide-react';
+import { Heart, Brain, Phone, Mail, ExternalLink, Shield, Users, Book, Search, Globe } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 
@@ -21,9 +21,19 @@ interface CrisisResource {
   description: string;
 }
 
+interface ExternalResource {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  category: string;
+  focus: string;
+}
+
 const Support = () => {
   const [supportCategories, setSupportCategories] = useState<SupportCategory[]>([]);
   const [crisisResources, setCrisisResources] = useState<CrisisResource[]>([]);
+  const [externalResources, setExternalResources] = useState<ExternalResource[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -117,22 +127,29 @@ const Support = () => {
   useEffect(() => {
     const fetchSupportData = async () => {
       try {
-        const { data: categoriesData } = await supabase
+        const { data: categoriesData } = await (supabase as any)
           .from('support_categories')
           .select('*')
           .order('created_at', { ascending: true });
 
-        const { data: crisisData } = await supabase
+        const { data: crisisData } = await (supabase as any)
           .from('crisis_resources')
+          .select('*')
+          .order('created_at', { ascending: true });
+
+        const { data: externalData } = await (supabase as any)
+          .from('external_resources')
           .select('*')
           .order('created_at', { ascending: true });
 
         setSupportCategories(categoriesData?.length ? categoriesData : defaultCategories);
         setCrisisResources(crisisData?.length ? crisisData : defaultCrisisResources);
+        setExternalResources(externalData || []);
       } catch (error) {
-        console.log('Using default support data');
+        console.log('Using default support data:', error);
         setSupportCategories(defaultCategories);
         setCrisisResources(defaultCrisisResources);
+        setExternalResources([]);
       } finally {
         setLoading(false);
       }
@@ -157,6 +174,13 @@ const Support = () => {
       }, () => {
         fetchSupportData();
       })
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'external_resources'
+      }, () => {
+        fetchSupportData();
+      })
       .subscribe();
 
     return () => {
@@ -173,6 +197,13 @@ const Support = () => {
   const filteredCrisisResources = crisisResources.filter(resource =>
     resource.service.toLowerCase().includes(searchQuery.toLowerCase()) ||
     resource.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredExternalResources = externalResources.filter(resource =>
+    resource.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    resource.focus.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (loading) {
@@ -295,6 +326,49 @@ const Support = () => {
               </div>
             </div>
 
+            {/* External Resources Section */}
+            {externalResources.length > 0 && (
+              <div className="bg-gradient-to-r from-gray-800/60 to-gray-900/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-700/50 mb-12">
+                <h2 className="text-2xl md:text-4xl font-bold text-white mb-6 flex items-center">
+                  <Globe className="w-6 h-6 md:w-8 md:h-8 text-green-400 mr-3" />
+                  External Resources & Organizations
+                </h2>
+                <p className="text-gray-300 mb-8 max-w-4xl leading-relaxed text-sm md:text-base">
+                  Explore external resources and organizations that provide specialized support for menstrual health and wellness.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredExternalResources.map((resource, index) => (
+                    <div
+                      key={resource.id}
+                      className="bg-gray-900/30 rounded-xl p-6 hover:bg-gray-900/50 transition-colors duration-300 cursor-pointer group animate-fade-in"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                      onClick={() => window.open(resource.url, '_blank')}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="font-bold text-white group-hover:text-green-400 transition-colors text-sm md:text-base">
+                          {resource.name}
+                        </h3>
+                        <div className="flex items-center space-x-2">
+                          <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">
+                            {resource.focus}
+                          </span>
+                          <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors" />
+                        </div>
+                      </div>
+                      <p className="text-gray-300 text-xs md:text-sm leading-relaxed mb-4">
+                        {resource.description}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-green-400 text-xs font-medium">{resource.category}</span>
+                        <span className="text-gray-500 text-xs">{new URL(resource.url).hostname}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Contact Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div className="bg-gradient-to-r from-gray-800/60 to-gray-900/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-700/50">
@@ -327,7 +401,10 @@ const Support = () => {
                   Explore external resources and organizations that provide specialized 
                   support for menstrual health and wellness.
                 </p>
-                <button className="bg-gradient-to-r from-red-500 to-purple-500 hover:from-red-600 hover:to-purple-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 text-sm md:text-base">
+                <button 
+                  onClick={() => window.scrollTo({ top: document.querySelector('[data-external-resources]')?.offsetTop || 0, behavior: 'smooth' })}
+                  className="bg-gradient-to-r from-red-500 to-purple-500 hover:from-red-600 hover:to-purple-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 text-sm md:text-base"
+                >
                   View External Resources
                 </button>
               </div>

@@ -173,7 +173,7 @@ const Resources = () => {
   useEffect(() => {
     const fetchResourcesData = async () => {
       try {
-        const { data: categoriesData } = await supabase
+        const { data: categoriesData } = await (supabase as any)
           .from('resource_categories')
           .select(`
             *,
@@ -181,21 +181,29 @@ const Resources = () => {
           `)
           .order('created_at', { ascending: true });
 
-        const { data: downloadsData } = await supabase
+        const { data: downloadsData } = await (supabase as any)
           .from('downloadable_resources')
           .select('*')
           .order('created_at', { ascending: true });
 
-        const { data: orgsData } = await supabase
+        const { data: orgsData } = await (supabase as any)
           .from('external_organizations')
           .select('*')
           .order('created_at', { ascending: true });
 
-        setResourceCategories(categoriesData?.length ? categoriesData : defaultCategories);
+        // Transform the data to match our interface
+        const transformedCategories = categoriesData?.length 
+          ? categoriesData.map((cat: any) => ({
+              ...cat,
+              topics: cat.resource_topics || []
+            }))
+          : defaultCategories;
+
+        setResourceCategories(transformedCategories);
         setDownloadableResources(downloadsData?.length ? downloadsData : defaultDownloadableResources);
         setExternalOrganizations(orgsData?.length ? orgsData : defaultExternalOrganizations);
       } catch (error) {
-        console.log('Using default resources data');
+        console.log('Using default resources data:', error);
         setResourceCategories(defaultCategories);
         setDownloadableResources(defaultDownloadableResources);
         setExternalOrganizations(defaultExternalOrganizations);
@@ -495,6 +503,7 @@ const Resources = () => {
                     key={org.id}
                     className="bg-gray-900/30 rounded-xl p-4 md:p-6 hover:bg-gray-900/50 transition-colors duration-300 cursor-pointer group animate-fade-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
+                    onClick={() => window.open(`https://${org.url}`, '_blank')}
                   >
                     <div className="flex items-start justify-between mb-3">
                       <h3 className="font-bold text-white group-hover:text-purple-400 transition-colors text-sm md:text-base">
