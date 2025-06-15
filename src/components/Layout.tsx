@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles, Home, Mail, Instagram, Twitter, Facebook, Youtube, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -274,20 +273,6 @@ const Layout = ({ children }: LayoutProps) => {
               <p className="mb-4 text-sm text-womb-warmgrey">
                 WombVerse is a professional community dedicated to sharing accurate, science-backed knowledge and real stories about menstrual health and wellbeing, with a focus on creating informed belonging.
               </p>
-              <div className="flex space-x-4">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-womb-warmgrey hover:text-primary transition-colors">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-womb-warmgrey hover:text-primary transition-colors">
-                  <Twitter className="w-5 h-5" />
-                </a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-womb-warmgrey hover:text-primary transition-colors">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-womb-warmgrey hover:text-primary transition-colors">
-                  <Youtube className="w-5 h-5" />
-                </a>
-              </div>
             </div>
             {/* Explore */}
             <div>
@@ -328,6 +313,9 @@ const Layout = ({ children }: LayoutProps) => {
               <ul className="space-y-2">
                 <li>
                   <Link to="/privacy" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Privacy Policy</span></Link>
+                </li>
+                <li>
+                  <Link to="/admin" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Admin</span></Link>
                 </li>
               </ul>
             </div>
