@@ -12,8 +12,15 @@ import NotificationCenter from '@/components/admin/NotificationCenter';
 import SystemSettings from '@/components/admin/SystemSettings';
 import AdminLogin from '@/components/admin/AdminLogin';
 import ExportReports from '@/components/admin/ExportReports';
-import { Shield, TrendingUp, Users, Star, Activity, Settings, Bell, FileText } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import SentimentAnalytics from '@/components/admin/SentimentAnalytics';
+import CrisisDetection from '@/components/admin/CrisisDetection';
+import ModeratorDashboard from '@/components/admin/ModeratorDashboard';
+import StoryImpactTracker from '@/components/admin/StoryImpactTracker';
+import PromptPerformance from '@/components/admin/PromptPerformance';
+import SafeWordsPanel from '@/components/admin/SafeWordsPanel';
+import RollbackSystem from '@/components/admin/RollbackSystem';
+import ExperimentalFeatures from '@/components/admin/ExperimentalFeatures';
+import { Shield, TrendingUp, Users, Star, Activity, Settings, Bell, FileText, Brain, AlertTriangle, UserCheck, Lightbulb, RotateCcw, Flask } from 'lucide-react';
 
 const Admin = () => {
   const { user } = useAuth();
@@ -63,61 +70,89 @@ const Admin = () => {
 
             {/* Dashboard Tabs */}
             <Tabs defaultValue="moderation" className="w-full">
-              <TabsList className="grid w-full grid-cols-8 bg-black/50 border border-gray-800 rounded-xl p-1 mb-8">
+              <TabsList className="grid w-full grid-cols-6 lg:grid-cols-12 bg-black/50 border border-gray-800 rounded-xl p-1 mb-8 gap-1">
                 <TabsTrigger 
                   value="moderation" 
-                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
                 >
-                  <Shield className="w-4 h-4" />
+                  <Shield className="w-3 h-3 lg:w-4 lg:h-4" />
                   <span className="hidden sm:inline">Moderation</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="analytics" 
-                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
                 >
-                  <TrendingUp className="w-4 h-4" />
+                  <TrendingUp className="w-3 h-3 lg:w-4 lg:h-4" />
                   <span className="hidden sm:inline">Analytics</span>
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="users" 
-                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
+                  value="sentiment" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
                 >
-                  <Users className="w-4 h-4" />
+                  <Brain className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="hidden sm:inline">Sentiment</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="crisis" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
+                >
+                  <AlertTriangle className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="hidden sm:inline">Crisis</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="moderators" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
+                >
+                  <UserCheck className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="hidden sm:inline">Moderators</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="impact" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
+                >
+                  <Star className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="hidden sm:inline">Impact</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="prompts" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
+                >
+                  <Lightbulb className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="hidden sm:inline">Prompts</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="safewords" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
+                >
+                  <Shield className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="hidden sm:inline">Safe Words</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="rollback" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
+                >
+                  <RotateCcw className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="hidden sm:inline">Rollback</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="experimental" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
+                >
+                  <Flask className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <span className="hidden sm:inline">Features</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="users" 
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
+                >
+                  <Users className="w-3 h-3 lg:w-4 lg:h-4" />
                   <span className="hidden sm:inline">Users</span>
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="content" 
-                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
-                >
-                  <Star className="w-4 h-4" />
-                  <span className="hidden sm:inline">Content</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="security" 
-                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
-                >
-                  <Activity className="w-4 h-4" />
-                  <span className="hidden sm:inline">Security</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="notifications" 
-                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
-                >
-                  <Bell className="w-4 h-4" />
-                  <span className="hidden sm:inline">Notifications</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="reports" 
-                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
-                >
-                  <FileText className="w-4 h-4" />
-                  <span className="hidden sm:inline">Reports</span>
-                </TabsTrigger>
-                <TabsTrigger 
                   value="settings" 
-                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-1 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all text-xs lg:text-sm"
                 >
-                  <Settings className="w-4 h-4" />
+                  <Settings className="w-3 h-3 lg:w-4 lg:h-4" />
                   <span className="hidden sm:inline">Settings</span>
                 </TabsTrigger>
               </TabsList>
@@ -130,24 +165,40 @@ const Admin = () => {
                 <AnalyticsDashboard />
               </TabsContent>
 
+              <TabsContent value="sentiment" className="space-y-6">
+                <SentimentAnalytics />
+              </TabsContent>
+
+              <TabsContent value="crisis" className="space-y-6">
+                <CrisisDetection />
+              </TabsContent>
+
+              <TabsContent value="moderators" className="space-y-6">
+                <ModeratorDashboard />
+              </TabsContent>
+
+              <TabsContent value="impact" className="space-y-6">
+                <StoryImpactTracker />
+              </TabsContent>
+
+              <TabsContent value="prompts" className="space-y-6">
+                <PromptPerformance />
+              </TabsContent>
+
+              <TabsContent value="safewords" className="space-y-6">
+                <SafeWordsPanel />
+              </TabsContent>
+
+              <TabsContent value="rollback" className="space-y-6">
+                <RollbackSystem />
+              </TabsContent>
+
+              <TabsContent value="experimental" className="space-y-6">
+                <ExperimentalFeatures />
+              </TabsContent>
+
               <TabsContent value="users" className="space-y-6">
                 <UserManagement />
-              </TabsContent>
-
-              <TabsContent value="content" className="space-y-6">
-                <ContentManagement />
-              </TabsContent>
-
-              <TabsContent value="security" className="space-y-6">
-                <SecurityLogs />
-              </TabsContent>
-
-              <TabsContent value="notifications" className="space-y-6">
-                <NotificationCenter />
-              </TabsContent>
-
-              <TabsContent value="reports" className="space-y-6">
-                <ExportReports />
               </TabsContent>
 
               <TabsContent value="settings" className="space-y-6">
