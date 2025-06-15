@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,6 +10,7 @@ import SecurityLogs from '@/components/admin/SecurityLogs';
 import NotificationCenter from '@/components/admin/NotificationCenter';
 import SystemSettings from '@/components/admin/SystemSettings';
 import AdminLogin from '@/components/admin/AdminLogin';
+import ExportReports from '@/components/admin/ExportReports';
 import { Shield, TrendingUp, Users, Star, Activity, Settings, Bell, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -146,17 +146,7 @@ const Admin = () => {
               </TabsContent>
 
               <TabsContent value="reports" className="space-y-6">
-                <Card className="bg-slate-800/50 border-slate-700">
-                  <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <FileText className="w-5 h-5" />
-                      Export & Reports
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-slate-400">Advanced reporting and export features coming soon...</p>
-                  </CardContent>
-                </Card>
+                <ExportReports />
               </TabsContent>
 
               <TabsContent value="settings" className="space-y-6">
