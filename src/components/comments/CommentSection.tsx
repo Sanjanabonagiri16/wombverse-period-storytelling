@@ -10,6 +10,7 @@ interface Comment {
   content: string;
   created_at: string;
   is_supportive: boolean;
+  user_id: string;
   profiles?: {
     display_name: string;
   } | null;
@@ -56,27 +57,42 @@ const CommentSection = ({ storyId, initialCommentCount = 0 }: CommentSectionProp
 
   const fetchComments = async () => {
     try {
-      // First get comments
-      const { data: commentsData } = await supabase
+      setLoading(true);
+      
+      // Fetch comments
+      const { data: commentsData, error } = await supabase
         .from('comments')
         .select('*')
         .eq('story_id', storyId)
         .order('created_at', { ascending: true });
 
+      if (error) {
+        console.error('Error fetching comments:', error);
+        return;
+      }
+
       if (commentsData) {
-        // Then get profiles for each comment
+        // Fetch profiles for each comment
         const commentsWithProfiles = await Promise.all(
           commentsData.map(async (comment) => {
-            const { data: profile } = await supabase
-              .from('profiles')
-              .select('display_name')
-              .eq('id', comment.user_id)
-              .single();
+            try {
+              const { data: profile } = await supabase
+                .from('profiles')
+                .select('display_name')
+                .eq('id', comment.user_id)
+                .single();
 
-            return {
-              ...comment,
-              profiles: profile
-            };
+              return {
+                ...comment,
+                profiles: profile
+              };
+            } catch (profileError) {
+              console.error('Error fetching profile for comment:', profileError);
+              return {
+                ...comment,
+                profiles: null
+              };
+            }
           })
         );
 

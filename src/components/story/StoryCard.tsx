@@ -6,6 +6,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 import { Button } from '@/components/ui/button';
+import ReactionSystem from '@/components/reactions/ReactionSystem';
+import CommentSection from '@/components/comments/CommentSection';
 
 interface Story {
   id: string;
@@ -33,12 +35,15 @@ const StoryCard = ({ story }: StoryCardProps) => {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
+  const [reactionCount, setReactionCount] = useState(0);
+  const [showFullStory, setShowFullStory] = useState(false);
 
   useEffect(() => {
     if (user) {
       checkBookmark();
     }
     fetchCommentCount();
+    fetchReactionCount();
   }, [story.id, user]);
 
   const checkBookmark = async () => {
@@ -54,7 +59,6 @@ const StoryCard = ({ story }: StoryCardProps) => {
       
       setIsBookmarked(!!data);
     } catch (error) {
-      // No bookmark found
       setIsBookmarked(false);
     }
   };
@@ -69,6 +73,19 @@ const StoryCard = ({ story }: StoryCardProps) => {
       setCommentCount(count || 0);
     } catch (error) {
       console.error('Error fetching comment count:', error);
+    }
+  };
+
+  const fetchReactionCount = async () => {
+    try {
+      const { count } = await supabase
+        .from('reactions')
+        .select('*', { count: 'exact' })
+        .eq('story_id', story.id);
+      
+      setReactionCount(count || 0);
+    } catch (error) {
+      console.error('Error fetching reaction count:', error);
     }
   };
 
@@ -155,16 +172,29 @@ const StoryCard = ({ story }: StoryCardProps) => {
 
       {/* Story Content */}
       <div className="space-y-4">
-        <h2 className="text-lg md:text-xl font-playfair font-semibold text-womb-softwhite hover:text-white transition-colors cursor-pointer">
+        <h2 
+          className="text-lg md:text-xl font-playfair font-semibold text-womb-softwhite hover:text-white transition-colors cursor-pointer"
+          onClick={() => setShowFullStory(!showFullStory)}
+        >
           {story.title}
         </h2>
         
         <div className="prose prose-invert max-w-none">
           <p className="text-womb-softwhite whitespace-pre-wrap text-sm md:text-base leading-relaxed">
-            {story.content.length > 300 
-              ? `${story.content.substring(0, 300)}...` 
-              : story.content}
+            {showFullStory 
+              ? story.content 
+              : story.content.length > 300 
+                ? `${story.content.substring(0, 300)}...` 
+                : story.content}
           </p>
+          {story.content.length > 300 && (
+            <button
+              onClick={() => setShowFullStory(!showFullStory)}
+              className="text-womb-plum hover:text-womb-crimson text-sm mt-2 transition-colors"
+            >
+              {showFullStory ? 'Show less' : 'Read more'}
+            </button>
+          )}
         </div>
 
         {/* Emotion Tags */}
@@ -189,15 +219,23 @@ const StoryCard = ({ story }: StoryCardProps) => {
             </span>
           </div>
         )}
+
+        {/* Reactions */}
+        <div className="py-3">
+          <ReactionSystem storyId={story.id} />
+        </div>
+
+        {/* Comments Section */}
+        <CommentSection storyId={story.id} initialCommentCount={commentCount} />
       </div>
 
-      {/* Interaction Section */}
+      {/* Actions Section */}
       <div className="pt-4 mt-4 border-t border-womb-deepgrey">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1 text-womb-warmgrey">
               <Heart className="w-4 h-4" />
-              <span className="text-sm">0</span>
+              <span className="text-sm">{reactionCount}</span>
             </div>
             <div className="flex items-center space-x-1 text-womb-warmgrey">
               <MessageCircle className="w-4 h-4" />

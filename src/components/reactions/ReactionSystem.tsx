@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 import EmojiReactionButton from './EmojiReactionButton';
 
 interface ReactionCount {
@@ -19,6 +20,7 @@ interface ReactionSystemProps {
 
 const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [reactionCounts, setReactionCounts] = useState<ReactionCount[]>([]);
   const [userReactions, setUserReactions] = useState<UserReaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,8 +30,8 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
     { type: 'support', emoji: '🤗', label: 'Support' },
     { type: 'strength', emoji: '💪', label: 'Strength' },
     { type: 'hope', emoji: '✨', label: 'Hope' },
-    { type: 'gratitude', emoji: '🙏', label: 'Gratitude' },
-    { type: 'understanding', emoji: '🤝', label: 'Understanding' },
+    { type: 'grateful', emoji: '🙏', label: 'Gratitude' },
+    { type: 'empathy', emoji: '🤝', label: 'Understanding' },
   ];
 
   useEffect(() => {
@@ -65,14 +67,17 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
 
   const fetchReactions = async () => {
     try {
-      // Directly query the reactions table since the RPC might not exist
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('reactions')
         .select('type')
         .eq('story_id', storyId);
       
+      if (error) {
+        console.error('Error fetching reactions:', error);
+        return;
+      }
+
       if (data) {
-        // Count reactions by type
         const counts = data.reduce((acc: Record<string, number>, reaction) => {
           acc[reaction.type] = (acc[reaction.type] || 0) + 1;
           return acc;
@@ -96,11 +101,16 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
     if (!user) return;
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('reactions')
         .select('type')
         .eq('story_id', storyId)
         .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Error fetching user reactions:', error);
+        return;
+      }
 
       setUserReactions(data || []);
     } catch (error) {
@@ -109,28 +119,39 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
   };
 
   const handleReactionToggle = async (type: string) => {
-    if (!user) return;
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to react to stories.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     try {
       const existingReaction = userReactions.find(r => r.type === type);
 
       if (existingReaction) {
         // Remove reaction
-        await supabase
+        const { error } = await supabase
           .from('reactions')
           .delete()
           .eq('story_id', storyId)
           .eq('user_id', user.id)
           .eq('type', type);
+
+        if (error) throw error;
       } else {
         // Add reaction
-        await supabase
+        const { error } = await supabase
           .from('reactions')
           .insert({
             story_id: storyId,
             user_id: user.id,
             type: type
           });
+
+        if (error) throw error;
 
         // Track analytics if the function exists
         try {
@@ -146,6 +167,11 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
       }
     } catch (error) {
       console.error('Error toggling reaction:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update reaction. Please try again.",
+        variant: "destructive",
+      });
       throw error;
     }
   };
