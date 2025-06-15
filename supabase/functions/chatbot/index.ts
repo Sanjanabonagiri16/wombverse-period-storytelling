@@ -20,9 +20,9 @@ serve(async (req) => {
     console.log('Received request with messages:', messages?.length || 0);
 
     if (!openAIApiKey) {
-      console.error('OpenAI API key is missing');
+      console.error('API key is missing');
       return new Response(JSON.stringify({ 
-        error: "OpenAI API key is not configured. Please contact support." 
+        error: "API key is not configured. Please contact support." 
       }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -39,16 +39,18 @@ serve(async (req) => {
       });
     }
 
-    console.log('Making OpenAI API request...');
+    console.log('Making OpenRouter API request...');
     
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${openAIApiKey}`,
         "Content-Type": "application/json",
+        "HTTP-Referer": "https://wombwhispers.lovable.dev",
+        "X-Title": "WombWhispers",
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "openai/gpt-4o-mini",
         messages: [
           { 
             role: "system", 
@@ -61,15 +63,15 @@ serve(async (req) => {
       }),
     });
 
-    console.log('OpenAI API response status:', response.status);
+    console.log('OpenRouter API response status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('OpenAI API error:', response.status, errorText);
+      console.error('OpenRouter API error:', response.status, errorText);
       
       if (response.status === 401) {
         return new Response(JSON.stringify({ 
-          error: "API authentication failed. Please check your OpenAI API key." 
+          error: "API authentication failed. Please check your API key." 
         }), {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -83,7 +85,7 @@ serve(async (req) => {
         });
       } else {
         return new Response(JSON.stringify({ 
-          error: `OpenAI API error: ${response.status}. Please try again later.` 
+          error: `API error: ${response.status}. Please try again later.` 
         }), {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -92,12 +94,12 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log('OpenAI response received, choices:', data?.choices?.length || 0);
+    console.log('OpenRouter response received, choices:', data?.choices?.length || 0);
 
     const answer = data?.choices?.[0]?.message?.content;
 
     if (!answer) {
-      console.error('No answer in OpenAI response:', data);
+      console.error('No answer in OpenRouter response:', data);
       return new Response(JSON.stringify({ 
         error: "I'm having trouble generating a response right now. Please try rephrasing your question." 
       }), {
