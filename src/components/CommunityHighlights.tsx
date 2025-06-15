@@ -119,9 +119,6 @@ const CommunityHighlights = () => {
                 </div>
               ))}
             </div>
-            <Button className="w-full mt-6 btn-secondary">
-              Join Community
-            </Button>
           </div>
 
           {/* Womb Wisdom */}

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -40,34 +39,34 @@ const ExportReports = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [lastExportTime, setLastExportTime] = useState<Date | null>(null);
 
-  // Quick Reports Data
+  // Quick Reports Data - Updated with professional colors
   const quickReports = [
     {
       title: 'User Activity Summary',
       description: 'Overview of user registrations, story submissions, and engagement',
       icon: Users,
-      color: 'blue',
+      color: 'slate',
       action: () => generateQuickReport('user_activity')
     },
     {
       title: 'Content Moderation Report',
       description: 'Flagged content, moderation actions, and violation trends',
       icon: Shield,
-      color: 'red',
+      color: 'gray',
       action: () => generateQuickReport('moderation')
     },
     {
       title: 'Analytics Dashboard',
       description: 'Page views, user sessions, and platform engagement metrics',
       icon: BarChart3,
-      color: 'green',
+      color: 'zinc',
       action: () => generateQuickReport('analytics')
     },
     {
       title: 'Security & Compliance',
       description: 'Security incidents, rate limiting violations, and compliance status',
       icon: Activity,
-      color: 'orange',
+      color: 'neutral',
       action: () => generateQuickReport('security')
     }
   ];
@@ -265,12 +264,12 @@ const ExportReports = () => {
 
   const getColorClasses = (color: string) => {
     const colorMap = {
-      blue: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      red: 'bg-red-500/20 text-red-400 border-red-500/30',
-      green: 'bg-green-500/20 text-green-400 border-green-500/30',
-      orange: 'bg-orange-500/20 text-orange-400 border-orange-500/30'
+      slate: 'bg-slate-600/20 text-slate-300 border-slate-500/30',
+      gray: 'bg-gray-600/20 text-gray-300 border-gray-500/30',
+      zinc: 'bg-zinc-600/20 text-zinc-300 border-zinc-500/30',
+      neutral: 'bg-neutral-600/20 text-neutral-300 border-neutral-500/30'
     };
-    return colorMap[color as keyof typeof colorMap] || colorMap.blue;
+    return colorMap[color as keyof typeof colorMap] || colorMap.slate;
   };
 
   return (
@@ -278,7 +277,7 @@ const ExportReports = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-            <FileText className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
+            <FileText className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
             Export & Reports
           </h2>
           <p className="text-slate-400 text-sm md:text-base mt-1">
@@ -333,7 +332,7 @@ const ExportReports = () => {
                           onClick={report.action}
                           disabled={isExporting}
                           size="sm"
-                          className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
+                          className="bg-slate-600 hover:bg-slate-700 w-full sm:w-auto"
                         >
                           <Download className="w-4 h-4 mr-2" />
                           {isExporting ? 'Generating...' : 'Generate Report'}
@@ -443,7 +442,7 @@ const ExportReports = () => {
                     className="bg-slate-700/50 rounded-lg p-4 md:p-6 border border-slate-600"
                   >
                     <div className="flex items-start gap-3 md:gap-4">
-                      <div className="p-2 md:p-3 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-lg">
+                      <div className="p-2 md:p-3 bg-slate-600/20 text-slate-300 border border-slate-500/30 rounded-lg">
                         <category.icon className="w-5 h-5 md:w-6 md:h-6" />
                       </div>
                       <div className="flex-1">
@@ -502,11 +501,11 @@ const ExportReports = () => {
                   <textarea
                     placeholder="SELECT * FROM analytics_events WHERE created_at >= '2024-01-01'..."
                     rows={8}
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white font-mono text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white font-mono text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent resize-none"
                   />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <Button className="bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-none">
+                  <Button className="bg-slate-600 hover:bg-slate-700 flex-1 sm:flex-none">
                     <Database className="w-4 h-4 mr-2" />
                     Execute Query
                   </Button>
