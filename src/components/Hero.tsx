@@ -1,4 +1,3 @@
-
 import { PenTool, BookOpen, Heart, ChevronDown, Sparkles, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -160,18 +159,17 @@ const Hero = () => {
 
   return (
     <section className="relative py-20 lg:py-32 overflow-hidden">
-      {/* Professional Background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-womb-charcoal via-womb-plum/80 to-womb-deepgrey"></div>
-        <div className="absolute top-1/4 left-1/3 w-32 h-32 bg-gradient-to-r from-womb-crimson/20 to-womb-deepgrey/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-gradient-to-r from-womb-crimson/20 to-womb-plum/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-10 left-1/4 w-14 h-14 bg-gradient-to-br from-womb-crimson/25 to-womb-plum/20 rounded-full blur-2xl animate-float"></div>
-        <div className="absolute top-16 right-1/4 animate-float opacity-20" style={{ animationDelay: '1s' }}>
-          <Heart className="w-8 h-8 text-womb-crimson" />
-        </div>
-        <div className="absolute bottom-32 left-1/4 animate-float opacity-15" style={{ animationDelay: '3s' }}>
-          <Star className="w-6 h-6 text-red-400" />
-        </div>
+      {/* Enhanced Professional Background with Black and Indigo */}
+      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-black/50 to-womb-crimson/20"></div>
+      <div className="absolute top-1/4 left-1/3 w-48 h-48 bg-gradient-to-r from-indigo-500/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-gradient-to-r from-womb-crimson/25 to-indigo-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute bottom-10 left-1/4 w-14 h-14 bg-gradient-to-br from-womb-crimson/25 to-indigo-400/20 rounded-full blur-2xl animate-float"></div>
+      <div className="absolute top-16 right-1/4 animate-float opacity-20" style={{ animationDelay: '1s' }}>
+        <Heart className="w-8 h-8 text-womb-crimson" />
+      </div>
+      <div className="absolute bottom-32 left-1/4 animate-float opacity-15" style={{ animationDelay: '3s' }}>
+        <Star className="w-6 h-6 text-indigo-400" />
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
@@ -185,7 +183,7 @@ const Hero = () => {
                 Your Story.
               </span>
               <br />
-              <span className="bg-gradient-to-r from-womb-plum via-womb-crimson to-womb-plum bg-clip-text text-transparent drop-shadow-md">
+              <span className="bg-gradient-to-r from-indigo-400 via-womb-crimson to-indigo-500 bg-clip-text text-transparent drop-shadow-md">
                 Your Voice.
               </span>
             </h1>
@@ -195,7 +193,7 @@ const Hero = () => {
             <p className="text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto text-gray-300">
               Join a community where period stories are shared, celebrated, and heard.
               <br />
-              <span className="text-red-400 font-semibold font-inter tracking-wide">
+              <span className="block mt-4 text-2xl md:text-3xl font-bold font-inter tracking-wider text-indigo-300 drop-shadow-[0_2px_4px_rgba(127,17,224,0.4)]">
                 Break the silence. Build connection. Belong.
               </span>
             </p>
