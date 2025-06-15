@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import StoryCard from './StoryCard';
+import PopularTags from './PopularTags';
 import { Loader2, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -140,30 +140,33 @@ const StoryExplorer = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-womb-plum" />
+        <Loader2 className="w-8 h-8 animate-spin text-red-400" />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
+      {/* Popular Tags Section */}
+      <PopularTags />
+
       {/* Filters */}
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
-          <Filter className="w-5 h-5 text-womb-warmgrey" />
-          <h3 className="text-lg font-medium text-womb-softwhite">Filter by feeling</h3>
+          <Filter className="w-5 h-5 text-slate-400" />
+          <h3 className="text-lg font-medium text-white">Filter by feeling</h3>
         </div>
         
         {/* Emotion Tags Filter */}
         <div className="space-y-2">
-          <p className="text-sm text-womb-warmgrey">Emotional tags:</p>
+          <p className="text-sm text-slate-400">Emotional tags:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setEmotionFilter('')}
               className={`px-3 py-1 rounded-full text-sm transition-colors ${
                 emotionFilter === '' 
-                  ? 'bg-womb-plum text-white' 
-                  : 'bg-womb-deepgrey text-womb-warmgrey hover:text-womb-softwhite'
+                  ? 'bg-red-600 text-white' 
+                  : 'bg-slate-800 border border-slate-600 text-slate-300 hover:text-white hover:border-slate-500'
               }`}
             >
               All
@@ -174,8 +177,8 @@ const StoryExplorer = () => {
                 onClick={() => setEmotionFilter(emotion.id)}
                 className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center space-x-1 ${
                   emotionFilter === emotion.id 
-                    ? 'bg-womb-plum text-white' 
-                    : 'bg-womb-deepgrey text-womb-warmgrey hover:text-womb-softwhite'
+                    ? 'bg-red-600 text-white' 
+                    : 'bg-slate-800 border border-slate-600 text-slate-300 hover:text-white hover:border-slate-500'
                 }`}
               >
                 <span>{emotion.emoji}</span>
@@ -187,14 +190,14 @@ const StoryExplorer = () => {
 
         {/* Mood Filter */}
         <div className="space-y-2">
-          <p className="text-sm text-womb-warmgrey">Moods:</p>
+          <p className="text-sm text-slate-400">Moods:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setMoodFilter('')}
               className={`px-3 py-1 rounded-full text-sm transition-colors ${
                 moodFilter === '' 
-                  ? 'bg-womb-crimson text-white' 
-                  : 'bg-womb-deepgrey text-womb-warmgrey hover:text-womb-softwhite'
+                  ? 'bg-indigo-600 text-white' 
+                  : 'bg-slate-800 border border-slate-600 text-slate-300 hover:text-white hover:border-slate-500'
               }`}
             >
               All
@@ -205,8 +208,8 @@ const StoryExplorer = () => {
                 onClick={() => setMoodFilter(mood.id)}
                 className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center space-x-1 ${
                   moodFilter === mood.id 
-                    ? 'bg-womb-crimson text-white' 
-                    : 'bg-womb-deepgrey text-womb-warmgrey hover:text-womb-softwhite'
+                    ? 'bg-indigo-600 text-white' 
+                    : 'bg-slate-800 border border-slate-600 text-slate-300 hover:text-white hover:border-slate-500'
                 }`}
               >
                 <span>{mood.emoji}</span>
@@ -220,8 +223,8 @@ const StoryExplorer = () => {
       {/* Stories Grid */}
       {stories.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-womb-warmgrey text-lg mb-4">No stories found</p>
-          <p className="text-womb-warmgrey text-sm">
+          <p className="text-slate-300 text-lg mb-4">No stories found</p>
+          <p className="text-slate-400 text-sm">
             Try adjusting your filters or be the first to share a story with these tags!
           </p>
         </div>
@@ -240,7 +243,7 @@ const StoryExplorer = () => {
                 onClick={loadMore}
                 disabled={loadingMore}
                 variant="outline"
-                className="border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
+                className="border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
               >
                 {loadingMore ? (
                   <>
