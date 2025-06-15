@@ -19,7 +19,7 @@ interface Story {
   profiles?: {
     display_name: string;
     avatar_url: string;
-  };
+  } | null;
 }
 
 interface StoryListProps {
