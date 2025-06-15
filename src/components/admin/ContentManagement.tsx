@@ -181,10 +181,10 @@ const ContentManagement = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active':
-      case 'published': return 'bg-green-900/30 text-green-200 border-green-700/50';
-      case 'scheduled': return 'bg-indigo-900/30 text-indigo-200 border-indigo-700/50';
-      case 'draft': return 'bg-orange-900/30 text-orange-200 border-orange-700/50';
-      case 'expired': return 'bg-red-900/30 text-red-200 border-red-700/50';
+      case 'published': return 'bg-indigo-900/30 text-indigo-200 border-indigo-700/50';
+      case 'scheduled': return 'bg-gray-900/30 text-gray-200 border-gray-700/50';
+      case 'draft': return 'bg-gray-800/30 text-gray-300 border-gray-600/50';
+      case 'expired': return 'bg-black/50 text-gray-400 border-gray-600/50';
       default: return 'bg-gray-900/30 text-gray-200 border-gray-700/50';
     }
   };
@@ -247,7 +247,7 @@ const ContentManagement = () => {
                           size="sm"
                           variant="outline"
                           onClick={() => handleUnfeatureStory(story.id)}
-                          className="border-red-700 text-red-400 hover:bg-red-900/20"
+                          className="border-gray-700 text-gray-400 hover:bg-gray-900/20"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -360,7 +360,7 @@ const ContentManagement = () => {
                         <Button size="sm" variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800">
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="outline" className="border-red-700 text-red-400 hover:bg-red-900/20">
+                        <Button size="sm" variant="outline" className="border-gray-700 text-gray-400 hover:bg-gray-900/20">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -398,8 +398,8 @@ const ContentManagement = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge className={prompt.is_active ? 
-                          'bg-green-900/30 text-green-200 border-green-700/50' : 
-                          'bg-red-900/30 text-red-200 border-red-700/50'
+                          'bg-indigo-900/30 text-indigo-200 border-indigo-700/50' : 
+                          'bg-gray-800/30 text-gray-300 border-gray-600/50'
                         }>
                           {prompt.is_active ? 'Active' : 'Inactive'}
                         </Badge>
@@ -407,8 +407,8 @@ const ContentManagement = () => {
                           size="sm"
                           onClick={() => handleTogglePrompt(prompt.id)}
                           className={prompt.is_active ? 
-                            'bg-red-800 hover:bg-red-700' : 
-                            'bg-green-800 hover:bg-green-700'
+                            'bg-gray-800 hover:bg-gray-700' : 
+                            'bg-indigo-800 hover:bg-indigo-700'
                           }
                         >
                           {prompt.is_active ? 'Deactivate' : 'Activate'}

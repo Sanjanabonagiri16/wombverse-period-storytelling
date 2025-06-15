@@ -199,10 +199,10 @@ const ModerationDashboard = () => {
 
   const getStatusBadge = (status: string) => {
     const statusMap = {
-      pending: { color: 'bg-orange-900/30 text-orange-200 border-orange-700/50', icon: Clock },
-      approved: { color: 'bg-green-900/30 text-green-200 border-green-700/50', icon: Check },
-      rejected: { color: 'bg-red-900/30 text-red-200 border-red-700/50', icon: X },
-      removed: { color: 'bg-gray-900/30 text-gray-200 border-gray-700/50', icon: X }
+      pending: { color: 'bg-gray-900/30 text-gray-200 border-gray-700/50', icon: Clock },
+      approved: { color: 'bg-indigo-900/30 text-indigo-200 border-indigo-700/50', icon: Check },
+      rejected: { color: 'bg-gray-800/30 text-gray-300 border-gray-600/50', icon: X },
+      removed: { color: 'bg-black/50 text-gray-400 border-gray-600/50', icon: X }
     };
     
     const config = statusMap[status as keyof typeof statusMap];
@@ -258,19 +258,19 @@ const ModerationDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         <Card className="bg-black/50 border-gray-800">
           <CardContent className="p-4">
-            <div className="text-xl md:text-2xl font-bold text-orange-400">{totalPending}</div>
+            <div className="text-xl md:text-2xl font-bold text-gray-200">{totalPending}</div>
             <div className="text-xs md:text-sm text-gray-400">Pending Review</div>
           </CardContent>
         </Card>
         <Card className="bg-black/50 border-gray-800">
           <CardContent className="p-4">
-            <div className="text-xl md:text-2xl font-bold text-green-400">{totalProcessed}</div>
+            <div className="text-xl md:text-2xl font-bold text-indigo-400">{totalProcessed}</div>
             <div className="text-xs md:text-sm text-gray-400">Total Processed</div>
           </CardContent>
         </Card>
         <Card className="bg-black/50 border-gray-800">
           <CardContent className="p-4">
-            <div className="text-xl md:text-2xl font-bold text-indigo-400">
+            <div className="text-xl md:text-2xl font-bold text-white">
               {totalPending + totalProcessed}
             </div>
             <div className="text-xs md:text-sm text-gray-400">Total Reports</div>
@@ -317,7 +317,7 @@ const ModerationDashboard = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-green-700 text-green-400 hover:bg-green-900/20 flex-1 sm:flex-none"
+                      className="border-indigo-700 text-indigo-400 hover:bg-indigo-900/20 flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'approved')}
                     >
                       <Check className="w-4 h-4 mr-1" />
@@ -326,7 +326,7 @@ const ModerationDashboard = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-orange-700 text-orange-400 hover:bg-orange-900/20 flex-1 sm:flex-none"
+                      className="border-gray-700 text-gray-400 hover:bg-gray-900/20 flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'rejected')}
                     >
                       <X className="w-4 h-4 mr-1" />
@@ -335,7 +335,7 @@ const ModerationDashboard = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-red-700 text-red-400 hover:bg-red-900/20 flex-1 sm:flex-none"
+                      className="border-gray-600 text-gray-300 hover:bg-gray-800/20 flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'removed')}
                     >
                       <X className="w-4 h-4 mr-1" />

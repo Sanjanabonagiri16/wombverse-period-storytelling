@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -181,30 +180,30 @@ const NotificationCenter = () => {
 
   const getNotificationTypeColor = (type: string) => {
     switch (type) {
-      case 'announcement': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'maintenance': return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
-      case 'feature': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'warning': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      case 'announcement': return 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30';
+      case 'maintenance': return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+      case 'feature': return 'bg-gray-700/30 text-gray-300 border-gray-600/50';
+      case 'warning': return 'bg-gray-800/50 text-gray-200 border-gray-700/50';
+      default: return 'bg-gray-900/30 text-gray-200 border-gray-700/50';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'sent': return <CheckCircle className="w-4 h-4 text-green-400" />;
-      case 'draft': return <Clock className="w-4 h-4 text-yellow-400" />;
-      case 'scheduled': return <Clock className="w-4 h-4 text-blue-400" />;
-      default: return <AlertCircle className="w-4 h-4 text-slate-400" />;
+      case 'sent': return <CheckCircle className="w-4 h-4 text-indigo-400" />;
+      case 'draft': return <Clock className="w-4 h-4 text-gray-400" />;
+      case 'scheduled': return <Clock className="w-4 h-4 text-indigo-400" />;
+      default: return <AlertCircle className="w-4 h-4 text-gray-400" />;
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      case 'high': return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
-      case 'medium': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      case 'low': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      case 'urgent': return 'bg-gray-800/50 text-gray-200 border-gray-700/50';
+      case 'high': return 'bg-gray-700/30 text-gray-300 border-gray-600/50';
+      case 'medium': return 'bg-gray-600/20 text-gray-400 border-gray-500/30';
+      case 'low': return 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30';
+      default: return 'bg-gray-900/30 text-gray-200 border-gray-700/50';
     }
   };
 
@@ -212,31 +211,31 @@ const NotificationCenter = () => {
     <div className="space-y-4 md:space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-          <Bell className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
+          <Bell className="w-5 h-5 md:w-6 md:h-6 text-indigo-400" />
           Notification Center
         </h2>
-        <div className="flex items-center gap-2 text-xs md:text-sm text-slate-400">
+        <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
           <RefreshCw className="w-3 h-3" />
           Last updated: {lastUpdated.toLocaleTimeString()}
         </div>
       </div>
 
       <Tabs defaultValue="announcements" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 border border-slate-700">
-          <TabsTrigger value="announcements" className="data-[state=active]:bg-slate-700 text-xs md:text-sm">
+        <TabsList className="grid w-full grid-cols-2 bg-black/50 border border-gray-800">
+          <TabsTrigger value="announcements" className="data-[state=active]:bg-gray-900 text-xs md:text-sm">
             Admin Announcements
           </TabsTrigger>
-          <TabsTrigger value="feedback" className="data-[state=active]:bg-slate-700 text-xs md:text-sm">
+          <TabsTrigger value="feedback" className="data-[state=active]:bg-gray-900 text-xs md:text-sm">
             User Feedback
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="announcements" className="space-y-4 md:space-y-6">
           {/* Create New Announcement */}
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
-                <Send className="w-4 h-4 md:w-5 md:h-5 text-blue-400" />
+                <Send className="w-4 h-4 md:w-5 md:h-5 text-indigo-400" />
                 Send Announcement
               </CardTitle>
             </CardHeader>
@@ -298,7 +297,7 @@ const NotificationCenter = () => {
                 />
               </div>
               
-              <Button onClick={handleSendNotification} className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+              <Button onClick={handleSendNotification} className="bg-indigo-600 hover:bg-indigo-700 w-full sm:w-auto">
                 <Send className="w-4 h-4 mr-2" />
                 Send Notification
               </Button>
@@ -306,7 +305,7 @@ const NotificationCenter = () => {
           </Card>
 
           {/* Notification History */}
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <CardTitle className="text-white text-base md:text-lg">Notification History</CardTitle>
@@ -314,7 +313,7 @@ const NotificationCenter = () => {
                   variant="outline"
                   size="sm"
                   onClick={exportNotifications}
-                  className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
@@ -326,7 +325,7 @@ const NotificationCenter = () => {
                 {notifications.map((notification) => (
                   <div
                     key={notification.id}
-                    className="bg-slate-700/50 rounded-lg p-3 md:p-4 border border-slate-600"
+                    className="bg-gray-900/50 rounded-lg p-3 md:p-4 border border-gray-700"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
                       <h3 className="font-semibold text-white text-sm md:text-base">{notification.title}</h3>
@@ -337,8 +336,8 @@ const NotificationCenter = () => {
                         </Badge>
                       </div>
                     </div>
-                    <p className="text-slate-300 mb-3 text-sm md:text-base">{notification.message}</p>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm text-slate-400 gap-2">
+                    <p className="text-gray-300 mb-3 text-sm md:text-base">{notification.message}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm text-gray-400 gap-2">
                       <span>To: {notification.recipient}</span>
                       <span>{new Date(notification.createdAt).toLocaleDateString()}</span>
                     </div>
@@ -350,18 +349,18 @@ const NotificationCenter = () => {
         </TabsContent>
 
         <TabsContent value="feedback" className="space-y-4 md:space-y-6">
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
-                  <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-green-400" />
+                  <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-indigo-400" />
                   User Feedback Inbox
                 </CardTitle>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={exportFeedback}
-                  className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
@@ -373,30 +372,30 @@ const NotificationCenter = () => {
                 {feedback.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-slate-700/50 rounded-lg p-3 md:p-4 border border-slate-600 hover:border-slate-500 transition-colors"
+                    className="bg-gray-900/50 rounded-lg p-3 md:p-4 border border-gray-700 hover:border-gray-600 transition-colors"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
                       <div>
                         <h3 className="font-semibold text-white text-sm md:text-base">{item.subject}</h3>
-                        <p className="text-xs md:text-sm text-slate-400">From: {item.userName}</p>
+                        <p className="text-xs md:text-sm text-gray-400">From: {item.userName}</p>
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
                         <Badge className={getPriorityColor(item.priority)}>
                           {item.priority}
                         </Badge>
-                        <Badge variant="outline" className="border-slate-600 text-slate-300 text-xs">
+                        <Badge variant="outline" className="border-gray-700 text-gray-300 text-xs">
                           {item.category}
                         </Badge>
                       </div>
                     </div>
-                    <p className="text-slate-300 mb-3 text-sm md:text-base">{item.message}</p>
+                    <p className="text-gray-300 mb-3 text-sm md:text-base">{item.message}</p>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div className="flex flex-wrap items-center gap-4 text-xs md:text-sm text-slate-400">
+                      <div className="flex flex-wrap items-center gap-4 text-xs md:text-sm text-gray-400">
                         <span>Status: {item.status}</span>
                         <span>{item.replies} replies</span>
                         <span>{new Date(item.createdAt).toLocaleDateString()}</span>
                       </div>
-                      <Button size="sm" variant="outline" className="border-slate-600 text-slate-300 w-full sm:w-auto">
+                      <Button size="sm" variant="outline" className="border-gray-700 text-gray-300 w-full sm:w-auto">
                         Reply
                       </Button>
                     </div>

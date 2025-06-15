@@ -51,7 +51,7 @@ const Admin = () => {
                   </p>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="bg-green-900/30 text-green-400 px-4 py-2 rounded-full text-sm font-semibold border border-green-700/50">
+                  <div className="bg-gray-900/30 text-gray-200 px-4 py-2 rounded-full text-sm font-semibold border border-gray-700/50">
                     System Healthy
                   </div>
                   <div className="bg-black border border-gray-700 rounded-lg px-4 py-2">
