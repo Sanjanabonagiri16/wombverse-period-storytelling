@@ -10,7 +10,8 @@ const MoodStories = () => {
           <h1 className="text-3xl md:text-4xl font-playfair font-bold text-white mb-3 leading-tight">
             Mood Stories <span className="text-womb-maroon">😊</span>
           </h1>
-          <p className="text-base md:text-lg text-womb-secondarytext font-medium">
+          <p className="text-base md:text-lg text-white font-medium">
+            {/* was text-womb-secondarytext, now white to avoid any yellow */}
             Explore stories that match your current mood.
           </p>
         </div>
@@ -19,5 +20,4 @@ const MoodStories = () => {
     </Layout>
   );
 };
-
 export default MoodStories;

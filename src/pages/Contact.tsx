@@ -9,7 +9,7 @@ const Contact = () => (
     <div className="container mx-auto px-4 py-16">
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-womb-softwhite mb-4 font-playfair">Get in Touch</h1>
-        <p className="text-lg text-womb-warmgrey mb-12">
+        <p className="text-lg text-white mb-12">
           We're here to help and answer any question you might have. We look forward to hearing from you.
         </p>
       </div>
@@ -20,7 +20,7 @@ const Contact = () => (
             <Mail className="w-6 h-6 text-womb-maroon mt-1" />
             <div>
               <h3 className="font-semibold text-womb-softwhite">Email Us</h3>
-              <p className="text-womb-warmgrey">For general inquiries, support, or feedback.</p>
+              <p className="text-white">For general inquiries, support, or feedback.</p>
               <a href="mailto:contact@wombverse.org" className="text-womb-maroon hover:underline">contact@wombverse.org</a>
             </div>
           </div>
@@ -28,7 +28,7 @@ const Contact = () => (
             <Phone className="w-6 h-6 text-womb-maroon mt-1" />
             <div>
               <h3 className="font-semibold text-womb-softwhite">Call Us</h3>
-              <p className="text-womb-warmgrey">For urgent matters.</p>
+              <p className="text-white">For urgent matters.</p>
               <a href="tel:+1-800-555-0123" className="text-womb-maroon hover:underline">+1 (800) 555-0123</a>
             </div>
           </div>
@@ -36,7 +36,9 @@ const Contact = () => (
             <MapPin className="w-6 h-6 text-womb-maroon mt-1" />
             <div>
               <h3 className="font-semibold text-womb-softwhite">Our Office</h3>
-              <p className="text-womb-warmgrey">WombVerse Headquarters<br/>123 Wellness Way<br/>San Francisco, CA 94105, USA</p>
+              <p className="text-white">
+                WombVerse Headquarters<br/>123 Wellness Way<br/>San Francisco, CA 94105, USA
+              </p>
             </div>
           </div>
         </div>

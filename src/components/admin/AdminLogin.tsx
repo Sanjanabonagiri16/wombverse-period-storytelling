@@ -78,7 +78,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
           <CardTitle className="text-2xl font-bold text-womb-softwhite">
             Admin Access
           </CardTitle>
-          <p className="text-womb-warmgrey text-sm">
+          <p className="text-womb-softwhite text-sm">
             Secure administrator portal
           </p>
         </CardHeader>
