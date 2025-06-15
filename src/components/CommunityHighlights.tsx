@@ -40,7 +40,7 @@ const CommunityHighlights = () => {
                 <div 
                   key={tag.name}
                   className="flex items-center justify-between p-3 bg-womb-deepgrey rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-womb-plum/10 animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  style={{ animationDelay: `${index * 75}ms` }}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-womb-warmgrey text-sm font-medium">

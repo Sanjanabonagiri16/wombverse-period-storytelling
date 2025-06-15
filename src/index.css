@@ -74,11 +74,11 @@
   }
   
   .btn-primary {
-    @apply bg-womb-crimson hover:bg-womb-crimson/90 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105;
+    @apply bg-womb-crimson hover:bg-womb-crimson/90 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-md shadow-womb-crimson/20 hover:shadow-lg hover:shadow-womb-crimson/30;
   }
   
   .btn-secondary {
-    @apply bg-womb-plum hover:bg-womb-plum/90 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105;
+    @apply bg-womb-plum hover:bg-womb-plum/90 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-md shadow-womb-plum/20 hover:shadow-lg hover:shadow-womb-plum/30;
   }
 
   /* Enhanced Animation Classes */

@@ -258,7 +258,7 @@ const Layout = ({ children }: LayoutProps) => {
       </main>
 
       {/* Professional Footer */}
-      <footer className="bg-womb-charcoal border-t border-womb-plum relative z-10">
+      <footer className="bg-womb-charcoal border-t border-womb-plum relative z-10 bg-mesh-gradient">
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-womb-softwhite">
             {/* Brand & About */}

@@ -1,4 +1,3 @@
-
 import { PenTool, BookOpen, Heart, ChevronDown, Sparkles, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -176,18 +175,18 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-playfair font-extrabold leading-tight">
-              <span className="block animate-slide-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.2s' }}>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-playfair font-extrabold leading-tight">
+              <span className="block animate-slide-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.1s' }}>
                 <span className="text-white drop-shadow-md">
                   Your Period.
                 </span>
               </span>
-              <span className="block animate-slide-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.4s' }}>
+              <span className="block animate-slide-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.25s' }}>
                 <span className="bg-gradient-to-r from-red-400 via-womb-crimson to-red-500 bg-clip-text text-transparent drop-shadow-lg">
                   Your Story.
                 </span>
               </span>
-              <span className="block animate-slide-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.6s' }}>
+              <span className="block animate-slide-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.4s' }}>
                 <span className="bg-gradient-to-r from-indigo-400 via-womb-crimson to-indigo-500 bg-clip-text text-transparent drop-shadow-md">
                   Your Voice.
                 </span>
@@ -195,8 +194,8 @@ const Hero = () => {
             </h1>
           </div>
           
-          <div className="animate-fade-in opacity-0 mb-12" style={{ animationFillMode: 'forwards', animationDelay: '0.8s' }}>
-            <p className="text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto text-gray-300">
+          <div className="animate-fade-in opacity-0 mb-12" style={{ animationFillMode: 'forwards', animationDelay: '0.6s' }}>
+            <p className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-gray-300">
               Join a community where period stories are shared, celebrated, and heard.
               <br />
               <span className="block mt-4 text-2xl md:text-3xl font-bold font-inter tracking-wider text-indigo-300 drop-shadow-[0_2px_4px_rgba(127,17,224,0.4)]">
@@ -205,7 +204,7 @@ const Hero = () => {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-in opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '1s' }}>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-in opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '0.8s' }}>
             <Link to="/auth">
               <Button size="lg" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-lg px-12 py-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-red-500/25 hover-glow">
                 <PenTool className="w-6 h-6 mr-3 group-hover:rotate-6 transition-transform duration-300" />
@@ -220,7 +219,7 @@ const Hero = () => {
             </Link>
           </div>
           
-          <div className="max-w-6xl mx-auto animate-fade-in opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '1.2s' }}>
+          <div className="max-w-6xl mx-auto animate-fade-in opacity-0" style={{ animationFillMode: 'forwards', animationDelay: '1s' }}>
             <Button
               onClick={() => setShowMoreWisdom(!showMoreWisdom)}
               className="group bg-slate-800/80 hover:bg-red-900/40 text-white border border-slate-600 hover:border-red-400 mb-8 text-base px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
@@ -239,8 +238,8 @@ const Hero = () => {
                     {displayedWisdom.map((quote, index) => (
                       <div
                         key={index}
-                        className="group bg-slate-800/60 backdrop-blur-lg rounded-xl p-6 border border-slate-700 hover:border-red-400/50 transition-all duration-300 animate-slide-in-up hover-lift opacity-0"
-                        style={{ animationFillMode: 'forwards', animationDelay: `${1.4 + index * 0.1}s` }}
+                        className="group bg-slate-800/60 backdrop-blur-lg rounded-xl p-6 border border-slate-700 hover:border-womb-crimson/50 transition-all duration-300 animate-slide-in-up hover-lift opacity-0"
+                        style={{ animationFillMode: 'forwards', animationDelay: `${1.2 + index * 0.08}s` }}
                       >
                         {quote.category && (
                           <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold rounded-full bg-womb-crimson/20 border border-womb-crimson/30 text-red-300">
