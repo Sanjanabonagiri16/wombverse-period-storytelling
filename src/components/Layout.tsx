@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles, Home, Mail, Phone, MapPin, Instagram, Twitter, Facebook, Youtube, ChevronUp } from 'lucide-react';
+import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles, Home, Mail, Instagram, Twitter, Facebook, Youtube, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
@@ -257,22 +257,20 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
 
-      {/* Enhanced Footer */}
-      <footer className="relative bg-gradient-to-br from-womb-deepgrey via-slate-900 to-womb-charcoal border-t border-womb-deepgrey overflow-hidden">
-        {/* Animated Background Elements */}
+      {/* Clean Professional Footer */}
+      <footer className="relative bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 border-t border-slate-700">
+        {/* Subtle background effects */}
         <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-r from-womb-crimson/10 to-pink-500/10 rounded-full blur-2xl animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-gradient-to-r from-womb-plum/10 to-purple-500/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-blue-400/5 to-cyan-400/5 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20"></div>
         </div>
 
         <div className="container mx-auto px-4 py-12 relative z-10">
           {/* Newsletter Section */}
-          <div className="text-center mb-12 animate-fade-in">
-            <h3 className="text-2xl md:text-3xl font-playfair font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-womb-crimson to-purple-500 mb-4">
-              Stay Connected with WombVerse 💫
+          <div className="text-center mb-12">
+            <h3 className="text-2xl md:text-3xl font-playfair font-bold text-white mb-4">
+              Stay Connected with WombVerse
             </h3>
-            <p className="text-womb-warmgrey mb-6 max-w-md mx-auto">
+            <p className="text-gray-400 mb-6 max-w-md mx-auto">
               Get period wisdom, community updates, and inspiring stories delivered to your inbox
             </p>
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -281,30 +279,30 @@ const Layout = ({ children }: LayoutProps) => {
                 placeholder="Enter your email"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-1 bg-womb-charcoal border-womb-plum/30 text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson"
+                className="flex-1 bg-slate-800 border-slate-600 text-white placeholder-gray-400 focus:border-blue-400"
                 required
               />
-              <Button type="submit" className="bg-gradient-to-r from-womb-crimson to-womb-plum hover:from-womb-crimson/80 hover:to-womb-plum/80 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:scale-105">
-                Subscribe ✨
+              <Button type="submit" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:scale-105">
+                Subscribe
               </Button>
             </form>
           </div>
 
           {/* Main Footer Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             {/* Brand Section */}
-            <div className="animate-fade-in">
+            <div>
               <div className="flex items-center space-x-2 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center animate-pulse">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-2xl font-playfair font-bold text-transparent bg-clip-text bg-gradient-to-r from-womb-crimson to-womb-plum">
+                <h3 className="text-2xl font-playfair font-bold text-white">
                   WombVerse
                 </h3>
               </div>
-              <p className="text-womb-warmgrey text-sm leading-relaxed mb-6">
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">
                 A safe, supportive space where period stories are shared, celebrated, and heard. 
-                Breaking the silence, building connection, creating belonging. 🌙
+                Breaking the silence, building connection, creating belonging.
               </p>
               {/* Social Media Links */}
               <div className="flex space-x-4">
@@ -317,7 +315,7 @@ const Layout = ({ children }: LayoutProps) => {
                   <a
                     key={index}
                     href={social.href}
-                    className={`text-womb-warmgrey ${social.color} transition-colors duration-300 hover:scale-125 transform`}
+                    className={`text-gray-400 ${social.color} transition-colors duration-300 hover:scale-125 transform`}
                   >
                     <social.icon className="w-5 h-5" />
                   </a>
@@ -325,44 +323,20 @@ const Layout = ({ children }: LayoutProps) => {
               </div>
             </div>
 
-            {/* Explore Section */}
-            <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              <h4 className="font-bold text-womb-softwhite mb-4 text-lg font-playfair">Explore</h4>
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-bold text-white mb-4 text-lg font-playfair">Quick Links</h4>
               <ul className="space-y-3 text-sm">
                 {[
-                  { name: "Featured Stories", href: "/featured-stories" },
-                  { name: "Recent Stories", href: "/recent-stories" },
-                  { name: "Popular Tags", href: "/popular-tags" },
-                  { name: "Mood Stories", href: "/mood-stories" },
-                  { name: "Community Wall", href: "/community" }
-                ].map((link, index) => (
-                  <li key={index}>
-                    <Link 
-                      to={link.href} 
-                      className="text-womb-warmgrey hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-womb-crimson hover:to-womb-plum transition-all duration-300 hover:translate-x-1 transform inline-block"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Community Section */}
-            <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <h4 className="font-bold text-womb-softwhite mb-4 text-lg font-playfair">Community</h4>
-              <ul className="space-y-3 text-sm">
-                {[
-                  { name: "Community Guidelines", href: "/guidelines" },
-                  { name: "Support & Resources", href: "/support" },
-                  { name: "Crisis Support", href: "/resources" },
-                  { name: "Period Education", href: "/education" },
+                  { name: "Stories", href: "/stories" },
+                  { name: "Community", href: "/community" },
+                  { name: "Whispers", href: "/whispers" },
                   { name: "Share Your Story", href: "/create-story" }
                 ].map((link, index) => (
                   <li key={index}>
                     <Link 
                       to={link.href} 
-                      className="text-womb-warmgrey hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-womb-plum hover:to-purple-400 transition-all duration-300 hover:translate-x-1 transform inline-block"
+                      className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
                     >
                       {link.name}
                     </Link>
@@ -372,70 +346,37 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
 
             {/* Contact Section */}
-            <div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              <h4 className="font-bold text-womb-softwhite mb-4 text-lg font-playfair">Connect</h4>
+            <div>
+              <h4 className="font-bold text-white mb-4 text-lg font-playfair">Contact</h4>
               <div className="space-y-3 text-sm">
-                <div className="flex items-center space-x-2 text-womb-warmgrey">
-                  <Mail className="w-4 h-4 text-womb-crimson" />
+                <div className="flex items-center space-x-2 text-gray-400">
+                  <Mail className="w-4 h-4 text-blue-400" />
                   <span>hello@wombverse.com</span>
                 </div>
-                <div className="flex items-center space-x-2 text-womb-warmgrey">
-                  <Phone className="w-4 h-4 text-womb-plum" />
-                  <span>+1 (555) 123-4567</span>
-                </div>
-                <div className="flex items-center space-x-2 text-womb-warmgrey">
-                  <MapPin className="w-4 h-4 text-pink-400" />
-                  <span>Global Community</span>
-                </div>
+                <p className="text-gray-400 text-sm">
+                  We're here to support you on your journey.
+                </p>
               </div>
-              <ul className="space-y-2 text-sm mt-4">
-                {[
-                  { name: "About Us", href: "/about-us" },
-                  { name: "Contact", href: "/contact" },
-                  { name: "Privacy Policy", href: "/privacy" },
-                  { name: "Terms of Service", href: "/terms" }
-                ].map((link, index) => (
-                  <li key={index}>
-                    <Link 
-                      to={link.href} 
-                      className="text-womb-warmgrey hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 hover:translate-x-1 transform inline-block"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
 
           {/* Bottom Section */}
-          <div className="border-t border-gradient-to-r from-womb-deepgrey via-womb-plum/20 to-womb-deepgrey pt-8 flex flex-col md:flex-row justify-between items-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
+          <div className="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="text-center md:text-left mb-4 md:mb-0">
-              <p className="text-sm text-womb-warmgrey mb-2">
+              <p className="text-sm text-gray-400">
                 &copy; 2025 WombVerse. Made with{' '}
-                <Heart className="inline w-4 h-4 text-womb-crimson animate-pulse" />{' '}
+                <Heart className="inline w-4 h-4 text-red-400" />{' '}
                 for the menstrual community.
-              </p>
-              <p className="text-xs text-womb-warmgrey/60">
-                Breaking period taboos, one story at a time. 🌸
               </p>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <button 
-                onClick={() => window.location.href = '/admin'}
-                className="text-xs text-womb-warmgrey/30 hover:text-womb-crimson transition-colors"
-              >
-                Admin Access
-              </button>
-              <Button
-                onClick={scrollToTop}
-                size="sm"
-                className="bg-gradient-to-r from-womb-plum to-purple-500 hover:from-purple-500 hover:to-womb-plum text-white rounded-full p-2 transition-all duration-300 hover:scale-110"
-              >
-                <ChevronUp className="w-4 h-4" />
-              </Button>
-            </div>
+            <Button
+              onClick={scrollToTop}
+              size="sm"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full p-2 transition-all duration-300 hover:scale-110"
+            >
+              <ChevronUp className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </footer>
