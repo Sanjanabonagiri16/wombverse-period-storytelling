@@ -1,4 +1,3 @@
-
 import Layout from '@/components/Layout';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
@@ -16,7 +15,8 @@ type ExternalResource = {
 const fetchSupportResources = async (): Promise<ExternalResource[]> => {
   const { data, error } = await supabase
     .from('external_resources')
-    .select('id, name, description, url');
+    .select('id, name, description, url')
+    .eq('focus', 'Support');
 
   if (error) {
     console.error('Error fetching support resources:', error);
