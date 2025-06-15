@@ -1,3 +1,4 @@
+
 import { PenTool, BookOpen, Heart, ChevronDown, Sparkles, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -161,15 +162,15 @@ const Hero = () => {
     <section className="relative py-20 lg:py-32 overflow-hidden">
       {/* Professional Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-900/80 to-slate-800"></div>
-        <div className="absolute top-1/4 left-1/3 w-32 h-32 bg-gradient-to-r from-indigo-600/20 to-slate-700/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-gradient-to-r from-red-500/20 to-indigo-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-10 left-1/4 w-14 h-14 bg-gradient-to-br from-red-500/25 to-indigo-600/20 rounded-full blur-2xl animate-float"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-womb-charcoal via-womb-plum/80 to-womb-deepgrey"></div>
+        <div className="absolute top-1/4 left-1/3 w-32 h-32 bg-gradient-to-r from-womb-crimson/20 to-womb-deepgrey/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-gradient-to-r from-womb-crimson/20 to-womb-plum/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-10 left-1/4 w-14 h-14 bg-gradient-to-br from-womb-crimson/25 to-womb-plum/20 rounded-full blur-2xl animate-float"></div>
         <div className="absolute top-16 right-1/4 animate-float opacity-20" style={{ animationDelay: '1s' }}>
-          <Heart className="w-8 h-8 text-red-400" />
+          <Heart className="w-8 h-8 text-womb-crimson" />
         </div>
         <div className="absolute bottom-32 left-1/4 animate-float opacity-15" style={{ animationDelay: '3s' }}>
-          <Star className="w-6 h-6 text-indigo-400" />
+          <Star className="w-6 h-6 text-red-400" />
         </div>
       </div>
       
@@ -180,11 +181,11 @@ const Hero = () => {
               <span className="text-white drop-shadow-md">
                 Your Period.
               </span>{' '}
-              <span className="bg-gradient-to-r from-red-500 via-indigo-600 to-red-400 bg-clip-text text-transparent drop-shadow-lg">
+              <span className="bg-gradient-to-r from-red-400 via-womb-crimson to-red-500 bg-clip-text text-transparent drop-shadow-lg">
                 Your Story.
               </span>
               <br />
-              <span className="bg-gradient-to-r from-indigo-600 via-red-500 to-indigo-600 bg-clip-text text-transparent drop-shadow-md">
+              <span className="bg-gradient-to-r from-womb-plum via-womb-crimson to-womb-plum bg-clip-text text-transparent drop-shadow-md">
                 Your Voice.
               </span>
             </h1>
@@ -238,7 +239,7 @@ const Hero = () => {
                         style={{ animationDelay: `${index * 0.1}s` }}
                       >
                         {quote.category && (
-                          <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold rounded-full bg-red-500/20 border border-red-400/30 text-red-300">
+                          <div className="inline-block px-3 py-1 mb-3 text-xs font-semibold rounded-full bg-womb-crimson/20 border border-womb-crimson/30 text-red-300">
                             {quote.category}
                           </div>
                         )}

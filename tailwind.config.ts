@@ -26,11 +26,11 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#1e3a8a', // Professional blue
+					DEFAULT: '#800000', // Dark Maroon
 					foreground: '#ffffff'
 				},
 				secondary: {
-					DEFAULT: '#64748b', // Professional slate/grey
+					DEFAULT: '#374151', // Dark Grey
 					foreground: '#ffffff'
 				},
 				destructive: {
@@ -42,7 +42,7 @@ export default {
 					foreground: '#e5e7eb'
 				},
 				accent: {
-					DEFAULT: '#0ea5e9', // Soft blue accent
+					DEFAULT: '#b91c1c', // A brighter red for accents
 					foreground: '#ffffff'
 				},
 				popover: {
@@ -55,12 +55,12 @@ export default {
 				},
 				// Professional, dark palette
 				womb: {
-					charcoal: '#111827', // Very dark blueish black
-					crimson: '#1e3a8a',  // Now blue
-					plum: '#334155',     // Slate/dark blue
+					charcoal: '#1a1a1a', // Near Black
+					crimson: '#800000',  // Dark Maroon
+					plum: '#5C4033',     // Dark Brown
 					softwhite: '#f9fafb',// White
-					warmgrey: '#94a3b8', // Soft grey
-					deepgrey: '#1e293b', // Deeper slate
+					warmgrey: '#6b7280', // Grey
+					deepgrey: '#1f2937', // Darker Grey
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
