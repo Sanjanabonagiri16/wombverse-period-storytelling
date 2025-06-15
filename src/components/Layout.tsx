@@ -1,11 +1,11 @@
-
 import { useState } from 'react';
-import { Search, Menu, X, Heart, PenTool, User, LogOut } from 'lucide-react';
+import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Link, useLocation } from 'react-router-dom';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +15,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, loading } = useAuth();
   const { toast } = useToast();
+  const location = useLocation();
 
   const handleSignOut = async () => {
     try {
@@ -41,8 +42,15 @@ const Layout = ({ children }: LayoutProps) => {
       });
       return;
     }
-    window.location.href = '/create-story';
   };
+
+  const isActivePage = (path: string) => location.pathname === path;
+
+  const navigationItems = [
+    { href: '/stories', label: 'Stories', icon: Book },
+    { href: '/whispers', label: 'Whispers', icon: MessageSquare },
+    { href: '/community', label: 'Community', icon: Users },
+  ];
 
   return (
     <div className="min-h-screen bg-womb-charcoal">
@@ -56,56 +64,65 @@ const Layout = ({ children }: LayoutProps) => {
                 <Heart className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-2xl font-playfair font-bold text-womb-softwhite">
-                <a href="/">WombVerse</a>
+                <Link to="/">WombVerse</Link>
               </h1>
-            </div>
-
-            {/* Search Bar - Desktop */}
-            <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-womb-warmgrey w-4 h-4" />
-                <Input
-                  placeholder="Search stories, tags, or emotions..."
-                  className="pl-10 bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson"
-                />
-              </div>
             </div>
 
             {/* Navigation - Desktop */}
             <nav className="hidden md:flex items-center space-x-6">
-              <a href="#" className="text-womb-softwhite hover:text-womb-crimson transition-colors">
-                Explore
-              </a>
-              <a href="#" className="text-womb-softwhite hover:text-womb-crimson transition-colors">
-                Community
-              </a>
+              {navigationItems.map(item => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={`flex items-center space-x-2 transition-colors ${
+                    isActivePage(item.href)
+                      ? 'text-womb-crimson font-medium'
+                      : 'text-womb-softwhite hover:text-womb-crimson'
+                  }`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </Link>
+              ))}
               
               {!loading && (
                 <>
                   {user ? (
                     <>
-                      <Button className="btn-primary" onClick={handleShareStory}>
-                        <PenTool className="w-4 h-4 mr-2" />
-                        Share Story
-                      </Button>
+                      <Link to="/create-story">
+                        <Button className="btn-primary" onClick={handleShareStory}>
+                          <PenTool className="w-4 h-4 mr-2" />
+                          Share Story
+                        </Button>
+                      </Link>
+                      <Link
+                        to="/profile"
+                        className={`transition-colors ${
+                          isActivePage('/profile')
+                            ? 'text-womb-crimson'
+                            : 'text-womb-softwhite hover:text-womb-crimson'
+                        }`}
+                      >
+                        <User className="w-5 h-5" />
+                      </Link>
                       <Button 
                         variant="ghost" 
                         className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey"
                         onClick={handleSignOut}
                       >
-                        <LogOut className="w-4 h-4 mr-2" />
-                        Sign Out
+                        <LogOut className="w-4 h-4" />
                       </Button>
                     </>
                   ) : (
-                    <Button 
-                      variant="ghost" 
-                      className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey"
-                      onClick={() => window.location.href = '/auth'}
-                    >
-                      <User className="w-4 h-4 mr-2" />
-                      Sign In
-                    </Button>
+                    <Link to="/auth">
+                      <Button 
+                        variant="ghost" 
+                        className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey"
+                      >
+                        <User className="w-4 h-4 mr-2" />
+                        Sign In
+                      </Button>
+                    </Link>
                   )}
                 </>
               )}
@@ -138,21 +155,41 @@ const Layout = ({ children }: LayoutProps) => {
         {isMenuOpen && (
           <div className="md:hidden bg-womb-deepgrey border-t border-womb-deepgrey">
             <nav className="container mx-auto px-4 py-4 space-y-4">
-              <a href="#" className="block text-womb-softwhite hover:text-womb-crimson transition-colors">
-                Explore Stories
-              </a>
-              <a href="#" className="block text-womb-softwhite hover:text-womb-crimson transition-colors">
-                Community Wall
-              </a>
+              {navigationItems.map(item => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={`flex items-center space-x-2 transition-colors ${
+                    isActivePage(item.href)
+                      ? 'text-womb-crimson font-medium'
+                      : 'text-womb-softwhite hover:text-womb-crimson'
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </Link>
+              ))}
               
               {!loading && (
                 <div className="pt-4 border-t border-womb-deepgrey space-y-2">
                   {user ? (
                     <>
-                      <Button className="w-full btn-primary" onClick={handleShareStory}>
-                        <PenTool className="w-4 h-4 mr-2" />
-                        Share Your Story
-                      </Button>
+                      <Link to="/create-story" onClick={() => setIsMenuOpen(false)}>
+                        <Button className="w-full btn-primary" onClick={handleShareStory}>
+                          <PenTool className="w-4 h-4 mr-2" />
+                          Share Your Story
+                        </Button>
+                      </Link>
+                      <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                        <Button 
+                          variant="outline" 
+                          className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
+                        >
+                          <User className="w-4 h-4 mr-2" />
+                          Profile
+                        </Button>
+                      </Link>
                       <Button 
                         variant="outline" 
                         className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
@@ -163,14 +200,15 @@ const Layout = ({ children }: LayoutProps) => {
                       </Button>
                     </>
                   ) : (
-                    <Button 
-                      variant="outline" 
-                      className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
-                      onClick={() => window.location.href = '/auth'}
-                    >
-                      <User className="w-4 h-4 mr-2" />
-                      Sign In
-                    </Button>
+                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
+                      >
+                        <User className="w-4 h-4 mr-2" />
+                        Sign In
+                      </Button>
+                    </Link>
                   )}
                 </div>
               )}

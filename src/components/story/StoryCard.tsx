@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Heart, MessageCircle, Bookmark, Share2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -34,6 +33,15 @@ const StoryCard = ({ story }: StoryCardProps) => {
   const [comments, setComments] = useState<any[]>([]);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [userReaction, setUserReaction] = useState<string | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const emojiReactions = [
+    { type: 'heart', emoji: '❤️', label: 'Love' },
+    { type: 'support', emoji: '🤗', label: 'Support' },
+    { type: 'strong', emoji: '💪', label: 'Strong' },
+    { type: 'tears', emoji: '😭', label: 'Tears' },
+    { type: 'grateful', emoji: '🙏', label: 'Grateful' },
+  ];
 
   useEffect(() => {
     fetchReactions();
@@ -127,6 +135,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
       }
       
       fetchReactions();
+      setShowEmojiPicker(false);
     } catch (error) {
       console.error('Error toggling reaction:', error);
     }
@@ -188,11 +197,17 @@ const StoryCard = ({ story }: StoryCardProps) => {
     return colorMap[tag] || 'text-womb-warmgrey bg-womb-warmgrey/20';
   };
 
-  const heartCount = reactions.filter(r => r.type === 'heart').length;
-  const supportCount = reactions.filter(r => r.type === 'support').length;
+  const getReactionCount = (type: string) => {
+    return reactions.filter(r => r.type === type).length;
+  };
+
+  const getReactionEmoji = (type: string) => {
+    const reaction = emojiReactions.find(r => r.type === type);
+    return reaction?.emoji || '❤️';
+  };
 
   return (
-    <div className="story-card p-4 md:p-6">
+    <div className="story-card p-4 md:p-6 hover:shadow-lg hover:shadow-womb-plum/5 transition-all duration-300">
       {/* Author Info */}
       <div className="flex items-center space-x-3 mb-4">
         <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center">
@@ -212,7 +227,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
 
       {/* Story Content */}
       <div className="space-y-4">
-        <h2 className="text-lg md:text-xl font-playfair font-semibold text-womb-softwhite">
+        <h2 className="text-lg md:text-xl font-playfair font-semibold text-womb-softwhite hover:text-white transition-colors">
           {story.title}
         </h2>
         
@@ -248,53 +263,81 @@ const StoryCard = ({ story }: StoryCardProps) => {
         )}
       </div>
 
-      {/* Interaction Buttons */}
-      <div className="flex items-center justify-between pt-4 mt-4 border-t border-womb-deepgrey">
-        <div className="flex items-center space-x-3 md:space-x-4">
-          <button 
-            onClick={() => toggleReaction('heart')}
-            className={`flex items-center space-x-1 md:space-x-2 transition-colors ${
-              userReaction === 'heart' 
-                ? 'text-womb-crimson' 
-                : 'text-womb-warmgrey hover:text-womb-crimson'
-            }`}
-          >
-            <Heart className={`w-4 h-4 md:w-5 md:h-5 ${userReaction === 'heart' ? 'fill-current' : ''}`} />
-            <span className="text-xs md:text-sm">{heartCount}</span>
-          </button>
-          
-          <button 
-            onClick={() => toggleReaction('support')}
-            className={`flex items-center space-x-1 md:space-x-2 transition-colors ${
-              userReaction === 'support' 
-                ? 'text-womb-plum' 
-                : 'text-womb-warmgrey hover:text-womb-plum'
-            }`}
-          >
-            <MessageCircle className={`w-4 h-4 md:w-5 md:h-5 ${userReaction === 'support' ? 'fill-current' : ''}`} />
-            <span className="text-xs md:text-sm">{supportCount}</span>
-          </button>
-          
-          <span className="text-womb-warmgrey text-xs md:text-sm">
-            {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
-          </span>
+      {/* Enhanced Interaction Section */}
+      <div className="pt-4 mt-4 border-t border-womb-deepgrey space-y-3">
+        {/* Emoji Reactions */}
+        <div className="flex items-center space-x-2">
+          {emojiReactions.map(reaction => {
+            const count = getReactionCount(reaction.type);
+            const isActive = userReaction === reaction.type;
+            return count > 0 || isActive ? (
+              <button
+                key={reaction.type}
+                onClick={() => toggleReaction(reaction.type)}
+                className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs transition-all ${
+                  isActive 
+                    ? 'bg-womb-crimson/20 text-womb-crimson border border-womb-crimson/50' 
+                    : 'bg-womb-deepgrey/50 text-womb-warmgrey hover:bg-womb-deepgrey hover:text-womb-softwhite'
+                }`}
+              >
+                <span>{reaction.emoji}</span>
+                <span>{count}</span>
+              </button>
+            ) : null;
+          })}
         </div>
-        
-        <div className="flex items-center space-x-2 md:space-x-3">
-          <button 
-            onClick={toggleBookmark}
-            className={`transition-colors ${
-              isBookmarked 
-                ? 'text-womb-plum' 
-                : 'text-womb-warmgrey hover:text-womb-plum'
-            }`}
-          >
-            <Bookmark className={`w-4 h-4 md:w-5 md:h-5 ${isBookmarked ? 'fill-current' : ''}`} />
-          </button>
+
+        {/* Main Interaction Buttons */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3 md:space-x-4">
+            {/* Emoji Picker Toggle */}
+            <div className="relative">
+              <button 
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                className="flex items-center space-x-1 md:space-x-2 transition-colors text-womb-warmgrey hover:text-womb-crimson"
+              >
+                <Heart className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="text-xs md:text-sm">React</span>
+              </button>
+              
+              {/* Emoji Picker Dropdown */}
+              {showEmojiPicker && (
+                <div className="absolute bottom-full left-0 mb-2 bg-womb-deepgrey border border-womb-warmgrey/20 rounded-lg p-2 flex space-x-1 z-10 shadow-lg">
+                  {emojiReactions.map(reaction => (
+                    <button
+                      key={reaction.type}
+                      onClick={() => toggleReaction(reaction.type)}
+                      className="text-xl hover:scale-125 transition-transform p-1"
+                      title={reaction.label}
+                    >
+                      {reaction.emoji}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <span className="text-womb-warmgrey text-xs md:text-sm">
+              {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
+            </span>
+          </div>
           
-          <button className="text-womb-warmgrey hover:text-womb-softwhite transition-colors">
-            <Share2 className="w-4 h-4 md:w-5 md:h-5" />
-          </button>
+          <div className="flex items-center space-x-2 md:space-x-3">
+            <button 
+              onClick={toggleBookmark}
+              className={`transition-colors ${
+                isBookmarked 
+                  ? 'text-womb-plum' 
+                  : 'text-womb-warmgrey hover:text-womb-plum'
+              }`}
+            >
+              <Bookmark className={`w-4 h-4 md:w-5 md:h-5 ${isBookmarked ? 'fill-current' : ''}`} />
+            </button>
+            
+            <button className="text-womb-warmgrey hover:text-womb-softwhite transition-colors">
+              <Share2 className="w-4 h-4 md:w-5 md:h-5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

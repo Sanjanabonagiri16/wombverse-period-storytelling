@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import CreateStory from "./pages/CreateStory";
 import Stories from "./pages/Stories";
+import Whispers from "./pages/Whispers";
+import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +28,8 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/create-story" element={<CreateStory />} />
             <Route path="/stories" element={<Stories />} />
+            <Route path="/whispers" element={<Whispers />} />
+            <Route path="/community" element={<Community />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
