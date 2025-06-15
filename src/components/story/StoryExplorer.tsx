@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -140,7 +141,7 @@ const StoryExplorer = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-red-400" />
+        <Loader2 className="w-8 h-8 animate-spin text-womb-maroon" />
       </div>
     );
   }
@@ -153,20 +154,20 @@ const StoryExplorer = () => {
       {/* Filters */}
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
-          <Filter className="w-5 h-5 text-slate-400" />
+          <Filter className="w-5 h-5 text-white" />
           <h3 className="text-lg font-medium text-white">Filter by feeling</h3>
         </div>
         
         {/* Emotion Tags Filter */}
         <div className="space-y-2">
-          <p className="text-sm text-slate-400">Emotional tags:</p>
+          <p className="text-sm text-white">Emotional tags:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setEmotionFilter('')}
               className={`px-3 py-1 rounded-full text-sm transition-colors ${
                 emotionFilter === '' 
-                  ? 'bg-red-600 text-white' 
-                  : 'bg-slate-800 border border-slate-600 text-slate-300 hover:text-white hover:border-slate-500'
+                  ? 'bg-womb-maroon text-white' 
+                  : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray'
               }`}
             >
               All
@@ -177,8 +178,8 @@ const StoryExplorer = () => {
                 onClick={() => setEmotionFilter(emotion.id)}
                 className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center space-x-1 ${
                   emotionFilter === emotion.id 
-                    ? 'bg-red-600 text-white' 
-                    : 'bg-slate-800 border border-slate-600 text-slate-300 hover:text-white hover:border-slate-500'
+                    ? 'bg-womb-maroon text-white' 
+                    : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray'
                 }`}
               >
                 <span>{emotion.emoji}</span>
@@ -190,14 +191,14 @@ const StoryExplorer = () => {
 
         {/* Mood Filter */}
         <div className="space-y-2">
-          <p className="text-sm text-slate-400">Moods:</p>
+          <p className="text-sm text-white">Moods:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setMoodFilter('')}
               className={`px-3 py-1 rounded-full text-sm transition-colors ${
                 moodFilter === '' 
-                  ? 'bg-indigo-600 text-white' 
-                  : 'bg-slate-800 border border-slate-600 text-slate-300 hover:text-white hover:border-slate-500'
+                  ? 'bg-womb-mediumgray text-womb-charcoal' 
+                  : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray'
               }`}
             >
               All
@@ -208,8 +209,8 @@ const StoryExplorer = () => {
                 onClick={() => setMoodFilter(mood.id)}
                 className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center space-x-1 ${
                   moodFilter === mood.id 
-                    ? 'bg-indigo-600 text-white' 
-                    : 'bg-slate-800 border border-slate-600 text-slate-300 hover:text-white hover:border-slate-500'
+                    ? 'bg-womb-mediumgray text-womb-charcoal' 
+                    : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray'
                 }`}
               >
                 <span>{mood.emoji}</span>
@@ -223,8 +224,8 @@ const StoryExplorer = () => {
       {/* Stories Grid */}
       {stories.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-slate-300 text-lg mb-4">No stories found</p>
-          <p className="text-slate-400 text-sm">
+          <p className="text-white text-lg mb-4">No stories found</p>
+          <p className="text-white text-sm">
             Try adjusting your filters or be the first to share a story with these tags!
           </p>
         </div>
@@ -243,7 +244,7 @@ const StoryExplorer = () => {
                 onClick={loadMore}
                 disabled={loadingMore}
                 variant="outline"
-                className="border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
+                className="border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
               >
                 {loadingMore ? (
                   <>
