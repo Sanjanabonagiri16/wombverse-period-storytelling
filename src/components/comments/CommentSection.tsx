@@ -56,16 +56,32 @@ const CommentSection = ({ storyId, initialCommentCount = 0 }: CommentSectionProp
 
   const fetchComments = async () => {
     try {
-      const { data } = await supabase
+      // First get comments
+      const { data: commentsData } = await supabase
         .from('comments')
-        .select(`
-          *,
-          profiles:user_id (display_name)
-        `)
+        .select('*')
         .eq('story_id', storyId)
         .order('created_at', { ascending: true });
 
-      setComments(data || []);
+      if (commentsData) {
+        // Then get profiles for each comment
+        const commentsWithProfiles = await Promise.all(
+          commentsData.map(async (comment) => {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('display_name')
+              .eq('id', comment.user_id)
+              .single();
+
+            return {
+              ...comment,
+              profiles: profile
+            };
+          })
+        );
+
+        setComments(commentsWithProfiles);
+      }
     } catch (error) {
       console.error('Error fetching comments:', error);
     } finally {
