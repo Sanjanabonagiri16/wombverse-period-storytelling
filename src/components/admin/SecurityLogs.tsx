@@ -188,8 +188,8 @@ const SecurityLogs = () => {
     return (
       <div className="p-4 md:p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-slate-700 rounded w-1/3"></div>
-          <div className="h-64 bg-slate-700 rounded"></div>
+          <div className="h-8 bg-gray-800 rounded w-1/3"></div>
+          <div className="h-64 bg-gray-800 rounded"></div>
         </div>
       </div>
     );
@@ -198,27 +198,31 @@ const SecurityLogs = () => {
   return (
     <div className="space-y-4 md:space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h2 className="text-xl md:text-2xl font-bold text-womb-softwhite flex items-center gap-2">
-          <Shield className="w-5 h-5 md:w-6 md:h-6" />
+        <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+          <Shield className="w-5 h-5 md:w-6 md:h-6 text-indigo-400" />
           Security & System Logs
         </h2>
-        <div className="flex items-center gap-2 text-xs md:text-sm text-slate-400">
+        <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
           <RefreshCw className="w-3 h-3" />
           Last updated: {lastUpdated.toLocaleTimeString()}
         </div>
       </div>
 
       <Tabs defaultValue="analytics" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 border border-slate-700">
-          <TabsTrigger value="analytics" className="text-xs md:text-sm">Activity Logs</TabsTrigger>
-          <TabsTrigger value="rate-limits" className="text-xs md:text-sm">Rate Limiting</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 bg-black/50 border border-gray-800">
+          <TabsTrigger value="analytics" className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-xs md:text-sm">
+            Activity Logs
+          </TabsTrigger>
+          <TabsTrigger value="rate-limits" className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-xs md:text-sm">
+            Rate Limiting
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="analytics">
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <CardTitle className="flex items-center gap-2 text-base md:text-lg text-white">
                   <Activity className="w-4 h-4 md:w-5 md:h-5" />
                   Analytics Events
                 </CardTitle>
@@ -226,7 +230,7 @@ const SecurityLogs = () => {
                   variant="outline" 
                   size="sm"
                   onClick={() => exportData('analytics')}
-                  className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
@@ -238,30 +242,30 @@ const SecurityLogs = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="text-xs md:text-sm">Event Type</TableHead>
-                      <TableHead className="text-xs md:text-sm">User ID</TableHead>
-                      <TableHead className="text-xs md:text-sm hidden sm:table-cell">IP Address</TableHead>
-                      <TableHead className="text-xs md:text-sm">Timestamp</TableHead>
-                      <TableHead className="text-xs md:text-sm hidden lg:table-cell">Metadata</TableHead>
+                      <TableHead className="text-xs md:text-sm text-gray-300">Event Type</TableHead>
+                      <TableHead className="text-xs md:text-sm text-gray-300">User ID</TableHead>
+                      <TableHead className="text-xs md:text-sm hidden sm:table-cell text-gray-300">IP Address</TableHead>
+                      <TableHead className="text-xs md:text-sm text-gray-300">Timestamp</TableHead>
+                      <TableHead className="text-xs md:text-sm hidden lg:table-cell text-gray-300">Metadata</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {analyticsEvents.slice(0, 20).map((event) => (
-                      <TableRow key={event.id}>
+                      <TableRow key={event.id} className="border-gray-800">
                         <TableCell>
-                          <Badge variant="outline" className="text-xs">{event.event_type}</Badge>
+                          <Badge variant="outline" className="text-xs border-gray-700 text-gray-300">{event.event_type}</Badge>
                         </TableCell>
-                        <TableCell className="font-mono text-xs">
+                        <TableCell className="font-mono text-xs text-gray-300">
                           {event.user_id ? event.user_id.substring(0, 8) + '...' : 'Anonymous'}
                         </TableCell>
-                        <TableCell className="hidden sm:table-cell text-xs">
+                        <TableCell className="hidden sm:table-cell text-xs text-gray-300">
                           {event.ip_address ? String(event.ip_address) : 'N/A'}
                         </TableCell>
-                        <TableCell className="text-xs">
+                        <TableCell className="text-xs text-gray-300">
                           {new Date(event.created_at).toLocaleString()}
                         </TableCell>
                         <TableCell className="hidden lg:table-cell">
-                          <code className="text-xs bg-womb-deepgrey p-1 rounded">
+                          <code className="text-xs bg-gray-900 p-1 rounded text-gray-300">
                             {JSON.stringify(event.metadata || {}).substring(0, 30)}...
                           </code>
                         </TableCell>
@@ -275,10 +279,10 @@ const SecurityLogs = () => {
         </TabsContent>
 
         <TabsContent value="rate-limits">
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <CardTitle className="flex items-center gap-2 text-base md:text-lg text-white">
                   <AlertTriangle className="w-4 h-4 md:w-5 md:h-5" />
                   Rate Limit Violations
                 </CardTitle>
@@ -286,7 +290,7 @@ const SecurityLogs = () => {
                   variant="outline" 
                   size="sm"
                   onClick={() => exportData('rate-limits')}
-                  className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
@@ -298,26 +302,26 @@ const SecurityLogs = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="text-xs md:text-sm">Action Type</TableHead>
-                      <TableHead className="text-xs md:text-sm">Count</TableHead>
-                      <TableHead className="text-xs md:text-sm">User/IP</TableHead>
-                      <TableHead className="text-xs md:text-sm">Window Start</TableHead>
+                      <TableHead className="text-xs md:text-sm text-gray-300">Action Type</TableHead>
+                      <TableHead className="text-xs md:text-sm text-gray-300">Count</TableHead>
+                      <TableHead className="text-xs md:text-sm text-gray-300">User/IP</TableHead>
+                      <TableHead className="text-xs md:text-sm text-gray-300">Window Start</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {rateLimits.map((limit) => (
-                      <TableRow key={limit.id}>
+                      <TableRow key={limit.id} className="border-gray-800">
                         <TableCell>
-                          <Badge variant="destructive" className="text-xs">{limit.action_type}</Badge>
+                          <Badge className="bg-red-900/30 text-red-200 border-red-700/50 text-xs">{limit.action_type}</Badge>
                         </TableCell>
-                        <TableCell className="text-xs md:text-sm">{limit.count}</TableCell>
-                        <TableCell className="font-mono text-xs">
+                        <TableCell className="text-xs md:text-sm text-gray-300">{limit.count}</TableCell>
+                        <TableCell className="font-mono text-xs text-gray-300">
                           {limit.user_id ? 
                             limit.user_id.substring(0, 8) + '...' : 
                             String(limit.ip_address)
                           }
                         </TableCell>
-                        <TableCell className="text-xs">
+                        <TableCell className="text-xs text-gray-300">
                           {new Date(limit.window_start).toLocaleString()}
                         </TableCell>
                       </TableRow>

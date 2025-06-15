@@ -199,17 +199,17 @@ const ModerationDashboard = () => {
 
   const getStatusBadge = (status: string) => {
     const statusMap = {
-      pending: { color: 'bg-yellow-500', icon: Clock },
-      approved: { color: 'bg-green-500', icon: Check },
-      rejected: { color: 'bg-red-500', icon: X },
-      removed: { color: 'bg-gray-500', icon: X }
+      pending: { color: 'bg-orange-900/30 text-orange-200 border-orange-700/50', icon: Clock },
+      approved: { color: 'bg-green-900/30 text-green-200 border-green-700/50', icon: Check },
+      rejected: { color: 'bg-red-900/30 text-red-200 border-red-700/50', icon: X },
+      removed: { color: 'bg-gray-900/30 text-gray-200 border-gray-700/50', icon: X }
     };
     
     const config = statusMap[status as keyof typeof statusMap];
     const IconComponent = config?.icon || Clock;
     
     return (
-      <Badge className={`${config?.color} text-white flex items-center gap-1`}>
+      <Badge className={`${config?.color} flex items-center gap-1`}>
         <IconComponent className="w-3 h-3" />
         {status}
       </Badge>
@@ -220,10 +220,10 @@ const ModerationDashboard = () => {
     return (
       <div className="p-4 md:p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-slate-700 rounded w-1/3"></div>
+          <div className="h-8 bg-gray-800 rounded w-1/3"></div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-24 bg-slate-700 rounded"></div>
+              <div key={i} className="h-24 bg-gray-800 rounded"></div>
             ))}
           </div>
         </div>
@@ -235,10 +235,10 @@ const ModerationDashboard = () => {
     <div className="p-4 md:p-6 space-y-4 md:space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center space-x-2">
-          <Flag className="w-5 h-5 md:w-6 md:h-6 text-womb-crimson" />
-          <h1 className="text-xl md:text-2xl font-bold text-womb-softwhite">Moderation Dashboard</h1>
+          <Flag className="w-5 h-5 md:w-6 md:h-6 text-indigo-400" />
+          <h1 className="text-xl md:text-2xl font-bold text-white">Moderation Dashboard</h1>
         </div>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-xs md:text-sm text-slate-400">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-xs md:text-sm text-gray-400">
           <span className="flex items-center gap-1">
             <RefreshCw className="w-3 h-3" />
             Last updated: {lastUpdated.toLocaleTimeString()}
@@ -247,7 +247,7 @@ const ModerationDashboard = () => {
             size="sm"
             variant="outline"
             onClick={exportModerationData}
-            className="border-slate-600 text-slate-300 hover:bg-slate-700"
+            className="border-gray-700 text-gray-300 hover:bg-gray-800"
           >
             <Download className="w-4 h-4 mr-1" />
             Export CSV
@@ -256,59 +256,59 @@ const ModerationDashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        <Card className="bg-slate-800/50 border-slate-700">
+        <Card className="bg-black/50 border-gray-800">
           <CardContent className="p-4">
-            <div className="text-xl md:text-2xl font-bold text-yellow-400">{totalPending}</div>
-            <div className="text-xs md:text-sm text-womb-warmgrey">Pending Review</div>
+            <div className="text-xl md:text-2xl font-bold text-orange-400">{totalPending}</div>
+            <div className="text-xs md:text-sm text-gray-400">Pending Review</div>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800/50 border-slate-700">
+        <Card className="bg-black/50 border-gray-800">
           <CardContent className="p-4">
             <div className="text-xl md:text-2xl font-bold text-green-400">{totalProcessed}</div>
-            <div className="text-xs md:text-sm text-womb-warmgrey">Total Processed</div>
+            <div className="text-xs md:text-sm text-gray-400">Total Processed</div>
           </CardContent>
         </Card>
-        <Card className="bg-slate-800/50 border-slate-700">
+        <Card className="bg-black/50 border-gray-800">
           <CardContent className="p-4">
-            <div className="text-xl md:text-2xl font-bold text-blue-400">
+            <div className="text-xl md:text-2xl font-bold text-indigo-400">
               {totalPending + totalProcessed}
             </div>
-            <div className="text-xs md:text-sm text-womb-warmgrey">Total Reports</div>
+            <div className="text-xs md:text-sm text-gray-400">Total Reports</div>
           </CardContent>
         </Card>
       </div>
 
       <div className="space-y-4">
         {flaggedContent.length === 0 ? (
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardContent className="p-6 text-center">
-              <p className="text-womb-warmgrey">No content pending moderation</p>
+              <p className="text-gray-400">No content pending moderation</p>
             </CardContent>
           </Card>
         ) : (
           flaggedContent.map((item) => (
-            <Card key={item.id} className="bg-womb-deepgrey border-womb-deepgrey">
+            <Card key={item.id} className="bg-gray-900/50 border-gray-800">
               <CardHeader className="pb-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <CardTitle className="text-sm md:text-base text-womb-softwhite flex items-center gap-2">
+                  <CardTitle className="text-sm md:text-base text-white flex items-center gap-2">
                     <Flag className="w-4 h-4" />
                     {item.content_type === 'stories' ? 'Story' : 'Comment'} Flagged
                   </CardTitle>
                   {getStatusBadge(item.status)}
                 </div>
-                <div className="text-xs md:text-sm text-womb-warmgrey">
+                <div className="text-xs md:text-sm text-gray-400">
                   Reason: {item.flag_reason} | Type: {item.flag_type}
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="bg-womb-charcoal p-3 md:p-4 rounded-lg">
+                  <div className="bg-black/50 p-3 md:p-4 rounded-lg">
                     {item.content?.title && (
-                      <h4 className="font-medium text-womb-softwhite mb-2 text-sm md:text-base">
+                      <h4 className="font-medium text-white mb-2 text-sm md:text-base">
                         {item.content.title}
                       </h4>
                     )}
-                    <p className="text-womb-warmgrey text-xs md:text-sm break-words">
+                    <p className="text-gray-300 text-xs md:text-sm break-words">
                       {item.content?.content || 'Content not found'}
                     </p>
                   </div>
@@ -317,7 +317,7 @@ const ModerationDashboard = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white flex-1 sm:flex-none"
+                      className="border-green-700 text-green-400 hover:bg-green-900/20 flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'approved')}
                     >
                       <Check className="w-4 h-4 mr-1" />
@@ -326,7 +326,7 @@ const ModerationDashboard = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white flex-1 sm:flex-none"
+                      className="border-orange-700 text-orange-400 hover:bg-orange-900/20 flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'rejected')}
                     >
                       <X className="w-4 h-4 mr-1" />
@@ -335,7 +335,7 @@ const ModerationDashboard = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white flex-1 sm:flex-none"
+                      className="border-red-700 text-red-400 hover:bg-red-900/20 flex-1 sm:flex-none"
                       onClick={() => handleModeration(item.id, 'removed')}
                     >
                       <X className="w-4 h-4 mr-1" />

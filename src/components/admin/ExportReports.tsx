@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -39,13 +40,13 @@ const ExportReports = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [lastExportTime, setLastExportTime] = useState<Date | null>(null);
 
-  // Quick Reports Data - Updated with professional colors
+  // Quick Reports Data - Updated with professional dark colors
   const quickReports = [
     {
       title: 'User Activity Summary',
       description: 'Overview of user registrations, story submissions, and engagement',
       icon: Users,
-      color: 'slate',
+      color: 'indigo',
       action: () => generateQuickReport('user_activity')
     },
     {
@@ -59,14 +60,14 @@ const ExportReports = () => {
       title: 'Analytics Dashboard',
       description: 'Page views, user sessions, and platform engagement metrics',
       icon: BarChart3,
-      color: 'zinc',
+      color: 'slate',
       action: () => generateQuickReport('analytics')
     },
     {
       title: 'Security & Compliance',
       description: 'Security incidents, rate limiting violations, and compliance status',
       icon: Activity,
-      color: 'neutral',
+      color: 'zinc',
       action: () => generateQuickReport('security')
     }
   ];
@@ -264,10 +265,10 @@ const ExportReports = () => {
 
   const getColorClasses = (color: string) => {
     const colorMap = {
-      slate: 'bg-slate-600/20 text-slate-300 border-slate-500/30',
-      gray: 'bg-gray-600/20 text-gray-300 border-gray-500/30',
-      zinc: 'bg-zinc-600/20 text-zinc-300 border-zinc-500/30',
-      neutral: 'bg-neutral-600/20 text-neutral-300 border-neutral-500/30'
+      indigo: 'bg-indigo-900/30 text-indigo-200 border-indigo-700/50',
+      gray: 'bg-gray-900/30 text-gray-200 border-gray-700/50',
+      slate: 'bg-slate-900/30 text-slate-200 border-slate-700/50',
+      zinc: 'bg-zinc-900/30 text-zinc-200 border-zinc-700/50'
     };
     return colorMap[color as keyof typeof colorMap] || colorMap.slate;
   };
@@ -277,15 +278,15 @@ const ExportReports = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-            <FileText className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
+            <FileText className="w-5 h-5 md:w-6 md:h-6 text-indigo-400" />
             Export & Reports
           </h2>
-          <p className="text-slate-400 text-sm md:text-base mt-1">
+          <p className="text-gray-400 text-sm md:text-base mt-1">
             Generate comprehensive reports and export platform data
           </p>
         </div>
         {lastExportTime && (
-          <div className="flex items-center gap-2 text-xs md:text-sm text-slate-400">
+          <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
             <Clock className="w-3 h-3" />
             Last export: {format(lastExportTime, 'MMM dd, HH:mm')}
           </div>
@@ -293,20 +294,20 @@ const ExportReports = () => {
       </div>
 
       <Tabs defaultValue="quick-reports" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 border border-slate-700">
-          <TabsTrigger value="quick-reports" className="data-[state=active]:bg-slate-700 text-xs md:text-sm">
+        <TabsList className="grid w-full grid-cols-3 bg-black/50 border border-gray-800">
+          <TabsTrigger value="quick-reports" className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-xs md:text-sm">
             Quick Reports
           </TabsTrigger>
-          <TabsTrigger value="data-export" className="data-[state=active]:bg-slate-700 text-xs md:text-sm">
+          <TabsTrigger value="data-export" className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-xs md:text-sm">
             Data Export
           </TabsTrigger>
-          <TabsTrigger value="custom-reports" className="data-[state=active]:bg-slate-700 text-xs md:text-sm">
+          <TabsTrigger value="custom-reports" className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-xs md:text-sm">
             Custom Reports
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="quick-reports" className="space-y-4 md:space-y-6">
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white text-base md:text-lg">Pre-built Reports</CardTitle>
             </CardHeader>
@@ -315,7 +316,7 @@ const ExportReports = () => {
                 {quickReports.map((report, index) => (
                   <div
                     key={index}
-                    className="bg-slate-700/50 rounded-lg p-4 md:p-6 border border-slate-600 hover:border-slate-500 transition-colors"
+                    className="bg-gray-900/50 rounded-lg p-4 md:p-6 border border-gray-700 hover:border-gray-600 transition-colors"
                   >
                     <div className="flex items-start gap-3 md:gap-4">
                       <div className={`p-2 md:p-3 rounded-lg ${getColorClasses(report.color)}`}>
@@ -325,14 +326,14 @@ const ExportReports = () => {
                         <h3 className="font-semibold text-white text-sm md:text-base mb-2">
                           {report.title}
                         </h3>
-                        <p className="text-slate-400 text-xs md:text-sm mb-3 md:mb-4">
+                        <p className="text-gray-400 text-xs md:text-sm mb-3 md:mb-4">
                           {report.description}
                         </p>
                         <Button
                           onClick={report.action}
                           disabled={isExporting}
                           size="sm"
-                          className="bg-slate-600 hover:bg-slate-700 w-full sm:w-auto"
+                          className="bg-indigo-700 hover:bg-indigo-600 text-white w-full sm:w-auto"
                         >
                           <Download className="w-4 h-4 mr-2" />
                           {isExporting ? 'Generating...' : 'Generate Report'}
@@ -348,7 +349,7 @@ const ExportReports = () => {
 
         <TabsContent value="data-export" className="space-y-4 md:space-y-6">
           {/* Export Controls */}
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
                 <Filter className="w-4 h-4 md:w-5 md:h-5" />
@@ -358,14 +359,14 @@ const ExportReports = () => {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Date Range
                   </label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
-                        className="w-full bg-slate-700 border-slate-600 text-white hover:bg-slate-600"
+                        className="w-full bg-gray-900 border-gray-700 text-white hover:bg-gray-800"
                       >
                         <CalendarIcon className="w-4 h-4 mr-2" />
                         {dateRange?.from ? (
@@ -381,13 +382,13 @@ const ExportReports = () => {
                         )}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 bg-slate-800 border-slate-700" align="start">
+                    <PopoverContent className="w-auto p-0 bg-black border-gray-800" align="start">
                       <Calendar
                         initialFocus
                         mode="range"
                         defaultMonth={dateRange?.from}
                         selected={dateRange}
-                        onSelect={setDateRange}
+                        onSelect={(range) => setDateRange(range)}
                         numberOfMonths={2}
                         className="text-white"
                       />
@@ -396,14 +397,14 @@ const ExportReports = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Export Format
                   </label>
                   <Select value={exportFormat} onValueChange={setExportFormat}>
-                    <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                    <SelectTrigger className="bg-gray-900 border-gray-700 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-700 border-slate-600">
+                    <SelectContent className="bg-gray-900 border-gray-700">
                       <SelectItem value="csv">CSV (Spreadsheet)</SelectItem>
                       <SelectItem value="json">JSON (Developer)</SelectItem>
                     </SelectContent>
@@ -411,14 +412,14 @@ const ExportReports = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Report Type
                   </label>
                   <Select value={reportType} onValueChange={setReportType}>
-                    <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                    <SelectTrigger className="bg-gray-900 border-gray-700 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-700 border-slate-600">
+                    <SelectContent className="bg-gray-900 border-gray-700">
                       <SelectItem value="all">All Data</SelectItem>
                       <SelectItem value="summary">Summary Only</SelectItem>
                       <SelectItem value="detailed">Detailed Report</SelectItem>
@@ -430,7 +431,7 @@ const ExportReports = () => {
           </Card>
 
           {/* Export Categories */}
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white text-base md:text-lg">Data Categories</CardTitle>
             </CardHeader>
@@ -439,22 +440,22 @@ const ExportReports = () => {
                 {exportCategories.map((category, index) => (
                   <div
                     key={index}
-                    className="bg-slate-700/50 rounded-lg p-4 md:p-6 border border-slate-600"
+                    className="bg-gray-900/50 rounded-lg p-4 md:p-6 border border-gray-700"
                   >
                     <div className="flex items-start gap-3 md:gap-4">
-                      <div className="p-2 md:p-3 bg-slate-600/20 text-slate-300 border border-slate-500/30 rounded-lg">
+                      <div className="p-2 md:p-3 bg-indigo-900/30 text-indigo-200 border border-indigo-700/50 rounded-lg">
                         <category.icon className="w-5 h-5 md:w-6 md:h-6" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-white text-sm md:text-base mb-2">
                           {category.name}
                         </h3>
-                        <p className="text-slate-400 text-xs md:text-sm mb-3">
+                        <p className="text-gray-400 text-xs md:text-sm mb-3">
                           {category.description}
                         </p>
                         <div className="flex flex-wrap gap-1 mb-3 md:mb-4">
                           {category.tables.map((table) => (
-                            <Badge key={table} variant="outline" className="border-slate-600 text-slate-300 text-xs">
+                            <Badge key={table} variant="outline" className="border-gray-700 text-gray-300 text-xs">
                               {table}
                             </Badge>
                           ))}
@@ -464,7 +465,7 @@ const ExportReports = () => {
                           disabled={isExporting}
                           size="sm"
                           variant="outline"
-                          className="border-slate-600 text-slate-300 hover:bg-slate-600 w-full sm:w-auto"
+                          className="border-gray-700 text-gray-300 hover:bg-gray-800 w-full sm:w-auto"
                         >
                           <FileSpreadsheet className="w-4 h-4 mr-2" />
                           {isExporting ? 'Exporting...' : 'Export Data'}
@@ -479,37 +480,37 @@ const ExportReports = () => {
         </TabsContent>
 
         <TabsContent value="custom-reports" className="space-y-4 md:space-y-6">
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white text-base md:text-lg">Custom SQL Reports</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Report Name
                   </label>
                   <Input
                     placeholder="Enter report name..."
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-gray-900 border-gray-700 text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     SQL Query
                   </label>
                   <textarea
                     placeholder="SELECT * FROM analytics_events WHERE created_at >= '2024-01-01'..."
                     rows={8}
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white font-mono text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent resize-none"
+                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white font-mono text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
                   />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <Button className="bg-slate-600 hover:bg-slate-700 flex-1 sm:flex-none">
+                  <Button className="bg-indigo-700 hover:bg-indigo-600 flex-1 sm:flex-none">
                     <Database className="w-4 h-4 mr-2" />
                     Execute Query
                   </Button>
-                  <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700 flex-1 sm:flex-none">
+                  <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800 flex-1 sm:flex-none">
                     Save Template
                   </Button>
                 </div>
@@ -517,15 +518,15 @@ const ExportReports = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white text-base md:text-lg">Saved Report Templates</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-center py-8">
-                <Database className="w-12 h-12 mx-auto text-slate-500 mb-4" />
-                <p className="text-slate-400 text-sm md:text-base">No saved report templates yet.</p>
-                <p className="text-slate-500 text-xs md:text-sm mt-2">
+                <Database className="w-12 h-12 mx-auto text-gray-500 mb-4" />
+                <p className="text-gray-400 text-sm md:text-base">No saved report templates yet.</p>
+                <p className="text-gray-500 text-xs md:text-sm mt-2">
                   Create custom SQL reports and save them as templates for reuse.
                 </p>
               </div>

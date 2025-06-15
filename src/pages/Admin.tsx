@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -36,25 +37,25 @@ const Admin = () => {
   if (isAuthorized) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
           <div className="container mx-auto px-6 py-8">
             {/* Header */}
             <div className="mb-8">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent mb-2">
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-2">
                     WombVerse Admin
                   </h1>
-                  <p className="text-slate-400 text-lg font-medium">
+                  <p className="text-gray-400 text-lg font-medium">
                     Comprehensive platform management and analytics
                   </p>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold">
+                  <div className="bg-green-900/30 text-green-400 px-4 py-2 rounded-full text-sm font-semibold border border-green-700/50">
                     System Healthy
                   </div>
-                  <div className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-2">
-                    <span className="text-slate-300 text-sm">Demo Mode</span>
+                  <div className="bg-black border border-gray-700 rounded-lg px-4 py-2">
+                    <span className="text-gray-300 text-sm">Demo Mode</span>
                   </div>
                 </div>
               </div>
@@ -62,59 +63,59 @@ const Admin = () => {
 
             {/* Dashboard Tabs */}
             <Tabs defaultValue="moderation" className="w-full">
-              <TabsList className="grid w-full grid-cols-8 bg-slate-800/50 border border-slate-700 rounded-xl p-1 mb-8">
+              <TabsList className="grid w-full grid-cols-8 bg-black/50 border border-gray-800 rounded-xl p-1 mb-8">
                 <TabsTrigger 
                   value="moderation" 
-                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <Shield className="w-4 h-4" />
                   <span className="hidden sm:inline">Moderation</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="analytics" 
-                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <TrendingUp className="w-4 h-4" />
                   <span className="hidden sm:inline">Analytics</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="users" 
-                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <Users className="w-4 h-4" />
                   <span className="hidden sm:inline">Users</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="content" 
-                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <Star className="w-4 h-4" />
                   <span className="hidden sm:inline">Content</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security" 
-                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <Activity className="w-4 h-4" />
                   <span className="hidden sm:inline">Security</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="notifications" 
-                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <Bell className="w-4 h-4" />
                   <span className="hidden sm:inline">Notifications</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reports" 
-                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <FileText className="w-4 h-4" />
                   <span className="hidden sm:inline">Reports</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="settings" 
-                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:bg-gray-900 data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <Settings className="w-4 h-4" />
                   <span className="hidden sm:inline">Settings</span>
@@ -161,10 +162,10 @@ const Admin = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading admin dashboard...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading admin dashboard...</p>
         </div>
       </div>
     </Layout>

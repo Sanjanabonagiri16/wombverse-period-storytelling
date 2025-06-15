@@ -181,11 +181,11 @@ const ContentManagement = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active':
-      case 'published': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'scheduled': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'draft': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      case 'expired': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      case 'published': return 'bg-green-900/30 text-green-200 border-green-700/50';
+      case 'scheduled': return 'bg-indigo-900/30 text-indigo-200 border-indigo-700/50';
+      case 'draft': return 'bg-orange-900/30 text-orange-200 border-orange-700/50';
+      case 'expired': return 'bg-red-900/30 text-red-200 border-red-700/50';
+      default: return 'bg-gray-900/30 text-gray-200 border-gray-700/50';
     }
   };
 
@@ -193,29 +193,29 @@ const ContentManagement = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-          <Star className="w-6 h-6 text-yellow-400" />
+          <Star className="w-6 h-6 text-indigo-400" />
           Content Management Tools
         </h2>
       </div>
 
       <Tabs defaultValue="featured" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 border border-slate-700">
-          <TabsTrigger value="featured" className="data-[state=active]:bg-slate-700">
+        <TabsList className="grid w-full grid-cols-3 bg-black/50 border border-gray-800">
+          <TabsTrigger value="featured" className="data-[state=active]:bg-gray-900 data-[state=active]:text-white">
             Featured Stories
           </TabsTrigger>
-          <TabsTrigger value="community" className="data-[state=active]:bg-slate-700">
+          <TabsTrigger value="community" className="data-[state=active]:bg-gray-900 data-[state=active]:text-white">
             Community Wall
           </TabsTrigger>
-          <TabsTrigger value="prompts" className="data-[state=active]:bg-slate-700">
+          <TabsTrigger value="prompts" className="data-[state=active]:bg-gray-900 data-[state=active]:text-white">
             Mood Prompts
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="featured" className="space-y-6">
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <Star className="w-5 h-5 text-yellow-400" />
+                <Star className="w-5 h-5 text-indigo-400" />
                 Featured Stories Management
               </CardTitle>
             </CardHeader>
@@ -224,14 +224,14 @@ const ContentManagement = () => {
                 {featuredStories.map((story) => (
                   <div
                     key={story.id}
-                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                    className="bg-gray-900/50 rounded-lg p-4 border border-gray-700"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <h3 className="font-semibold text-white mb-1">{story.title}</h3>
-                        <p className="text-sm text-slate-400 mb-2">by {story.author}</p>
-                        <p className="text-slate-300 text-sm mb-3">{story.excerpt}</p>
-                        <div className="flex items-center gap-4 text-sm text-slate-400">
+                        <p className="text-sm text-gray-400 mb-2">by {story.author}</p>
+                        <p className="text-gray-300 text-sm mb-3">{story.excerpt}</p>
+                        <div className="flex items-center gap-4 text-sm text-gray-400">
                           <span className="flex items-center gap-1">
                             <BarChart3 className="w-4 h-4" />
                             {story.reactions} reactions
@@ -247,7 +247,7 @@ const ContentManagement = () => {
                           size="sm"
                           variant="outline"
                           onClick={() => handleUnfeatureStory(story.id)}
-                          className="border-red-600 text-red-400 hover:bg-red-900/20"
+                          className="border-red-700 text-red-400 hover:bg-red-900/20"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -262,22 +262,22 @@ const ContentManagement = () => {
 
         <TabsContent value="community" className="space-y-6">
           {/* Create New Post */}
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <Edit className="w-5 h-5 text-blue-400" />
+                <Edit className="w-5 h-5 text-indigo-400" />
                 Create Community Post
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Post Type
                 </label>
                 <select
                   value={newPost.type}
                   onChange={(e) => setNewPost(prev => ({ ...prev, type: e.target.value as any }))}
-                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white"
+                  className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white"
                 >
                   <option value="announcement">Announcement</option>
                   <option value="poll">Poll</option>
@@ -287,19 +287,19 @@ const ContentManagement = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Title
                 </label>
                 <Input
                   value={newPost.title}
                   onChange={(e) => setNewPost(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="Enter post title..."
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-gray-900 border-gray-700 text-white"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Content
                 </label>
                 <Textarea
@@ -307,15 +307,15 @@ const ContentManagement = () => {
                   onChange={(e) => setNewPost(prev => ({ ...prev, content: e.target.value }))}
                   placeholder="Enter post content..."
                   rows={4}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-gray-900 border-gray-700 text-white"
                 />
               </div>
               
               <div className="flex gap-2">
-                <Button onClick={handleCreatePost} className="bg-blue-600 hover:bg-blue-700">
+                <Button onClick={handleCreatePost} className="bg-indigo-700 hover:bg-indigo-600">
                   Publish Now
                 </Button>
-                <Button variant="outline" className="border-slate-600 text-slate-300">
+                <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800">
                   Save as Draft
                 </Button>
               </div>
@@ -323,10 +323,10 @@ const ContentManagement = () => {
           </Card>
 
           {/* Community Posts List */}
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-green-400" />
+                <MessageSquare className="w-5 h-5 text-indigo-400" />
                 Community Posts
               </CardTitle>
             </CardHeader>
@@ -335,32 +335,32 @@ const ContentManagement = () => {
                 {communityPosts.map((post) => (
                   <div
                     key={post.id}
-                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                    className="bg-gray-900/50 rounded-lg p-4 border border-gray-700"
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <h3 className="font-semibold text-white">{post.title}</h3>
-                        <p className="text-sm text-slate-400">by {post.author}</p>
+                        <p className="text-sm text-gray-400">by {post.author}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge className={getStatusColor(post.status)}>
                           {post.status}
                         </Badge>
-                        <Badge variant="outline" className="border-slate-600 text-slate-300">
+                        <Badge variant="outline" className="border-gray-700 text-gray-300">
                           {post.type}
                         </Badge>
                       </div>
                     </div>
-                    <p className="text-slate-300 mb-3">{post.content}</p>
+                    <p className="text-gray-300 mb-3">{post.content}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-400">
+                      <span className="text-sm text-gray-400">
                         {post.engagement} interactions
                       </span>
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline" className="border-slate-600 text-slate-300">
+                        <Button size="sm" variant="outline" className="border-gray-700 text-gray-300 hover:bg-gray-800">
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="outline" className="border-red-600 text-red-400">
+                        <Button size="sm" variant="outline" className="border-red-700 text-red-400 hover:bg-red-900/20">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -373,10 +373,10 @@ const ContentManagement = () => {
         </TabsContent>
 
         <TabsContent value="prompts" className="space-y-6">
-          <Card className="bg-slate-800/50 border-slate-700">
+          <Card className="bg-black/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-purple-400" />
+                <Calendar className="w-5 h-5 text-indigo-400" />
                 Mood Prompt Editor
               </CardTitle>
             </CardHeader>
@@ -385,12 +385,12 @@ const ContentManagement = () => {
                 {moodPrompts.map((prompt) => (
                   <div
                     key={prompt.id}
-                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                    className="bg-gray-900/50 rounded-lg p-4 border border-gray-700"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <p className="text-white font-medium mb-2">{prompt.prompt}</p>
-                        <div className="flex items-center gap-4 text-sm text-slate-400">
+                        <div className="flex items-center gap-4 text-sm text-gray-400">
                           <span>Category: {prompt.category}</span>
                           <span>Used {prompt.usage_count} times</span>
                           <span>Last used: {new Date(prompt.last_used).toLocaleDateString()}</span>
@@ -398,8 +398,8 @@ const ContentManagement = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge className={prompt.is_active ? 
-                          'bg-green-500/20 text-green-400 border-green-500/30' : 
-                          'bg-red-500/20 text-red-400 border-red-500/30'
+                          'bg-green-900/30 text-green-200 border-green-700/50' : 
+                          'bg-red-900/30 text-red-200 border-red-700/50'
                         }>
                           {prompt.is_active ? 'Active' : 'Inactive'}
                         </Badge>
@@ -407,8 +407,8 @@ const ContentManagement = () => {
                           size="sm"
                           onClick={() => handleTogglePrompt(prompt.id)}
                           className={prompt.is_active ? 
-                            'bg-red-600 hover:bg-red-700' : 
-                            'bg-green-600 hover:bg-green-700'
+                            'bg-red-800 hover:bg-red-700' : 
+                            'bg-green-800 hover:bg-green-700'
                           }
                         >
                           {prompt.is_active ? 'Deactivate' : 'Activate'}
