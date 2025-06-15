@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
@@ -71,7 +70,7 @@
   }
   
   .story-card {
-    @apply bg-womb-deepgrey border border-womb-deepgrey rounded-lg p-6 hover:border-womb-plum/30 transition-all duration-300 hover:shadow-lg hover:shadow-womb-plum/10 hover:-translate-y-1;
+    @apply bg-womb-deepgrey border border-womb-deepgrey rounded-lg p-6 transition-all duration-300;
   }
   
   .btn-primary {

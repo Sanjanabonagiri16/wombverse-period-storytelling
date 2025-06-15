@@ -186,7 +186,7 @@ const FeaturedStories = () => {
           {stories.map((story, index) => (
             <article 
               key={story.id} 
-              className="story-card animate-fade-in cursor-pointer"
+              className="story-card hover-lift animate-fade-in cursor-pointer"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Story Header - Mobile Optimized */}

@@ -306,12 +306,6 @@ const Layout = ({ children }: LayoutProps) => {
                 <li>
                   <Link to="/contact" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Contact</span></Link>
                 </li>
-              </ul>
-            </div>
-            {/* Legal */}
-            <div>
-              <h4 className="font-playfair font-semibold text-lg text-white mb-4">Legal</h4>
-              <ul className="space-y-2">
                 <li>
                   <Link to="/privacy" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Privacy Policy</span></Link>
                 </li>
@@ -319,6 +313,30 @@ const Layout = ({ children }: LayoutProps) => {
                   <Link to="/admin" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Admin</span></Link>
                 </li>
               </ul>
+            </div>
+            {/* Connect */}
+            <div>
+              <h4 className="font-playfair font-semibold text-lg text-white mb-4">Stay Connected</h4>
+              <p className="text-sm text-womb-warmgrey mb-4">Get the latest stories and updates in your inbox.</p>
+              <form onSubmit={handleNewsletterSubmit} className="flex gap-2 mb-6">
+                <Input
+                  type="email"
+                  placeholder="Your email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  className="bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson"
+                  required
+                />
+                <Button type="submit" className="btn-primary shrink-0">
+                  <Mail className="w-4 h-4" />
+                </Button>
+              </form>
+              <div className="flex space-x-4">
+                <Link to="#" className="text-womb-warmgrey hover:text-white transition-colors"><Instagram className="w-6 h-6" /></Link>
+                <Link to="#" className="text-womb-warmgrey hover:text-white transition-colors"><Twitter className="w-6 h-6" /></Link>
+                <Link to="#" className="text-womb-warmgrey hover:text-white transition-colors"><Facebook className="w-6 h-6" /></Link>
+                <Link to="#" className="text-womb-warmgrey hover:text-white transition-colors"><Youtube className="w-6 h-6" /></Link>
+              </div>
             </div>
           </div>
           <div className="text-center text-xs text-womb-warmgrey pt-8 mt-8 border-t border-womb-deepgrey">
