@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,8 +13,8 @@ interface AdminLoginProps {
 
 const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
   const { toast } = useToast();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('admin@wombverse.com');
+  const [password, setPassword] = useState('WombVerse2025!');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -23,22 +22,27 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
     e.preventDefault();
     setLoading(true);
 
+    console.log('Login attempt with:', { email, password });
+
     try {
-      // Check for demo credentials first
-      if (email === 'admin@wombverse.com' && password === 'WombVerse2025!') {
-        console.log('Demo credentials validated, calling onLoginSuccess');
+      // Check for demo credentials
+      if (email.trim() === 'admin@wombverse.com' && password.trim() === 'WombVerse2025!') {
+        console.log('Demo credentials validated successfully');
         toast({
           title: "Demo Login Successful",
           description: "Welcome to the admin dashboard (demo mode).",
         });
-        onLoginSuccess();
+        setTimeout(() => {
+          onLoginSuccess();
+        }, 100);
         return;
       }
 
-      // If not demo credentials, show error about using demo credentials
+      // If credentials don't match, show error
+      console.log('Invalid credentials provided');
       toast({
         title: "Invalid Credentials",
-        description: "Please use the demo credentials: admin@wombverse.com / WombVerse2025!",
+        description: "Please use the demo credentials provided below.",
         variant: "destructive",
       });
 
@@ -46,7 +50,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
       console.error('Login error:', error);
       toast({
         title: "Login failed",
-        description: "Please use demo credentials: admin@wombverse.com / WombVerse2025!",
+        description: "Please use the demo credentials provided below.",
         variant: "destructive",
       });
     } finally {
@@ -82,7 +86,6 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite"
-                placeholder="admin@wombverse.com"
                 required
               />
             </div>
@@ -97,7 +100,6 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite pr-10"
-                  placeholder="WombVerse2025!"
                   required
                 />
                 <Button
