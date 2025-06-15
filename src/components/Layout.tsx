@@ -82,17 +82,17 @@ const Layout = ({ children }: LayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-womb-charcoal">
+    <div className="min-h-screen bg-womb-black">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-womb-charcoal/95 backdrop-blur-sm border-b border-womb-deepgrey">
+      <header className="sticky top-0 z-50 bg-womb-black/95 backdrop-blur-sm border-b border-womb-darkgrey">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo with updated colors */}
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-womb-indigo to-womb-purple rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-womb-indigo to-womb-maroon rounded-full flex items-center justify-center">
                 <Heart className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-2xl font-playfair font-bold text-womb-softwhite">
+              <h1 className="text-2xl font-playfair font-bold text-womb-white">
                 <Link to="/">WombVerse</Link>
               </h1>
             </div>
@@ -106,7 +106,7 @@ const Layout = ({ children }: LayoutProps) => {
                   className={`flex items-center space-x-2 transition-colors ${
                     isActivePage(item.href)
                       ? 'text-womb-indigo font-medium'
-                      : 'text-womb-softwhite hover:text-womb-indigo'
+                      : 'text-womb-white hover:text-womb-indigo'
                   }`}
                 >
                   <item.icon className="w-4 h-4" />
@@ -119,7 +119,7 @@ const Layout = ({ children }: LayoutProps) => {
                   {user ? (
                     <>
                       <Button 
-                        className="bg-gradient-to-r from-womb-indigo to-womb-purple hover:from-indigo-600 hover:to-purple-700 text-white border-0" 
+                        className="bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white border-0" 
                         onClick={handleShareStory}
                       >
                         <PenTool className="w-4 h-4 mr-2" />
@@ -130,14 +130,14 @@ const Layout = ({ children }: LayoutProps) => {
                         className={`transition-colors ${
                           isActivePage('/profile')
                             ? 'text-womb-indigo'
-                            : 'text-womb-softwhite hover:text-womb-indigo'
+                            : 'text-womb-white hover:text-womb-indigo'
                         }`}
                       >
                         <User className="w-5 h-5" />
                       </Link>
                       <Button 
                         variant="ghost" 
-                        className="text-womb-softwhite hover:text-womb-indigo hover:bg-womb-deepgrey"
+                        className="text-womb-white hover:text-womb-indigo hover:bg-womb-darkgrey"
                         onClick={handleSignOut}
                       >
                         <LogOut className="w-4 h-4" />
@@ -147,7 +147,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <Link to="/auth">
                       <Button 
                         variant="ghost" 
-                        className="text-womb-softwhite hover:text-womb-indigo hover:bg-womb-deepgrey"
+                        className="text-womb-white hover:text-womb-indigo hover:bg-womb-darkgrey"
                       >
                         <User className="w-4 h-4 mr-2" />
                         Sign In
@@ -162,7 +162,7 @@ const Layout = ({ children }: LayoutProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden text-womb-softwhite"
+              className="md:hidden text-womb-white"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -172,10 +172,10 @@ const Layout = ({ children }: LayoutProps) => {
           {/* Mobile Search */}
           <div className="md:hidden mt-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-womb-warmgrey w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-womb-lightgrey w-4 h-4" />
               <Input
                 placeholder="Search stories..."
-                className="pl-10 bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-indigo"
+                className="pl-10 bg-womb-darkgrey border-womb-darkgrey text-womb-white placeholder-womb-lightgrey focus:border-womb-indigo"
               />
             </div>
           </div>
@@ -183,7 +183,7 @@ const Layout = ({ children }: LayoutProps) => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-womb-deepgrey border-t border-womb-deepgrey">
+          <div className="md:hidden bg-womb-darkgrey border-t border-womb-darkgrey">
             <nav className="container mx-auto px-4 py-4 space-y-4">
               {navigationItems.map(item => (
                 <Link
@@ -192,7 +192,7 @@ const Layout = ({ children }: LayoutProps) => {
                   className={`flex items-center space-x-2 transition-colors ${
                     isActivePage(item.href)
                       ? 'text-womb-indigo font-medium'
-                      : 'text-womb-softwhite hover:text-womb-indigo'
+                      : 'text-womb-white hover:text-womb-indigo'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -202,11 +202,11 @@ const Layout = ({ children }: LayoutProps) => {
               ))}
               
               {!loading && (
-                <div className="pt-4 border-t border-womb-deepgrey space-y-2">
+                <div className="pt-4 border-t border-womb-darkgrey space-y-2">
                   {user ? (
                     <>
                       <Button 
-                        className="w-full bg-gradient-to-r from-womb-indigo to-womb-purple hover:from-indigo-600 hover:to-purple-700 text-white border-0" 
+                        className="w-full bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white border-0" 
                         onClick={() => {
                           handleShareStory();
                           setIsMenuOpen(false);
@@ -218,7 +218,7 @@ const Layout = ({ children }: LayoutProps) => {
                       <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
                         <Button 
                           variant="outline" 
-                          className="w-full border-womb-purple text-womb-purple hover:bg-womb-purple hover:text-white"
+                          className="w-full border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
                         >
                           <User className="w-4 h-4 mr-2" />
                           Profile
@@ -226,7 +226,7 @@ const Layout = ({ children }: LayoutProps) => {
                       </Link>
                       <Button 
                         variant="outline" 
-                        className="w-full border-womb-purple text-womb-purple hover:bg-womb-purple hover:text-white"
+                        className="w-full border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
                         onClick={handleSignOut}
                       >
                         <LogOut className="w-4 h-4 mr-2" />
@@ -237,7 +237,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                       <Button 
                         variant="outline" 
-                        className="w-full border-womb-purple text-womb-purple hover:bg-womb-purple hover:text-white"
+                        className="w-full border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white"
                       >
                         <User className="w-4 h-4 mr-2" />
                         Sign In
@@ -257,20 +257,20 @@ const Layout = ({ children }: LayoutProps) => {
       </main>
 
       {/* Professional Footer with updated colors */}
-      <footer className="bg-womb-charcoal border-t border-womb-purple relative z-10 bg-mesh-gradient">
+      <footer className="bg-womb-black border-t border-womb-maroon relative z-10 bg-mesh-gradient">
         <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-womb-softwhite">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-womb-white">
             {/* Brand & About */}
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-womb-purple to-womb-charcoal rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-womb-maroon to-womb-black rounded-full flex items-center justify-center">
                   <span>
                     <svg width="18" height="18" viewBox="0 0 20 20" className="w-5 h-5 text-white"><circle cx="10" cy="10" r="10" fill="currentColor"/></svg>
                   </span>
                 </div>
                 <span className="font-playfair text-xl font-bold text-white">WombVerse</span>
               </div>
-              <p className="mb-4 text-sm text-womb-warmgrey">
+              <p className="mb-4 text-sm text-womb-lightgrey">
                 WombVerse is a professional community dedicated to sharing accurate, science-backed knowledge and real stories about menstrual health and wellbeing, with a focus on creating informed belonging.
               </p>
             </div>
@@ -279,16 +279,16 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Explore</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/featured-stories" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Featured Stories</span></Link>
+                  <Link to="/featured-stories" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>Featured Stories</span></Link>
                 </li>
                 <li>
-                  <Link to="/recent-stories" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Recent Stories</span></Link>
+                  <Link to="/recent-stories" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>Recent Stories</span></Link>
                 </li>
                 <li>
-                  <Link to="/resources" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Resources</span></Link>
+                  <Link to="/resources" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>Resources</span></Link>
                 </li>
                 <li>
-                  <Link to="/support" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Support</span></Link>
+                  <Link to="/support" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>Support</span></Link>
                 </li>
               </ul>
             </div>
@@ -297,54 +297,54 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Community</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/guidelines" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Community Guidelines</span></Link>
+                  <Link to="/guidelines" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>Community Guidelines</span></Link>
                 </li>
                 <li>
-                  <Link to="/about-us" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>About Us</span></Link>
+                  <Link to="/about-us" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>About Us</span></Link>
                 </li>
                 <li>
-                  <Link to="/contact" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Contact</span></Link>
+                  <Link to="/contact" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>Contact</span></Link>
                 </li>
                 <li>
-                  <Link to="/privacy" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Privacy Policy</span></Link>
+                  <Link to="/privacy" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>Privacy Policy</span></Link>
                 </li>
                 <li>
-                  <Link to="/admin" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Admin</span></Link>
+                  <Link to="/admin" className="text-womb-lightgrey hover:text-primary transition-colors story-link"><span>Admin</span></Link>
                 </li>
               </ul>
             </div>
             {/* Connect */}
             <div>
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Stay Connected</h4>
-              <p className="text-sm text-womb-warmgrey mb-4">Get the latest stories and updates in your inbox.</p>
+              <p className="text-sm text-womb-lightgrey mb-4">Get the latest stories and updates in your inbox.</p>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2 mb-6">
                 <Input
                   type="email"
                   placeholder="Your email"
                   value={newsletterEmail}
                   onChange={(e) => setNewsletterEmail(e.target.value)}
-                  className="bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-indigo"
+                  className="bg-womb-darkgrey border-womb-darkgrey text-womb-white placeholder-womb-lightgrey focus:border-womb-indigo"
                   required
                 />
-                <Button type="submit" className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-indigo-500/25 shrink-0">
+                <Button type="submit" className="bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-indigo-600/25 shrink-0">
                   <Mail className="w-4 h-4" />
                 </Button>
               </form>
               <div className="flex space-x-4">
-                <Link to="#" className="text-womb-warmgrey hover:text-white transition-colors"><Instagram className="w-6 h-6" /></Link>
-                <Link to="#" className="text-womb-warmgrey hover:text-white transition-colors"><Twitter className="w-6 h-6" /></Link>
-                <Link to="#" className="text-womb-warmgrey hover:text-white transition-colors"><Facebook className="w-6 h-6" /></Link>
-                <Link to="#" className="text-womb-warmgrey hover:text-white transition-colors"><Youtube className="w-6 h-6" /></Link>
+                <Link to="#" className="text-womb-lightgrey hover:text-white transition-colors"><Instagram className="w-6 h-6" /></Link>
+                <Link to="#" className="text-womb-lightgrey hover:text-white transition-colors"><Twitter className="w-6 h-6" /></Link>
+                <Link to="#" className="text-womb-lightgrey hover:text-white transition-colors"><Facebook className="w-6 h-6" /></Link>
+                <Link to="#" className="text-womb-lightgrey hover:text-white transition-colors"><Youtube className="w-6 h-6" /></Link>
               </div>
             </div>
           </div>
-          <div className="text-center text-xs text-womb-warmgrey pt-8 mt-8 border-t border-womb-deepgrey">
+          <div className="text-center text-xs text-womb-lightgrey pt-8 mt-8 border-t border-womb-darkgrey">
             &copy; 2025 WombVerse. All rights reserved.
           </div>
         </div>
         <button
           onClick={scrollToTop}
-          className="absolute bottom-4 right-4 md:bottom-8 md:right-8 bg-womb-purple p-3 rounded-full text-white hover:bg-purple-600/80 transition-colors shadow-lg hover:scale-110 transform"
+          className="absolute bottom-4 right-4 md:bottom-8 md:right-8 bg-womb-maroon p-3 rounded-full text-white hover:bg-red-900/80 transition-colors shadow-lg hover:scale-110 transform"
           aria-label="Back to top"
         >
           <ChevronUp className="w-6 h-6" />

@@ -14,24 +14,24 @@ const CommunityHighlights = () => {
   ];
 
   return (
-    <section className="py-16 bg-womb-deepgrey">
+    <section className="py-16 bg-womb-darkgrey">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-womb-softwhite mb-4">
+          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-womb-white mb-4">
             Community Pulse
           </h2>
-          <p className="text-lg text-womb-warmgrey max-w-2xl mx-auto">
+          <p className="text-lg text-womb-lightgrey max-w-2xl mx-auto">
             See what's trending, discover popular conversations, and connect with our growing community.
           </p>
         </div>
 
         <div className="max-w-2xl mx-auto">
           {/* Trending Tags - Now Full Width */}
-          <div className="bg-womb-charcoal rounded-lg p-6 animate-fade-in">
+          <div className="bg-womb-black rounded-lg p-6 animate-fade-in">
             <div className="flex items-center space-x-2 mb-6">
               <TrendingUp className="w-5 h-5 text-womb-indigo" />
-              <h3 className="text-xl font-playfair font-semibold text-womb-softwhite">
+              <h3 className="text-xl font-playfair font-semibold text-womb-white">
                 Trending Tags
               </h3>
             </div>
@@ -39,30 +39,30 @@ const CommunityHighlights = () => {
               {trendingTags.map((tag, index) => (
                 <div 
                   key={tag.name}
-                  className="flex items-center justify-between p-3 bg-womb-deepgrey rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/10 animate-fade-in"
+                  className="flex items-center justify-between p-3 bg-womb-darkgrey rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-womb-maroon/10 animate-fade-in"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-center space-x-3">
-                    <span className="text-womb-warmgrey text-sm font-medium">
+                    <span className="text-womb-lightgrey text-sm font-medium">
                       #{index + 1}
                     </span>
                     <div>
-                      <div className="text-womb-softwhite font-medium">
+                      <div className="text-womb-white font-medium">
                         #{tag.name}
                       </div>
-                      <div className="text-womb-warmgrey text-sm">
+                      <div className="text-womb-lightgrey text-sm">
                         {tag.count} stories
                       </div>
                     </div>
                   </div>
-                  <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
+                  <Badge className="bg-womb-maroon/20 text-womb-maroon border-womb-maroon/30">
                     {tag.growth}
                   </Badge>
                 </div>
               ))}
             </div>
             <div className="text-center mt-6">
-              <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-indigo-500/25">
+              <Button className="bg-gradient-to-r from-womb-indigo to-womb-maroon hover:from-indigo-700 hover:to-red-900 text-white px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-indigo-600/25">
                 Explore All Tags
               </Button>
             </div>
