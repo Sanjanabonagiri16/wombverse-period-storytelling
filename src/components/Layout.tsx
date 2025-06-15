@@ -240,8 +240,75 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
 
+      {/* More Wisdom Section */}
+      <section className="bg-womb-deepgrey py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-playfair font-bold text-womb-softwhite mb-6">
+              More Wisdom
+            </h2>
+            <p className="text-womb-warmgrey text-lg mb-8">
+              Discover insights, tips, and resources to help you on your journey
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-womb-charcoal p-6 rounded-lg border border-womb-deepgrey">
+                <h3 className="text-xl font-semibold text-womb-softwhite mb-3">Period Health</h3>
+                <p className="text-womb-warmgrey text-sm">
+                  Learn about menstrual health, cycle tracking, and wellness tips
+                </p>
+              </div>
+              <div className="bg-womb-charcoal p-6 rounded-lg border border-womb-deepgrey">
+                <h3 className="text-xl font-semibold text-womb-softwhite mb-3">Emotional Wellness</h3>
+                <p className="text-womb-warmgrey text-sm">
+                  Explore emotional support and mental health resources
+                </p>
+              </div>
+              <div className="bg-womb-charcoal p-6 rounded-lg border border-womb-deepgrey">
+                <h3 className="text-xl font-semibold text-womb-softwhite mb-3">Community Stories</h3>
+                <p className="text-womb-warmgrey text-sm">
+                  Read inspiring stories and experiences from our community
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Join Community Section */}
+      <section className="bg-gradient-to-r from-womb-crimson to-womb-plum py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-3xl font-playfair font-bold text-white mb-6">
+              Join Our Community
+            </h2>
+            <p className="text-white/90 text-lg mb-8">
+              Connect with others, share your experiences, and be part of a supportive community
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/auth">
+                <Button 
+                  size="lg" 
+                  className="bg-white text-womb-crimson hover:bg-white/90 font-semibold px-8 py-3"
+                >
+                  Get Started
+                </Button>
+              </Link>
+              <Link to="/stories">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="border-white text-white hover:bg-white hover:text-womb-crimson font-semibold px-8 py-3"
+                >
+                  Explore Stories
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="bg-womb-deepgrey border-t border-womb-deepgrey mt-16">
+      <footer className="bg-womb-deepgrey border-t border-womb-deepgrey">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -258,17 +325,17 @@ const Layout = ({ children }: LayoutProps) => {
             <div>
               <h4 className="font-semibold text-womb-softwhite mb-3">Explore</h4>
               <ul className="space-y-2 text-sm text-womb-warmgrey">
-                <li><a href="#" className="hover:text-womb-crimson transition-colors">Featured Stories</a></li>
-                <li><a href="#" className="hover:text-womb-crimson transition-colors">Recent Stories</a></li>
-                <li><a href="#" className="hover:text-womb-crimson transition-colors">Popular Tags</a></li>
+                <li><Link to="/stories" className="hover:text-womb-crimson transition-colors">Featured Stories</Link></li>
+                <li><Link to="/stories" className="hover:text-womb-crimson transition-colors">Recent Stories</Link></li>
+                <li><Link to="/stories" className="hover:text-womb-crimson transition-colors">Popular Tags</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold text-womb-softwhite mb-3">Community</h4>
               <ul className="space-y-2 text-sm text-womb-warmgrey">
-                <li><a href="#" className="hover:text-womb-crimson transition-colors">Guidelines</a></li>
-                <li><a href="#" className="hover:text-womb-crimson transition-colors">Support</a></li>
-                <li><a href="#" className="hover:text-womb-crimson transition-colors">Resources</a></li>
+                <li><Link to="/community" className="hover:text-womb-crimson transition-colors">Guidelines</Link></li>
+                <li><Link to="/community" className="hover:text-womb-crimson transition-colors">Support</Link></li>
+                <li><Link to="/community" className="hover:text-womb-crimson transition-colors">Resources</Link></li>
               </ul>
             </div>
             <div>
@@ -282,7 +349,7 @@ const Layout = ({ children }: LayoutProps) => {
           </div>
           <div className="border-t border-womb-deepgrey mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-center text-sm text-womb-warmgrey mb-4 md:mb-0">
-              &copy; 2024 WombVerse. Made with ❤️ for the menstrual community.
+              &copy; 2025 WombVerse. Made with ❤️ for the menstrual community.
             </p>
             <div className="text-xs text-womb-warmgrey">
               <button 

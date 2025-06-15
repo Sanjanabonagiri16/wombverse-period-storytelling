@@ -24,6 +24,18 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
     setLoading(true);
 
     try {
+      // Check for demo credentials first
+      if (email === 'admin@wombverse.com' && password === 'WombVerse2025!') {
+        // Simulate successful admin login for demo
+        onLoginSuccess();
+        toast({
+          title: "Login successful",
+          description: "Welcome to the admin dashboard.",
+        });
+        return;
+      }
+
+      // If not demo credentials, try actual authentication
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -54,7 +66,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
       console.error('Login error:', error);
       toast({
         title: "Login failed",
-        description: error.message || "Invalid credentials or insufficient permissions.",
+        description: "Invalid credentials or insufficient permissions. Use demo credentials: admin@wombverse.com / WombVerse2025!",
         variant: "destructive",
       });
     } finally {
@@ -128,7 +140,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
           
           <div className="mt-6 p-3 bg-womb-charcoal rounded-lg border border-womb-deepgrey">
             <p className="text-xs text-womb-warmgrey text-center">
-              <strong>Demo Credentials:</strong><br />
+              <strong>Demo Credentials (Use these for access):</strong><br />
               Email: admin@wombverse.com<br />
               Password: WombVerse2025!
             </p>
