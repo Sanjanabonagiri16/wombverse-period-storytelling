@@ -31,6 +31,22 @@ const Hero = () => {
     {
       text: "Normalizing period talk starts with us - one conversation at a time.",
       author: "Lisa, 25"
+    },
+    {
+      text: "I learned to track my cycle not to control it, but to understand and embrace it.",
+      author: "Aisha, 27"
+    },
+    {
+      text: "The shame around periods is learned - and what's learned can be unlearned.",
+      author: "Rosa, 29"
+    },
+    {
+      text: "My period pain is valid, my experience matters, and I deserve support.",
+      author: "Jade, 23"
+    },
+    {
+      text: "Periods are a sign of health, strength, and the incredible power of the female body.",
+      author: "Nina, 31"
     }
   ];
 
@@ -90,44 +106,46 @@ const Hero = () => {
           </div>
 
           {/* More Wisdom Section */}
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <Button
               onClick={() => setShowMoreWisdom(!showMoreWisdom)}
               variant="ghost"
-              className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey mb-6 text-base sm:text-lg px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto transition-all duration-300"
+              className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey/50 mb-8 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto transition-all duration-300 border border-womb-deepgrey hover:border-womb-crimson/50"
             >
-              <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              More Wisdom
-              <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 ml-2 transition-transform duration-300 ${showMoreWisdom ? 'rotate-180' : ''}`} />
+              <Heart className="w-5 h-5 mr-2" />
+              {showMoreWisdom ? 'Hide Wisdom' : 'More Wisdom'}
+              <ChevronDown className={`w-5 h-5 ml-2 transition-transform duration-300 ${showMoreWisdom ? 'rotate-180' : ''}`} />
             </Button>
 
             {/* Wisdom Content */}
-            {showMoreWisdom && (
-              <div className="animate-fade-in space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {wisdomQuotes.map((quote, index) => (
-                    <div
-                      key={index}
-                      className="bg-womb-deepgrey/50 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-womb-deepgrey hover:border-womb-crimson/30 transition-all duration-300 animate-scale-in"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      <blockquote className="text-womb-softwhite text-sm sm:text-base mb-3 leading-relaxed italic">
-                        "{quote.text}"
-                      </blockquote>
-                      <cite className="text-womb-crimson text-xs sm:text-sm font-medium">
-                        — {quote.author}
-                      </cite>
-                    </div>
-                  ))}
+            <div className={`transition-all duration-500 ${showMoreWisdom ? 'opacity-100 max-h-none' : 'opacity-0 max-h-0 overflow-hidden'}`}>
+              {showMoreWisdom && (
+                <div className="animate-fade-in space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    {wisdomQuotes.map((quote, index) => (
+                      <div
+                        key={index}
+                        className="bg-womb-deepgrey/60 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-womb-deepgrey hover:border-womb-crimson/40 transition-all duration-300 hover:shadow-lg hover:shadow-womb-crimson/10"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <blockquote className="text-womb-softwhite text-sm sm:text-base mb-3 leading-relaxed italic font-medium">
+                          "{quote.text}"
+                        </blockquote>
+                        <cite className="text-womb-crimson text-xs sm:text-sm font-semibold">
+                          — {quote.author}
+                        </cite>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="text-center pt-6">
+                    <p className="text-womb-warmgrey text-sm sm:text-base font-medium">
+                      Share your own wisdom and inspire others in our community 💫
+                    </p>
+                  </div>
                 </div>
-                
-                <div className="text-center pt-4">
-                  <p className="text-womb-warmgrey text-sm sm:text-base">
-                    Share your own wisdom and inspire others in our community 💫
-                  </p>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
