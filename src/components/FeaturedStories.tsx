@@ -94,76 +94,81 @@ const FeaturedStories = () => {
               className="story-card animate-fade-in cursor-pointer"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Story Header */}
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
-                <div className="flex items-center space-x-2 text-xs sm:text-sm text-womb-warmgrey">
-                  <User className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span className="truncate">{story.author}</span>
-                  <span className="hidden sm:inline">•</span>
-                  <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 hidden sm:inline" />
-                  <span className="hidden sm:inline">{story.date}</span>
-                </div>
-                <div className="flex items-center justify-between sm:justify-end gap-2">
-                  <span className="text-xs text-womb-warmgrey sm:hidden">{story.date}</span>
-                  <Badge variant="secondary" className="bg-womb-plum/20 text-womb-plum border-womb-plum/30 text-xs">
-                    {story.readTime}
-                  </Badge>
+              {/* Story Header - Improved Responsive Layout */}
+              <div className="mb-4">
+                {/* Author and Date - Mobile First */}
+                <div className="flex flex-col space-y-2 mb-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2 text-xs text-womb-warmgrey min-w-0 flex-1">
+                      <User className="w-3 h-3 flex-shrink-0" />
+                      <span className="truncate">{story.author}</span>
+                    </div>
+                    <Badge variant="secondary" className="bg-womb-plum/20 text-womb-plum border-womb-plum/30 text-xs flex-shrink-0 ml-2">
+                      {story.readTime}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center space-x-1 text-xs text-womb-warmgrey">
+                    <Calendar className="w-3 h-3 flex-shrink-0" />
+                    <span>{story.date}</span>
+                  </div>
                 </div>
               </div>
 
               {/* Story Title */}
-              <h3 className="text-lg sm:text-xl font-playfair font-semibold text-womb-softwhite mb-3 line-clamp-2 hover:text-womb-crimson transition-colors">
+              <h3 className="text-lg sm:text-xl font-playfair font-semibold text-womb-softwhite mb-3 line-clamp-2 hover:text-womb-crimson transition-colors leading-tight">
                 {story.title}
               </h3>
 
               {/* Story Excerpt */}
-              <p className="text-sm sm:text-base text-womb-warmgrey mb-4 line-clamp-3 leading-relaxed">
+              <p className="text-sm text-womb-warmgrey mb-4 line-clamp-3 leading-relaxed">
                 {story.excerpt}
               </p>
 
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
-                {story.tags.slice(0, 3).map((tag) => (
-                  <Badge 
-                    key={tag} 
-                    variant="secondary" 
-                    className="bg-womb-deepgrey text-womb-warmgrey border-womb-deepgrey hover:border-womb-crimson hover:text-womb-crimson transition-colors text-xs"
-                  >
-                    #{tag}
-                  </Badge>
-                ))}
-                {story.tags.length > 3 && (
-                  <Badge variant="secondary" className="bg-womb-deepgrey text-womb-warmgrey border-womb-deepgrey text-xs">
-                    +{story.tags.length - 3}
-                  </Badge>
-                )}
+              {/* Tags - Responsive Layout */}
+              <div className="mb-4">
+                <div className="flex flex-wrap gap-1">
+                  {story.tags.slice(0, 2).map((tag) => (
+                    <Badge 
+                      key={tag} 
+                      variant="secondary" 
+                      className="bg-womb-deepgrey text-womb-warmgrey border-womb-deepgrey hover:border-womb-crimson hover:text-womb-crimson transition-colors text-xs"
+                    >
+                      #{tag}
+                    </Badge>
+                  ))}
+                  {story.tags.length > 2 && (
+                    <Badge variant="secondary" className="bg-womb-deepgrey text-womb-warmgrey border-womb-deepgrey text-xs">
+                      +{story.tags.length - 2}
+                    </Badge>
+                  )}
+                </div>
               </div>
 
-              {/* Story Footer - Mobile First Layout */}
+              {/* Story Footer - Enhanced Mobile Layout */}
               <div className="pt-4 border-t border-womb-deepgrey">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  {/* Reactions and Comments */}
-                  <div className="flex items-center gap-4 text-sm text-womb-warmgrey">
-                    <div className="flex items-center gap-1 hover:text-womb-crimson transition-colors cursor-pointer">
+                {/* Reactions and Comments - Compact Mobile Layout */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-1 text-xs text-womb-warmgrey hover:text-womb-crimson transition-colors cursor-pointer">
                       <Heart className="w-4 h-4" />
-                      <span>{story.reactions}</span>
+                      <span className="font-medium">{story.reactions}</span>
                     </div>
-                    <div className="flex items-center gap-1 hover:text-womb-plum transition-colors cursor-pointer">
+                    <div className="flex items-center space-x-1 text-xs text-womb-warmgrey hover:text-womb-plum transition-colors cursor-pointer">
                       <MessageCircle className="w-4 h-4" />
-                      <span>{story.comments}</span>
+                      <span className="font-medium">{story.comments}</span>
                     </div>
                   </div>
-                  
-                  {/* Read Story Button */}
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-womb-crimson hover:text-womb-crimson hover:bg-womb-crimson/10 p-2 h-auto w-full sm:w-auto justify-center sm:justify-start"
-                  >
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    Read Story
-                  </Button>
                 </div>
+                
+                {/* Read Story Button - Full Width on Mobile */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-womb-crimson hover:text-womb-crimson hover:bg-womb-crimson/10 w-full justify-center py-2 text-sm font-medium"
+                >
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Read Story
+                </Button>
               </div>
             </article>
           ))}
