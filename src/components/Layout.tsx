@@ -50,7 +50,11 @@ const Layout = ({ children }: LayoutProps) => {
                 <PenTool className="w-4 h-4 mr-2" />
                 Share Story
               </Button>
-              <Button variant="ghost" className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey">
+              <Button 
+                variant="ghost" 
+                className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey"
+                onClick={() => window.location.href = '/auth'}
+              >
                 <User className="w-4 h-4 mr-2" />
                 Sign In
               </Button>
@@ -94,7 +98,11 @@ const Layout = ({ children }: LayoutProps) => {
                   <PenTool className="w-4 h-4 mr-2" />
                   Share Your Story
                 </Button>
-                <Button variant="outline" className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white">
+                <Button 
+                  variant="outline" 
+                  className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
+                  onClick={() => window.location.href = '/auth'}
+                >
                   <User className="w-4 h-4 mr-2" />
                   Sign In
                 </Button>
