@@ -1,6 +1,7 @@
 
 import { PenTool, BookOpen, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -28,14 +29,18 @@ const Hero = () => {
           
           {/* Call to action buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button size="lg" className="btn-primary text-lg px-8 py-4 animate-scale-in">
-              <PenTool className="w-5 h-5 mr-2" />
-              Share Your Story
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white animate-scale-in">
-              <BookOpen className="w-5 h-5 mr-2" />
-              Explore Stories
-            </Button>
+            <Link to="/auth">
+              <Button size="lg" className="btn-primary text-lg px-8 py-4 animate-scale-in">
+                <PenTool className="w-5 h-5 mr-2" />
+                Share Your Story
+              </Button>
+            </Link>
+            <Link to="/stories">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white animate-scale-in">
+                <BookOpen className="w-5 h-5 mr-2" />
+                Explore Stories
+              </Button>
+            </Link>
           </div>
           
           {/* Stats */}
