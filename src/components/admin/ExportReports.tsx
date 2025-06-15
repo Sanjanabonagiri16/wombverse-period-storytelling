@@ -27,10 +27,11 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
+import type { DateRange } from 'react-day-picker';
 
 const ExportReports = () => {
   const { toast } = useToast();
-  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(new Date().setDate(new Date().getDate() - 30)),
     to: new Date()
   });
@@ -76,31 +77,31 @@ const ExportReports = () => {
     {
       name: 'User Data',
       icon: Users,
-      tables: ['profiles', 'user_roles', 'user_privacy_settings'],
+      tables: ['profiles', 'user_roles', 'user_privacy_settings'] as const,
       description: 'User profiles, roles, and privacy settings'
     },
     {
       name: 'Content Data',
       icon: FileText,
-      tables: ['stories', 'comments', 'reactions'],
+      tables: ['stories', 'comments', 'reactions'] as const,
       description: 'Stories, comments, and user reactions'
     },
     {
       name: 'Moderation Data',
       icon: Flag,
-      tables: ['content_moderation', 'blocked_entities'],
+      tables: ['content_moderation', 'blocked_entities'] as const,
       description: 'Moderation actions and blocked content'
     },
     {
       name: 'Analytics Data',
       icon: TrendingUp,
-      tables: ['analytics_events', 'rate_limits'],
+      tables: ['analytics_events', 'rate_limits'] as const,
       description: 'User analytics and rate limiting data'
     },
     {
       name: 'Community Data',
       icon: MessageSquare,
-      tables: ['community_posts', 'bookmarks'],
+      tables: ['community_posts', 'bookmarks'] as const,
       description: 'Community posts and user bookmarks'
     }
   ];
@@ -186,7 +187,7 @@ const ExportReports = () => {
         let query = supabase.from(table).select('*');
 
         // Apply date filtering if applicable
-        if (dateRange.from && dateRange.to) {
+        if (dateRange?.from && dateRange?.to) {
           query = query
             .gte('created_at', dateRange.from.toISOString())
             .lte('created_at', dateRange.to.toISOString());
@@ -368,7 +369,7 @@ const ExportReports = () => {
                         className="w-full bg-slate-700 border-slate-600 text-white hover:bg-slate-600"
                       >
                         <CalendarIcon className="w-4 h-4 mr-2" />
-                        {dateRange.from ? (
+                        {dateRange?.from ? (
                           dateRange.to ? (
                             <>
                               {format(dateRange.from, 'LLL dd')} - {format(dateRange.to, 'LLL dd')}
@@ -385,7 +386,7 @@ const ExportReports = () => {
                       <Calendar
                         initialFocus
                         mode="range"
-                        defaultMonth={dateRange.from}
+                        defaultMonth={dateRange?.from}
                         selected={dateRange}
                         onSelect={setDateRange}
                         numberOfMonths={2}
