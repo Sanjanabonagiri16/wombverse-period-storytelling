@@ -260,7 +260,7 @@ const Layout = ({ children }: LayoutProps) => {
       {/* Professional Footer */}
       <footer className="bg-womb-charcoal border-t border-womb-plum relative z-10">
         <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-womb-softwhite">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-womb-softwhite">
             {/* Brand & About */}
             <div>
               <div className="flex items-center space-x-2 mb-4">
@@ -274,23 +274,36 @@ const Layout = ({ children }: LayoutProps) => {
               <p className="mb-4 text-sm text-womb-warmgrey">
                 WombVerse is a professional community dedicated to sharing accurate, science-backed knowledge and real stories about menstrual health and wellbeing, with a focus on creating informed belonging.
               </p>
-              <p className="text-xs text-womb-warmgrey">&copy; 2025 WombVerse. All rights reserved.</p>
+              <div className="flex space-x-4">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-womb-warmgrey hover:text-primary transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-womb-warmgrey hover:text-primary transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-womb-warmgrey hover:text-primary transition-colors">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-womb-warmgrey hover:text-primary transition-colors">
+                  <Youtube className="w-5 h-5" />
+                </a>
+              </div>
             </div>
             {/* Explore */}
             <div>
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Explore</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/featured-stories" className="text-womb-warmgrey hover:text-primary transition-colors">Featured Stories</Link>
+                  <Link to="/featured-stories" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Featured Stories</span></Link>
                 </li>
                 <li>
-                  <Link to="/recent-stories" className="text-womb-warmgrey hover:text-primary transition-colors">Recent Stories</Link>
+                  <Link to="/recent-stories" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Recent Stories</span></Link>
                 </li>
                 <li>
-                  <Link to="/resources" className="text-womb-warmgrey hover:text-primary transition-colors">Resources</Link>
+                  <Link to="/resources" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Resources</span></Link>
                 </li>
                 <li>
-                  <Link to="/support" className="text-womb-warmgrey hover:text-primary transition-colors">Support</Link>
+                  <Link to="/support" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Support</span></Link>
                 </li>
               </ul>
             </div>
@@ -299,13 +312,13 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Community</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/guidelines" className="text-womb-warmgrey hover:text-primary transition-colors">Community Guidelines</Link>
+                  <Link to="/guidelines" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Community Guidelines</span></Link>
                 </li>
                 <li>
-                  <Link to="/about-us" className="text-womb-warmgrey hover:text-primary transition-colors">About Us</Link>
+                  <Link to="/about-us" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>About Us</span></Link>
                 </li>
                 <li>
-                  <Link to="/contact" className="text-womb-warmgrey hover:text-primary transition-colors">Contact</Link>
+                  <Link to="/contact" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Contact</span></Link>
                 </li>
               </ul>
             </div>
@@ -314,12 +327,22 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Legal</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/privacy" className="text-womb-warmgrey hover:text-primary transition-colors">Privacy Policy</Link>
+                  <Link to="/privacy" className="text-womb-warmgrey hover:text-primary transition-colors story-link"><span>Privacy Policy</span></Link>
                 </li>
               </ul>
             </div>
           </div>
+          <div className="text-center text-xs text-womb-warmgrey pt-8 mt-8 border-t border-womb-deepgrey">
+            &copy; 2025 WombVerse. All rights reserved.
+          </div>
         </div>
+        <button
+          onClick={scrollToTop}
+          className="absolute bottom-8 right-8 bg-womb-plum p-3 rounded-full text-white hover:bg-womb-plum/80 transition-colors shadow-lg hover:scale-110 transform"
+          aria-label="Back to top"
+        >
+          <ChevronUp className="w-6 h-6" />
+        </button>
       </footer>
     </div>
   );
