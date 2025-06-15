@@ -1,177 +1,258 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Star, MessageSquare, Tag, Plus } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Star, MessageSquare, Calendar, Edit, Trash2, Pin, Image, BarChart3 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-interface Story {
+interface FeaturedStory {
   id: string;
   title: string;
-  content: string;
-  created_at: string;
-  view_count: number;
-  user_id: string;
+  author: string;
+  excerpt: string;
+  reactions: number;
+  featured_at: string;
+  status: 'active' | 'scheduled' | 'expired';
 }
 
-interface MoodTag {
+interface CommunityPost {
   id: string;
-  name: string;
-  description: string;
-  color_hex: string;
+  type: 'announcement' | 'poll' | 'quote' | 'media';
+  title: string;
+  content: string;
+  author: string;
+  scheduled_for?: string;
+  status: 'draft' | 'published' | 'scheduled';
+  engagement: number;
+}
+
+interface MoodPrompt {
+  id: string;
+  prompt: string;
+  category: string;
+  is_active: boolean;
+  usage_count: number;
+  last_used: string;
 }
 
 const ContentManagement = () => {
   const { toast } = useToast();
-  const [featuredStories, setFeaturedStories] = useState<Story[]>([]);
-  const [allStories, setAllStories] = useState<Story[]>([]);
-  const [moodTags, setMoodTags] = useState<MoodTag[]>([]);
-  const [newTagName, setNewTagName] = useState('');
-  const [newTagDescription, setNewTagDescription] = useState('');
-  const [newTagColor, setNewTagColor] = useState('#6B7280');
+  const [featuredStories, setFeaturedStories] = useState<FeaturedStory[]>([]);
+  const [communityPosts, setCommunityPosts] = useState<CommunityPost[]>([]);
+  const [moodPrompts, setMoodPrompts] = useState<MoodPrompt[]>([]);
+  const [newPost, setNewPost] = useState({
+    type: 'announcement' as const,
+    title: '',
+    content: ''
+  });
 
   useEffect(() => {
-    fetchStories();
-    fetchMoodTags();
+    // Mock data for demo
+    setFeaturedStories([
+      {
+        id: '1',
+        title: 'Breaking the Silence: My First Period Story',
+        author: 'Sarah M.',
+        excerpt: 'A powerful narrative about overcoming shame...',
+        reactions: 234,
+        featured_at: '2024-12-15T10:00:00Z',
+        status: 'active'
+      },
+      {
+        id: '2',
+        title: 'Endometriosis Journey: Finding Hope',
+        author: 'Maria L.',
+        excerpt: 'How connecting with others transformed my pain...',
+        reactions: 189,
+        featured_at: '2024-12-14T15:30:00Z',
+        status: 'active'
+      }
+    ]);
+
+    setCommunityPosts([
+      {
+        id: '1',
+        type: 'announcement',
+        title: 'Welcome New Members!',
+        content: 'We\'re excited to have new voices joining our community...',
+        author: 'Admin',
+        status: 'published',
+        engagement: 45
+      },
+      {
+        id: '2',
+        type: 'poll',
+        title: 'Which topics would you like to see more of?',
+        content: 'Help us understand what content resonates with you...',
+        author: 'Moderator',
+        status: 'published',
+        engagement: 78
+      }
+    ]);
+
+    setMoodPrompts([
+      {
+        id: '1',
+        prompt: 'Describe a moment when you felt truly understood by someone about your period experience.',
+        category: 'Connection',
+        is_active: true,
+        usage_count: 23,
+        last_used: '2024-12-15T09:30:00Z'
+      },
+      {
+        id: '2',
+        prompt: 'What would you tell your younger self about periods?',
+        category: 'Reflection',
+        is_active: true,
+        usage_count: 45,
+        last_used: '2024-12-14T14:20:00Z'
+      },
+      {
+        id: '3',
+        prompt: 'Share a time when period tracking helped you understand your body better.',
+        category: 'Health',
+        is_active: false,
+        usage_count: 12,
+        last_used: '2024-12-10T11:15:00Z'
+      }
+    ]);
   }, []);
 
-  const fetchStories = async () => {
-    try {
-      const { data } = await supabase
-        .from('stories')
-        .select('*')
-        .eq('privacy', 'public')
-        .eq('is_draft', false)
-        .order('created_at', { ascending: false })
-        .limit(20);
-
-      setAllStories(data || []);
-    } catch (error) {
-      console.error('Error fetching stories:', error);
-    }
+  const handleFeatureStory = (storyId: string) => {
+    toast({
+      title: "Story featured",
+      description: "Story has been added to the featured section."
+    });
   };
 
-  const fetchMoodTags = async () => {
-    try {
-      const { data } = await supabase
-        .from('mood_tags')
-        .select('*')
-        .order('name');
-
-      setMoodTags(data || []);
-    } catch (error) {
-      console.error('Error fetching mood tags:', error);
-    }
+  const handleUnfeatureStory = (storyId: string) => {
+    setFeaturedStories(prev => prev.filter(story => story.id !== storyId));
+    toast({
+      title: "Story unfeatured",
+      description: "Story has been removed from featured section."
+    });
   };
 
-  const addMoodTag = async () => {
-    if (!newTagName.trim()) return;
-
-    try {
-      const { error } = await supabase
-        .from('mood_tags')
-        .insert({
-          name: newTagName,
-          description: newTagDescription,
-          color_hex: newTagColor
-        });
-
-      if (error) throw error;
-
-      toast({
-        title: "Mood tag added",
-        description: "New mood tag has been created successfully.",
-      });
-
-      setNewTagName('');
-      setNewTagDescription('');
-      setNewTagColor('#6B7280');
-      fetchMoodTags();
-    } catch (error) {
-      console.error('Error adding mood tag:', error);
+  const handleCreatePost = () => {
+    if (!newPost.title.trim() || !newPost.content.trim()) {
       toast({
         title: "Error",
-        description: "Failed to add mood tag.",
-        variant: "destructive",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
       });
+      return;
     }
+
+    const post: CommunityPost = {
+      id: Date.now().toString(),
+      ...newPost,
+      author: 'Admin',
+      status: 'published',
+      engagement: 0
+    };
+
+    setCommunityPosts(prev => [post, ...prev]);
+    setNewPost({ type: 'announcement', title: '', content: '' });
+
+    toast({
+      title: "Post created",
+      description: "Community post has been published successfully."
+    });
   };
 
-  const createCommunityPost = async (type: string, content: string, title?: string) => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+  const handleTogglePrompt = (promptId: string) => {
+    setMoodPrompts(prev => prev.map(prompt => 
+      prompt.id === promptId 
+        ? { ...prompt, is_active: !prompt.is_active }
+        : prompt
+    ));
 
-      const { error } = await supabase
-        .from('community_posts')
-        .insert({
-          user_id: user.id,
-          type,
-          title,
-          content,
-          is_pinned: true
-        });
+    toast({
+      title: "Prompt updated",
+      description: "Mood prompt status has been changed."
+    });
+  };
 
-      if (error) throw error;
-
-      toast({
-        title: "Community post created",
-        description: "Admin announcement has been posted to the community wall.",
-      });
-    } catch (error) {
-      console.error('Error creating community post:', error);
-      toast({
-        title: "Error",
-        description: "Failed to create community post.",
-        variant: "destructive",
-      });
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active':
+      case 'published': return 'bg-green-500/20 text-green-400 border-green-500/30';
+      case 'scheduled': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'draft': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      case 'expired': return 'bg-red-500/20 text-red-400 border-red-500/30';
+      default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
     }
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-womb-softwhite flex items-center gap-2">
-        <Star className="w-6 h-6" />
-        Content Management
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <Star className="w-6 h-6 text-yellow-400" />
+          Content Management Tools
+        </h2>
+      </div>
 
       <Tabs defaultValue="featured" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="featured">Featured Stories</TabsTrigger>
-          <TabsTrigger value="community">Community Posts</TabsTrigger>
-          <TabsTrigger value="moods">Mood Tags</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 border border-slate-700">
+          <TabsTrigger value="featured" className="data-[state=active]:bg-slate-700">
+            Featured Stories
+          </TabsTrigger>
+          <TabsTrigger value="community" className="data-[state=active]:bg-slate-700">
+            Community Wall
+          </TabsTrigger>
+          <TabsTrigger value="prompts" className="data-[state=active]:bg-slate-700">
+            Mood Prompts
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="featured">
-          <Card>
+        <TabsContent value="featured" className="space-y-6">
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle>Featured Stories Management</CardTitle>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-400" />
+                Featured Stories Management
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {allStories.slice(0, 10).map((story) => (
-                  <div key={story.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex-1">
-                      <h4 className="font-medium text-womb-softwhite">{story.title}</h4>
-                      <p className="text-sm text-womb-warmgrey">
-                        {story.content.substring(0, 100)}...
-                      </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge variant="outline">{story.view_count} views</Badge>
-                        <span className="text-xs text-womb-warmgrey">
-                          {new Date(story.created_at).toLocaleDateString()}
-                        </span>
+                {featuredStories.map((story) => (
+                  <div
+                    key={story.id}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-white mb-1">{story.title}</h3>
+                        <p className="text-sm text-slate-400 mb-2">by {story.author}</p>
+                        <p className="text-slate-300 text-sm mb-3">{story.excerpt}</p>
+                        <div className="flex items-center gap-4 text-sm text-slate-400">
+                          <span className="flex items-center gap-1">
+                            <BarChart3 className="w-4 h-4" />
+                            {story.reactions} reactions
+                          </span>
+                          <span>Featured: {new Date(story.featured_at).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={getStatusColor(story.status)}>
+                          {story.status}
+                        </Badge>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleUnfeatureStory(story.id)}
+                          className="border-red-600 text-red-400 hover:bg-red-900/20"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
-                    <Button size="sm" variant="outline">
-                      <Star className="w-4 h-4 mr-1" />
-                      Feature
-                    </Button>
                   </div>
                 ))}
               </div>
@@ -179,86 +260,166 @@ const ContentManagement = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="community">
-          <Card>
+        <TabsContent value="community" className="space-y-6">
+          {/* Create New Post */}
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle>Create Admin Announcement</CardTitle>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Edit className="w-5 h-5 text-blue-400" />
+                Create Community Post
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Post Type
+                </label>
+                <select
+                  value={newPost.type}
+                  onChange={(e) => setNewPost(prev => ({ ...prev, type: e.target.value as any }))}
+                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white"
+                >
+                  <option value="announcement">Announcement</option>
+                  <option value="poll">Poll</option>
+                  <option value="quote">Inspirational Quote</option>
+                  <option value="media">Media Content</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Title
+                </label>
+                <Input
+                  value={newPost.title}
+                  onChange={(e) => setNewPost(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="Enter post title..."
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Content
+                </label>
+                <Textarea
+                  value={newPost.content}
+                  onChange={(e) => setNewPost(prev => ({ ...prev, content: e.target.value }))}
+                  placeholder="Enter post content..."
+                  rows={4}
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              
+              <div className="flex gap-2">
+                <Button onClick={handleCreatePost} className="bg-blue-600 hover:bg-blue-700">
+                  Publish Now
+                </Button>
+                <Button variant="outline" className="border-slate-600 text-slate-300">
+                  Save as Draft
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Community Posts List */}
+          <Card className="bg-slate-800/50 border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-green-400" />
+                Community Posts
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <Input placeholder="Announcement title (optional)" />
-                <Textarea 
-                  placeholder="Write your announcement..."
-                  className="min-h-32"
-                />
-                <Button 
-                  onClick={() => createCommunityPost('text', 'Sample announcement', 'Admin Update')}
-                  className="w-full"
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Post Announcement
-                </Button>
+                {communityPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <h3 className="font-semibold text-white">{post.title}</h3>
+                        <p className="text-sm text-slate-400">by {post.author}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={getStatusColor(post.status)}>
+                          {post.status}
+                        </Badge>
+                        <Badge variant="outline" className="border-slate-600 text-slate-300">
+                          {post.type}
+                        </Badge>
+                      </div>
+                    </div>
+                    <p className="text-slate-300 mb-3">{post.content}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-400">
+                        {post.engagement} interactions
+                      </span>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline" className="border-slate-600 text-slate-300">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button size="sm" variant="outline" className="border-red-600 text-red-400">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="moods">
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Add New Mood Tag</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <Input
-                    placeholder="Mood tag name"
-                    value={newTagName}
-                    onChange={(e) => setNewTagName(e.target.value)}
-                  />
-                  <Textarea
-                    placeholder="Description (optional)"
-                    value={newTagDescription}
-                    onChange={(e) => setNewTagDescription(e.target.value)}
-                  />
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="color"
-                      value={newTagColor}
-                      onChange={(e) => setNewTagColor(e.target.value)}
-                      className="w-20"
-                    />
-                    <Button onClick={addMoodTag} className="flex-1">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Mood Tag
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Existing Mood Tags</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {moodTags.map((tag) => (
-                    <div key={tag.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div 
-                          className="w-4 h-4 rounded-full"
-                          style={{ backgroundColor: tag.color_hex }}
-                        />
-                        <span className="font-medium text-womb-softwhite">{tag.name}</span>
+        <TabsContent value="prompts" className="space-y-6">
+          <Card className="bg-slate-800/50 border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-purple-400" />
+                Mood Prompt Editor
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {moodPrompts.map((prompt) => (
+                  <div
+                    key={prompt.id}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <p className="text-white font-medium mb-2">{prompt.prompt}</p>
+                        <div className="flex items-center gap-4 text-sm text-slate-400">
+                          <span>Category: {prompt.category}</span>
+                          <span>Used {prompt.usage_count} times</span>
+                          <span>Last used: {new Date(prompt.last_used).toLocaleDateString()}</span>
+                        </div>
                       </div>
-                      <p className="text-sm text-womb-warmgrey">{tag.description}</p>
+                      <div className="flex items-center gap-2">
+                        <Badge className={prompt.is_active ? 
+                          'bg-green-500/20 text-green-400 border-green-500/30' : 
+                          'bg-red-500/20 text-red-400 border-red-500/30'
+                        }>
+                          {prompt.is_active ? 'Active' : 'Inactive'}
+                        </Badge>
+                        <Button
+                          size="sm"
+                          onClick={() => handleTogglePrompt(prompt.id)}
+                          className={prompt.is_active ? 
+                            'bg-red-600 hover:bg-red-700' : 
+                            'bg-green-600 hover:bg-green-700'
+                          }
+                        >
+                          {prompt.is_active ? 'Deactivate' : 'Activate'}
+                        </Button>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

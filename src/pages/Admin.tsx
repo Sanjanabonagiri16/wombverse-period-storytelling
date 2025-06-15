@@ -2,16 +2,17 @@
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ModerationDashboard from '@/components/moderation/ModerationDashboard';
 import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard';
 import UserManagement from '@/components/admin/UserManagement';
 import ContentManagement from '@/components/admin/ContentManagement';
 import SecurityLogs from '@/components/admin/SecurityLogs';
+import NotificationCenter from '@/components/admin/NotificationCenter';
+import SystemSettings from '@/components/admin/SystemSettings';
 import AdminLogin from '@/components/admin/AdminLogin';
-import { Shield, TrendingUp, Users, Star, Activity, Settings } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Shield, TrendingUp, Users, Star, Activity, Settings, Bell, FileText } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Admin = () => {
   const { user } = useAuth();
@@ -19,8 +20,6 @@ const Admin = () => {
   const [showLogin, setShowLogin] = useState(true);
 
   useEffect(() => {
-    // For demo purposes, we'll always show the login first
-    // In a real app, you'd check user roles here
     console.log('Admin page loaded, user:', user);
   }, [user]);
 
@@ -30,96 +29,153 @@ const Admin = () => {
     setIsAuthorized(true);
   };
 
-  // Always show login screen first for demo
   if (showLogin) {
     return <AdminLogin onLoginSuccess={handleLoginSuccess} />;
   }
 
-  // Show admin dashboard after successful login
   if (isAuthorized) {
     return (
       <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-womb-softwhite mb-2">
-              WombVerse Admin Dashboard
-            </h1>
-            <p className="text-womb-warmgrey">
-              Comprehensive platform management and analytics (Demo Mode)
-            </p>
-          </div>
-
-          <Tabs defaultValue="moderation" className="w-full">
-            <TabsList className="grid w-full grid-cols-6">
-              <TabsTrigger value="moderation" className="flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                Moderation
-              </TabsTrigger>
-              <TabsTrigger value="analytics" className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                Analytics
-              </TabsTrigger>
-              <TabsTrigger value="users" className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
-                Users
-              </TabsTrigger>
-              <TabsTrigger value="content" className="flex items-center gap-2">
-                <Star className="w-4 h-4" />
-                Content
-              </TabsTrigger>
-              <TabsTrigger value="security" className="flex items-center gap-2">
-                <Activity className="w-4 h-4" />
-                Security
-              </TabsTrigger>
-              <TabsTrigger value="settings" className="flex items-center gap-2">
-                <Settings className="w-4 h-4" />
-                Settings
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="moderation">
-              <ModerationDashboard />
-            </TabsContent>
-
-            <TabsContent value="analytics">
-              <AnalyticsDashboard />
-            </TabsContent>
-
-            <TabsContent value="users">
-              <UserManagement />
-            </TabsContent>
-
-            <TabsContent value="content">
-              <ContentManagement />
-            </TabsContent>
-
-            <TabsContent value="security">
-              <SecurityLogs />
-            </TabsContent>
-
-            <TabsContent value="settings">
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold text-womb-softwhite mb-4">
-                    Platform Settings
-                  </h3>
-                  <p className="text-womb-warmgrey">
-                    Advanced configuration options coming soon...
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+          <div className="container mx-auto px-6 py-8">
+            {/* Header */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent mb-2">
+                    WombVerse Admin
+                  </h1>
+                  <p className="text-slate-400 text-lg font-medium">
+                    Comprehensive platform management and analytics
                   </p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full text-sm font-semibold">
+                    System Healthy
+                  </div>
+                  <div className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-2">
+                    <span className="text-slate-300 text-sm">Demo Mode</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dashboard Tabs */}
+            <Tabs defaultValue="moderation" className="w-full">
+              <TabsList className="grid w-full grid-cols-8 bg-slate-800/50 border border-slate-700 rounded-xl p-1 mb-8">
+                <TabsTrigger 
+                  value="moderation" 
+                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <Shield className="w-4 h-4" />
+                  <span className="hidden sm:inline">Moderation</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="analytics" 
+                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <TrendingUp className="w-4 h-4" />
+                  <span className="hidden sm:inline">Analytics</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="users" 
+                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <Users className="w-4 h-4" />
+                  <span className="hidden sm:inline">Users</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="content" 
+                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <Star className="w-4 h-4" />
+                  <span className="hidden sm:inline">Content</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="security" 
+                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <Activity className="w-4 h-4" />
+                  <span className="hidden sm:inline">Security</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="notifications" 
+                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <Bell className="w-4 h-4" />
+                  <span className="hidden sm:inline">Notifications</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="reports" 
+                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span className="hidden sm:inline">Reports</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="settings" 
+                  className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="hidden sm:inline">Settings</span>
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="moderation" className="space-y-6">
+                <ModerationDashboard />
+              </TabsContent>
+
+              <TabsContent value="analytics" className="space-y-6">
+                <AnalyticsDashboard />
+              </TabsContent>
+
+              <TabsContent value="users" className="space-y-6">
+                <UserManagement />
+              </TabsContent>
+
+              <TabsContent value="content" className="space-y-6">
+                <ContentManagement />
+              </TabsContent>
+
+              <TabsContent value="security" className="space-y-6">
+                <SecurityLogs />
+              </TabsContent>
+
+              <TabsContent value="notifications" className="space-y-6">
+                <NotificationCenter />
+              </TabsContent>
+
+              <TabsContent value="reports" className="space-y-6">
+                <Card className="bg-slate-800/50 border-slate-700">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <FileText className="w-5 h-5" />
+                      Export & Reports
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-400">Advanced reporting and export features coming soon...</p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="settings" className="space-y-6">
+                <SystemSettings />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
       </Layout>
     );
   }
 
-  // Fallback loading state
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <p className="text-womb-warmgrey">Loading admin dashboard...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-slate-400">Loading admin dashboard...</p>
+        </div>
       </div>
     </Layout>
   );
