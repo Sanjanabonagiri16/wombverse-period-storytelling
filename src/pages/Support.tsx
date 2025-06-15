@@ -206,6 +206,13 @@ const Support = () => {
     resource.focus.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const scrollToExternalResources = () => {
+    const element = document.querySelector('[data-external-resources]');
+    if (element && element instanceof HTMLElement) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   if (loading) {
     return (
       <Layout>
@@ -328,7 +335,10 @@ const Support = () => {
 
             {/* External Resources Section */}
             {externalResources.length > 0 && (
-              <div className="bg-gradient-to-r from-gray-800/60 to-gray-900/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-700/50 mb-12">
+              <div 
+                data-external-resources
+                className="bg-gradient-to-r from-gray-800/60 to-gray-900/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-gray-700/50 mb-12"
+              >
                 <h2 className="text-2xl md:text-4xl font-bold text-white mb-6 flex items-center">
                   <Globe className="w-6 h-6 md:w-8 md:h-8 text-green-400 mr-3" />
                   External Resources & Organizations
@@ -402,7 +412,7 @@ const Support = () => {
                   support for menstrual health and wellness.
                 </p>
                 <button 
-                  onClick={() => window.scrollTo({ top: document.querySelector('[data-external-resources]')?.offsetTop || 0, behavior: 'smooth' })}
+                  onClick={scrollToExternalResources}
                   className="bg-gradient-to-r from-red-500 to-purple-500 hover:from-red-600 hover:to-purple-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 text-sm md:text-base"
                 >
                   View External Resources
