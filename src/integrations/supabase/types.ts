@@ -272,7 +272,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_reaction_counts: {
+        Args: { story_uuid: string }
+        Returns: {
+          reaction_type: string
+          count: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

@@ -2,9 +2,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
-import { Heart, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
+import ReactionSystem from '@/components/reactions/ReactionSystem';
 
 interface Whisper {
   id: string;
@@ -21,16 +21,31 @@ interface Whisper {
 const WhispersWall = () => {
   const [whispers, setWhispers] = useState<Whisper[]>([]);
   const [loading, setLoading] = useState(true);
-  const [reactions, setReactions] = useState<Record<string, number>>({});
-  const [userReactions, setUserReactions] = useState<Record<string, boolean>>({});
   const { user } = useAuth();
-  const { toast } = useToast();
 
   useEffect(() => {
     fetchWhispers();
-    if (user) {
-      fetchUserReactions();
-    }
+    
+    // Set up real-time subscription for new whispers
+    const channel = supabase
+      .channel('whispers-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'stories',
+          filter: 'category=eq.whisper'
+        },
+        () => {
+          fetchWhispers();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user]);
 
   const fetchWhispers = async () => {
@@ -69,86 +84,11 @@ const WhispersWall = () => {
       }
 
       setWhispers(whispers);
-      
-      // Fetch reaction counts
-      const reactionCounts: Record<string, number> = {};
-      for (const whisper of whispers) {
-        const { count } = await supabase
-          .from('reactions')
-          .select('*', { count: 'exact' })
-          .eq('story_id', whisper.id)
-          .eq('type', 'heart');
-        
-        reactionCounts[whisper.id] = count || 0;
-      }
-      setReactions(reactionCounts);
-
     } catch (error) {
       console.error('Error fetching whispers:', error);
       setWhispers([]);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchUserReactions = async () => {
-    if (!user) return;
-    
-    try {
-      const { data } = await supabase
-        .from('reactions')
-        .select('story_id')
-        .eq('user_id', user.id)
-        .eq('type', 'heart');
-      
-      const userReactionMap: Record<string, boolean> = {};
-      data?.forEach(reaction => {
-        userReactionMap[reaction.story_id] = true;
-      });
-      
-      setUserReactions(userReactionMap);
-    } catch (error) {
-      console.error('Error fetching user reactions:', error);
-    }
-  };
-
-  const toggleReaction = async (whisperId: string) => {
-    if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to react to whispers.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const hasReacted = userReactions[whisperId];
-      
-      if (hasReacted) {
-        await supabase
-          .from('reactions')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('story_id', whisperId)
-          .eq('type', 'heart');
-        
-        setUserReactions(prev => ({ ...prev, [whisperId]: false }));
-        setReactions(prev => ({ ...prev, [whisperId]: (prev[whisperId] || 1) - 1 }));
-      } else {
-        await supabase
-          .from('reactions')
-          .insert({
-            user_id: user.id,
-            story_id: whisperId,
-            type: 'heart',
-          });
-        
-        setUserReactions(prev => ({ ...prev, [whisperId]: true }));
-        setReactions(prev => ({ ...prev, [whisperId]: (prev[whisperId] || 0) + 1 }));
-      }
-    } catch (error) {
-      console.error('Error toggling reaction:', error);
     }
   };
 
@@ -219,6 +159,9 @@ const WhispersWall = () => {
                   </div>
                 )}
 
+                {/* Enhanced Reactions */}
+                <ReactionSystem storyId={whisper.id} />
+
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-2 border-t border-womb-deepgrey">
                   <div className="flex items-center space-x-2">
@@ -236,18 +179,6 @@ const WhispersWall = () => {
                       </p>
                     </div>
                   </div>
-
-                  <button
-                    onClick={() => toggleReaction(whisper.id)}
-                    className={`flex items-center space-x-1 transition-colors ${
-                      userReactions[whisper.id]
-                        ? 'text-womb-crimson'
-                        : 'text-womb-warmgrey hover:text-womb-crimson'
-                    }`}
-                  >
-                    <Heart className={`w-4 h-4 ${userReactions[whisper.id] ? 'fill-current' : ''}`} />
-                    <span className="text-xs">{reactions[whisper.id] || 0}</span>
-                  </button>
                 </div>
               </div>
             </div>

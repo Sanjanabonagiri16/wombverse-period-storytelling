@@ -1,9 +1,12 @@
+
 import { useState, useEffect } from 'react';
-import { Heart, MessageCircle, Bookmark, Share2 } from 'lucide-react';
+import { Bookmark, Share2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
+import ReactionSystem from '@/components/reactions/ReactionSystem';
+import CommentSection from '@/components/comments/CommentSection';
 
 interface Story {
   id: string;
@@ -29,50 +32,15 @@ interface StoryCardProps {
 const StoryCard = ({ story }: StoryCardProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [reactions, setReactions] = useState<any[]>([]);
-  const [comments, setComments] = useState<any[]>([]);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [userReaction, setUserReaction] = useState<string | null>(null);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
-  const emojiReactions = [
-    { type: 'heart', emoji: '❤️', label: 'Love' },
-    { type: 'support', emoji: '🤗', label: 'Support' },
-    { type: 'strong', emoji: '💪', label: 'Strong' },
-    { type: 'tears', emoji: '😭', label: 'Tears' },
-    { type: 'grateful', emoji: '🙏', label: 'Grateful' },
-  ];
+  const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
-    fetchReactions();
-    fetchComments();
     if (user) {
       checkBookmark();
-      checkUserReaction();
     }
+    fetchCommentCount();
   }, [story.id, user]);
-
-  const fetchReactions = async () => {
-    const { data } = await supabase
-      .from('reactions')
-      .select('*')
-      .eq('story_id', story.id);
-    
-    setReactions(data || []);
-  };
-
-  const fetchComments = async () => {
-    const { data } = await supabase
-      .from('comments')
-      .select(`
-        *,
-        profiles:user_id (display_name, avatar_url)
-      `)
-      .eq('story_id', story.id)
-      .order('created_at', { ascending: true });
-    
-    setComments(data || []);
-  };
 
   const checkBookmark = async () => {
     if (!user) return;
@@ -87,58 +55,13 @@ const StoryCard = ({ story }: StoryCardProps) => {
     setIsBookmarked(!!data);
   };
 
-  const checkUserReaction = async () => {
-    if (!user) return;
+  const fetchCommentCount = async () => {
+    const { count } = await supabase
+      .from('comments')
+      .select('*', { count: 'exact' })
+      .eq('story_id', story.id);
     
-    const { data } = await supabase
-      .from('reactions')
-      .select('type')
-      .eq('user_id', user.id)
-      .eq('story_id', story.id)
-      .single();
-    
-    setUserReaction(data?.type || null);
-  };
-
-  const toggleReaction = async (type: string) => {
-    if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to react to stories.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      if (userReaction === type) {
-        // Remove reaction
-        await supabase
-          .from('reactions')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('story_id', story.id)
-          .eq('type', type);
-        
-        setUserReaction(null);
-      } else {
-        // Add or update reaction
-        await supabase
-          .from('reactions')
-          .upsert({
-            user_id: user.id,
-            story_id: story.id,
-            type: type,
-          });
-        
-        setUserReaction(type);
-      }
-      
-      fetchReactions();
-      setShowEmojiPicker(false);
-    } catch (error) {
-      console.error('Error toggling reaction:', error);
-    }
+    setCommentCount(count || 0);
   };
 
   const toggleBookmark = async () => {
@@ -195,15 +118,6 @@ const StoryCard = ({ story }: StoryCardProps) => {
       'frustrating': 'text-pink-400 bg-pink-400/20',
     };
     return colorMap[tag] || 'text-womb-warmgrey bg-womb-warmgrey/20';
-  };
-
-  const getReactionCount = (type: string) => {
-    return reactions.filter(r => r.type === type).length;
-  };
-
-  const getReactionEmoji = (type: string) => {
-    const reaction = emojiReactions.find(r => r.type === type);
-    return reaction?.emoji || '❤️';
   };
 
   return (
@@ -264,63 +178,13 @@ const StoryCard = ({ story }: StoryCardProps) => {
       </div>
 
       {/* Enhanced Interaction Section */}
-      <div className="pt-4 mt-4 border-t border-womb-deepgrey space-y-3">
+      <div className="pt-4 mt-4 border-t border-womb-deepgrey space-y-4">
         {/* Emoji Reactions */}
-        <div className="flex items-center space-x-2">
-          {emojiReactions.map(reaction => {
-            const count = getReactionCount(reaction.type);
-            const isActive = userReaction === reaction.type;
-            return count > 0 || isActive ? (
-              <button
-                key={reaction.type}
-                onClick={() => toggleReaction(reaction.type)}
-                className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs transition-all ${
-                  isActive 
-                    ? 'bg-womb-crimson/20 text-womb-crimson border border-womb-crimson/50' 
-                    : 'bg-womb-deepgrey/50 text-womb-warmgrey hover:bg-womb-deepgrey hover:text-womb-softwhite'
-                }`}
-              >
-                <span>{reaction.emoji}</span>
-                <span>{count}</span>
-              </button>
-            ) : null;
-          })}
-        </div>
-
-        {/* Main Interaction Buttons */}
+        <ReactionSystem storyId={story.id} />
+        
+        {/* Action Buttons */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3 md:space-x-4">
-            {/* Emoji Picker Toggle */}
-            <div className="relative">
-              <button 
-                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                className="flex items-center space-x-1 md:space-x-2 transition-colors text-womb-warmgrey hover:text-womb-crimson"
-              >
-                <Heart className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="text-xs md:text-sm">React</span>
-              </button>
-              
-              {/* Emoji Picker Dropdown */}
-              {showEmojiPicker && (
-                <div className="absolute bottom-full left-0 mb-2 bg-womb-deepgrey border border-womb-warmgrey/20 rounded-lg p-2 flex space-x-1 z-10 shadow-lg">
-                  {emojiReactions.map(reaction => (
-                    <button
-                      key={reaction.type}
-                      onClick={() => toggleReaction(reaction.type)}
-                      className="text-xl hover:scale-125 transition-transform p-1"
-                      title={reaction.label}
-                    >
-                      {reaction.emoji}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            
-            <span className="text-womb-warmgrey text-xs md:text-sm">
-              {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
-            </span>
-          </div>
+          <CommentSection storyId={story.id} initialCommentCount={commentCount} />
           
           <div className="flex items-center space-x-2 md:space-x-3">
             <button 
