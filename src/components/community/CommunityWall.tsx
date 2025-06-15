@@ -82,10 +82,10 @@ const CommunityWall = () => {
 
   const getItemColor = (type: string) => {
     const colors = {
-      affirmation: 'from-red-500/10 to-rose-500/10 border-red-500/20',
-      poll: 'from-blue-500/10 to-indigo-500/10 border-blue-500/20',
-      art: 'from-purple-500/10 to-violet-500/10 border-purple-500/20',
-      wisdom: 'from-green-500/10 to-emerald-500/10 border-green-500/20',
+      affirmation: 'from-womb-maroon/10 to-womb-maroon/20 border-womb-maroon/30',
+      poll: 'from-white/10 to-white/20 border-white/30',
+      art: 'from-womb-mediumgray/10 to-womb-mediumgray/20 border-womb-mediumgray/30',
+      wisdom: 'from-womb-softgray/10 to-womb-softgray/20 border-womb-softgray/30',
     };
     return colors[type as keyof typeof colors] || 'from-gray-500/10 to-gray-600/10 border-gray-500/20';
   };
@@ -192,7 +192,7 @@ const CommunityWall = () => {
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <button className="flex items-center space-x-1 text-white hover:text-womb-darkgray transition-colors">
+                  <button className="flex items-center space-x-1 text-white hover:text-womb-maroon transition-colors">
                     <Heart className="w-4 h-4" />
                     <span className="text-xs">{item.reactions}</span>
                   </button>
@@ -202,7 +202,7 @@ const CommunityWall = () => {
                     <span className="text-xs">{item.comments}</span>
                   </button>
                   
-                  <button className="text-white hover:text-white transition-colors">
+                  <button className="text-white hover:text-womb-maroon transition-colors">
                     <Share2 className="w-4 h-4" />
                   </button>
                 </div>

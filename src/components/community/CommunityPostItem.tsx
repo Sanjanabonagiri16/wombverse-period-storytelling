@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -183,7 +182,7 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
               variant="ghost"
               size="sm"
               onClick={handleFlag}
-              className="text-white hover:text-red-400"
+              className="text-white hover:text-womb-maroon"
             >
               <Flag className="w-4 h-4" />
             </Button>
@@ -249,8 +248,8 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
             <Badge 
               variant="secondary" 
               className={`${
-                post.type === 'affirmation' ? 'bg-red-500/20 text-red-400' :
-                post.type === 'poll' ? 'bg-blue-500/20 text-blue-400' :
+                post.type === 'affirmation' ? 'bg-womb-maroon/20 text-womb-maroon' :
+                post.type === 'poll' ? 'bg-white/20 text-white' :
                 'bg-white/20 text-white'
               }`}
             >

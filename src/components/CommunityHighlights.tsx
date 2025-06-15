@@ -30,7 +30,7 @@ const CommunityHighlights = () => {
           {/* Trending Tags - Now Full Width */}
           <div className="bg-womb-charcoal rounded-lg p-6 animate-fade-in">
             <div className="flex items-center space-x-2 mb-6">
-              <TrendingUp className="w-5 h-5 text-womb-mediumgray" />
+              <TrendingUp className="w-5 h-5 text-white" />
               <h3 className="text-xl font-playfair font-semibold text-white">
                 Trending Tags
               </h3>
@@ -39,7 +39,7 @@ const CommunityHighlights = () => {
               {trendingTags.map((tag, index) => (
                 <div 
                   key={tag.name}
-                  className="flex items-center justify-between p-3 bg-womb-darkgray rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-womb-softgray/10 animate-fade-in"
+                  className="flex items-center justify-between p-3 bg-womb-darkgray rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-white/10 animate-fade-in"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-center space-x-3">
@@ -55,14 +55,14 @@ const CommunityHighlights = () => {
                       </div>
                     </div>
                   </div>
-                  <Badge className="bg-womb-softgray/20 text-womb-softgray border-womb-softgray/30">
+                  <Badge className="bg-white/20 text-white border-white/30">
                     {tag.growth}
                   </Badge>
                 </div>
               ))}
             </div>
             <div className="text-center mt-6">
-              <Button className="bg-gradient-to-r from-womb-mediumgray to-womb-softgray hover:from-gray-500 hover:to-gray-400 text-womb-charcoal px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-gray-600/25">
+              <Button className="bg-gradient-to-r from-womb-mediumgray to-white hover:from-gray-500 hover:to-gray-400 text-womb-charcoal px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-gray-600/25">
                 Explore All Tags
               </Button>
             </div>
