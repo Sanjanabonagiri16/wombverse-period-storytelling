@@ -58,7 +58,7 @@ const CommunityWallPage = () => {
         .order('created_at', { ascending: false });
 
       if (postsData) {
-        // Fetch profiles for each post
+        // Fetch profiles for each post and properly type the data
         const postsWithProfiles = await Promise.all(
           postsData.map(async (post) => {
             const { data: profile } = await supabase
@@ -67,10 +67,21 @@ const CommunityWallPage = () => {
               .eq('id', post.user_id)
               .single();
 
-            return {
-              ...post,
+            // Properly cast the poll_options and poll_votes
+            const typedPost: CommunityPost = {
+              id: post.id,
+              type: post.type,
+              title: post.title,
+              content: post.content,
+              poll_options: Array.isArray(post.poll_options) ? post.poll_options as string[] : null,
+              poll_votes: (post.poll_votes && typeof post.poll_votes === 'object') ? post.poll_votes as Record<string, string[]> : null,
+              is_pinned: post.is_pinned,
+              created_at: post.created_at,
+              user_id: post.user_id,
               profiles: profile
             };
+
+            return typedPost;
           })
         );
 

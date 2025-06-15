@@ -65,11 +65,26 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
 
   const fetchReactions = async () => {
     try {
-      const { data } = await supabase.rpc('get_reaction_counts', {
-        story_uuid: storyId
-      });
+      // Directly query the reactions table since the RPC might not exist
+      const { data } = await supabase
+        .from('reactions')
+        .select('type')
+        .eq('story_id', storyId);
       
-      setReactionCounts(data || []);
+      if (data) {
+        // Count reactions by type
+        const counts = data.reduce((acc: Record<string, number>, reaction) => {
+          acc[reaction.type] = (acc[reaction.type] || 0) + 1;
+          return acc;
+        }, {});
+
+        const reactionCountsArray = Object.entries(counts).map(([type, count]) => ({
+          type,
+          count
+        }));
+
+        setReactionCounts(reactionCountsArray);
+      }
     } catch (error) {
       console.error('Error fetching reaction counts:', error);
     } finally {
@@ -117,13 +132,17 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
             type: type
           });
 
-        // Track analytics
-        await supabase.rpc('track_analytics_event', {
-          event_type_param: 'reaction_added',
-          user_id_param: user.id,
-          story_id_param: storyId,
-          reaction_type_param: type
-        });
+        // Track analytics if the function exists
+        try {
+          await supabase.rpc('track_analytics_event', {
+            event_type_param: 'reaction_added',
+            user_id_param: user.id,
+            story_id_param: storyId,
+            reaction_type_param: type
+          });
+        } catch (analyticsError) {
+          console.log('Analytics tracking not available:', analyticsError);
+        }
       }
     } catch (error) {
       console.error('Error toggling reaction:', error);
