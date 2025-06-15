@@ -256,14 +256,14 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
 
-      {/* Restored original, comprehensive Footer */}
-      <footer className="bg-gradient-to-br from-slate-900 via-womb-plum to-womb-crimson/60 border-t border-womb-plum relative z-10">
+      {/* Professional Footer */}
+      <footer className="bg-womb-charcoal border-t border-womb-plum relative z-10">
         <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-gray-300">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-womb-softwhite">
             {/* Brand & About */}
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-womb-plum to-womb-charcoal rounded-full flex items-center justify-center">
                   <span>
                     <svg width="18" height="18" viewBox="0 0 20 20" className="w-5 h-5 text-white"><circle cx="10" cy="10" r="10" fill="currentColor"/></svg>
                   </span>
@@ -271,25 +271,25 @@ const Layout = ({ children }: LayoutProps) => {
                 <span className="font-playfair text-xl font-bold text-white">WombVerse</span>
               </div>
               <p className="mb-4 text-sm">
-                A safe, supportive space where period stories are shared and celebrated. Breaking the silence, building connection, creating belonging.
+                WombVerse is a professional community dedicated to sharing accurate, science-backed knowledge and real stories about menstrual health and wellbeing, with a focus on creating informed belonging.
               </p>
-              <p className="text-xs text-gray-400">&copy; 2025 WombVerse. All rights reserved.</p>
+              <p className="text-xs text-womb-warmgrey">&copy; 2025 WombVerse. All rights reserved.</p>
             </div>
             {/* Explore */}
             <div>
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Explore</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/featured-stories" className="hover:text-womb-crimson transition-colors">Featured Stories</a>
+                  <a href="/featured-stories" className="hover:text-primary transition-colors">Featured Stories</a>
                 </li>
                 <li>
-                  <a href="/recent-stories" className="hover:text-womb-crimson transition-colors">Recent Stories</a>
+                  <a href="/recent-stories" className="hover:text-primary transition-colors">Recent Stories</a>
                 </li>
                 <li>
-                  <a href="/resources" className="hover:text-womb-crimson transition-colors">Resources</a>
+                  <a href="/resources" className="hover:text-primary transition-colors">Resources</a>
                 </li>
                 <li>
-                  <a href="/support" className="hover:text-womb-crimson transition-colors">Support</a>
+                  <a href="/support" className="hover:text-primary transition-colors">Support</a>
                 </li>
               </ul>
             </div>
@@ -298,13 +298,13 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Community</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/community-guidelines" className="hover:text-womb-crimson transition-colors">Community Guidelines</a>
+                  <a href="/guidelines" className="hover:text-primary transition-colors">Community Guidelines</a>
                 </li>
                 <li>
-                  <a href="/about-us" className="hover:text-womb-crimson transition-colors">About Us</a>
+                  <a href="/about-us" className="hover:text-primary transition-colors">About Us</a>
                 </li>
                 <li>
-                  <a href="/contact" className="hover:text-womb-crimson transition-colors">Contact</a>
+                  <a href="/contact" className="hover:text-primary transition-colors">Contact</a>
                 </li>
               </ul>
             </div>
@@ -313,7 +313,7 @@ const Layout = ({ children }: LayoutProps) => {
               <h4 className="font-playfair font-semibold text-lg text-white mb-4">Legal</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/privacy" className="hover:text-womb-crimson transition-colors">Privacy Policy</a>
+                  <a href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
                 </li>
               </ul>
             </div>

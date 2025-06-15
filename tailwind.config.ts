@@ -26,41 +26,41 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: '#1e3a8a', // Professional blue
+					foreground: '#ffffff'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					DEFAULT: '#64748b', // Professional slate/grey
+					foreground: '#ffffff'
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
+					DEFAULT: '#e11d48',
+					foreground: '#ffffff'
 				},
 				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
+					DEFAULT: '#1f2937',
+					foreground: '#e5e7eb'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					DEFAULT: '#0ea5e9', // Soft blue accent
+					foreground: '#ffffff'
 				},
 				popover: {
-					DEFAULT: 'hsl(var(--popover))',
-					foreground: 'hsl(var(--popover-foreground))'
+					DEFAULT: '#1e293b',
+					foreground: '#e5e7eb'
 				},
 				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
+					DEFAULT: '#111827',
+					foreground: '#e5e7eb'
 				},
-				// WombVerse Custom Colors
+				// Professional, dark palette
 				womb: {
-					charcoal: '#121212',
-					crimson: '#E63946',
-					plum: '#7D5BA6',
-					softwhite: '#F1F1F1',
-					warmgrey: '#B0B0B0',
-					deepgrey: '#1E1E1E',
+					charcoal: '#111827', // Very dark blueish black
+					crimson: '#1e3a8a',  // Now blue
+					plum: '#334155',     // Slate/dark blue
+					softwhite: '#f9fafb',// White
+					warmgrey: '#94a3b8', // Soft grey
+					deepgrey: '#1e293b', // Deeper slate
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
