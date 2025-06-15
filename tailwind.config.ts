@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,14 +53,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Professional, dark palette updated to match CSS variables
+				// Modern, sleek palette
 				womb: {
-					charcoal: 'hsl(var(--background))',
-					crimson: 'hsl(var(--primary))',
-					plum: 'hsl(var(--secondary))',
-					softwhite: 'hsl(var(--foreground))',
-					warmgrey: 'hsl(var(--muted-foreground))',
-					deepgrey: 'hsl(var(--card))',
+					charcoal: 'hsl(var(--background))', // #0F0F0F
+					indigo: 'hsl(var(--primary))', // #6366F1
+					purple: 'hsl(var(--secondary))', // #A855F7
+					softwhite: 'hsl(var(--foreground))', // #F8F8F8
+					warmgrey: 'hsl(var(--muted-foreground))', // #A1A1AA
+					deepgrey: 'hsl(var(--card))', // #191919
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -221,9 +222,9 @@ export default {
 			},
 			backgroundImage: {
 				'mesh-gradient': `
-					radial-gradient(circle at 20% 80%, rgba(230, 57, 70, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 80% 20%, rgba(125, 91, 166, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)
+					radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.1) 0%, transparent 50%)
 				`
 			}
 		}

@@ -30,7 +30,7 @@ const CommunityHighlights = () => {
           {/* Trending Tags - Now Full Width */}
           <div className="bg-womb-charcoal rounded-lg p-6 animate-fade-in">
             <div className="flex items-center space-x-2 mb-6">
-              <TrendingUp className="w-5 h-5 text-womb-crimson" />
+              <TrendingUp className="w-5 h-5 text-womb-indigo" />
               <h3 className="text-xl font-playfair font-semibold text-womb-softwhite">
                 Trending Tags
               </h3>
@@ -39,8 +39,8 @@ const CommunityHighlights = () => {
               {trendingTags.map((tag, index) => (
                 <div 
                   key={tag.name}
-                  className="flex items-center justify-between p-3 bg-womb-deepgrey rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-womb-plum/10 animate-fade-in"
-                  style={{ animationDelay: `${index * 75}ms` }}
+                  className="flex items-center justify-between p-3 bg-womb-deepgrey rounded-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/10 animate-fade-in"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-womb-warmgrey text-sm font-medium">
@@ -55,14 +55,14 @@ const CommunityHighlights = () => {
                       </div>
                     </div>
                   </div>
-                  <Badge className="bg-womb-crimson/20 text-womb-crimson border-womb-crimson/30">
+                  <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
                     {tag.growth}
                   </Badge>
                 </div>
               ))}
             </div>
             <div className="text-center mt-6">
-              <Button className="btn-primary">
+              <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-indigo-500/25">
                 Explore All Tags
               </Button>
             </div>
