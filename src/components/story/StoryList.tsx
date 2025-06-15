@@ -41,13 +41,7 @@ const StoryList = ({ searchQuery = '', categoryFilter = '', emotionFilter = '' }
     try {
       let query = supabase
         .from('stories')
-        .select(`
-          *,
-          profiles!stories_user_id_fkey (
-            display_name,
-            avatar_url
-          )
-        `)
+        .select('*')
         .eq('is_draft', false)
         .order('created_at', { ascending: false });
 
@@ -64,13 +58,38 @@ const StoryList = ({ searchQuery = '', categoryFilter = '', emotionFilter = '' }
         query = query.or(`title.ilike.%${searchQuery}%, content.ilike.%${searchQuery}%`);
       }
 
-      const { data, error } = await query;
+      const { data: storiesData, error } = await query;
 
       if (error) throw error;
 
-      setStories(data || []);
+      // Fetch profiles separately to avoid foreign key issues
+      const stories: Story[] = [];
+      
+      if (storiesData) {
+        for (const story of storiesData) {
+          let profileData = null;
+          
+          if (!story.is_anonymous) {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('display_name, avatar_url')
+              .eq('id', story.user_id)
+              .single();
+            
+            profileData = profile;
+          }
+          
+          stories.push({
+            ...story,
+            profiles: profileData
+          });
+        }
+      }
+
+      setStories(stories);
     } catch (error) {
       console.error('Error fetching stories:', error);
+      setStories([]);
     } finally {
       setLoading(false);
     }
