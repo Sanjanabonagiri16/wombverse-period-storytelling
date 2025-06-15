@@ -82,7 +82,7 @@ const CommunityWall = () => {
 
   const getItemColor = (type: string) => {
     const colors = {
-      affirmation: 'from-pink-500/10 to-rose-500/10 border-pink-500/20',
+      affirmation: 'from-red-500/10 to-rose-500/10 border-red-500/20',
       poll: 'from-blue-500/10 to-indigo-500/10 border-blue-500/20',
       art: 'from-purple-500/10 to-violet-500/10 border-purple-500/20',
       wisdom: 'from-green-500/10 to-emerald-500/10 border-green-500/20',
@@ -105,19 +105,19 @@ const CommunityWall = () => {
     
     return (
       <div className="space-y-3">
-        <p className="text-womb-softwhite font-medium">{item.content}</p>
+        <p className="text-white font-medium">{item.content}</p>
         <div className="space-y-2">
           {item.pollOptions?.map((option, index) => {
             const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
             return (
               <div key={index} className="relative">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm text-womb-softwhite">{option.option}</span>
-                  <span className="text-xs text-womb-warmgrey">{option.votes} votes</span>
+                  <span className="text-sm text-white">{option.option}</span>
+                  <span className="text-xs text-white">{option.votes} votes</span>
                 </div>
                 <div className="w-full bg-womb-deepgrey rounded-full h-2">
                   <div
-                    className="bg-gradient-to-r from-womb-crimson to-womb-plum h-2 rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-womb-darkgray to-womb-maroon h-2 rounded-full transition-all duration-500"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
@@ -125,7 +125,7 @@ const CommunityWall = () => {
             );
           })}
         </div>
-        <p className="text-xs text-womb-warmgrey">{totalVotes} total votes</p>
+        <p className="text-xs text-white">{totalVotes} total votes</p>
       </div>
     );
   };
@@ -133,10 +133,10 @@ const CommunityWall = () => {
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-playfair font-bold text-womb-softwhite mb-3">
+        <h2 className="text-3xl md:text-4xl font-playfair font-bold text-white mb-3">
           Community Wall 🌟
         </h2>
-        <p className="text-base md:text-lg text-womb-warmgrey">
+        <p className="text-base md:text-lg text-white">
           Polls, affirmations, period art, and shared wisdom from our community
         </p>
       </div>
@@ -146,18 +146,18 @@ const CommunityWall = () => {
         {items.map((item) => (
           <div
             key={item.id}
-            className={`break-inside-avoid bg-gradient-to-br ${getItemColor(item.type)} rounded-xl p-6 border backdrop-blur-sm hover:shadow-lg hover:shadow-womb-plum/5 transition-all duration-300 group`}
+            className={`break-inside-avoid bg-gradient-to-br ${getItemColor(item.type)} rounded-xl p-6 border backdrop-blur-sm hover:shadow-lg hover:shadow-womb-maroon/5 transition-all duration-300 group`}
           >
             <div className="space-y-4">
               {/* Header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <span className="text-2xl">{getTypeIcon(item.type)}</span>
-                  <span className="text-sm font-medium text-womb-plum capitalize">
+                  <span className="text-sm font-medium text-womb-maroon capitalize">
                     {item.type}
                   </span>
                 </div>
-                {item.type === 'poll' && <TrendingUp className="w-4 h-4 text-womb-warmgrey" />}
+                {item.type === 'poll' && <TrendingUp className="w-4 h-4 text-white" />}
               </div>
 
               {/* Content */}
@@ -172,7 +172,7 @@ const CommunityWall = () => {
                       className="w-full rounded-lg"
                     />
                   )}
-                  <p className="text-womb-softwhite leading-relaxed group-hover:text-white transition-colors">
+                  <p className="text-white leading-relaxed group-hover:text-white transition-colors">
                     {item.content}
                   </p>
                 </div>
@@ -181,28 +181,28 @@ const CommunityWall = () => {
               {/* Footer */}
               <div className="flex items-center justify-between pt-3 border-t border-womb-deepgrey/50">
                 <div className="flex items-center space-x-1">
-                  <div className="w-6 h-6 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 bg-gradient-to-br from-womb-darkgray to-womb-maroon rounded-full flex items-center justify-center">
                     <span className="text-white text-xs">
                       {item.author?.charAt(0) || 'C'}
                     </span>
                   </div>
-                  <span className="text-xs text-womb-warmgrey">
+                  <span className="text-xs text-white">
                     {item.author || 'Community'}
                   </span>
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <button className="flex items-center space-x-1 text-womb-warmgrey hover:text-womb-crimson transition-colors">
+                  <button className="flex items-center space-x-1 text-white hover:text-womb-darkgray transition-colors">
                     <Heart className="w-4 h-4" />
                     <span className="text-xs">{item.reactions}</span>
                   </button>
                   
-                  <button className="flex items-center space-x-1 text-womb-warmgrey hover:text-womb-plum transition-colors">
+                  <button className="flex items-center space-x-1 text-white hover:text-womb-maroon transition-colors">
                     <MessageCircle className="w-4 h-4" />
                     <span className="text-xs">{item.comments}</span>
                   </button>
                   
-                  <button className="text-womb-warmgrey hover:text-womb-softwhite transition-colors">
+                  <button className="text-white hover:text-white transition-colors">
                     <Share2 className="w-4 h-4" />
                   </button>
                 </div>

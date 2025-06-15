@@ -120,8 +120,8 @@ const CommunityPostForm = ({ onPostCreated }: CommunityPostFormProps) => {
     return (
       <Card className="bg-womb-deepgrey border-womb-deepgrey">
         <CardContent className="p-6 text-center">
-          <p className="text-womb-warmgrey mb-3">Sign in to share with the community</p>
-          <p className="text-womb-warmgrey text-sm">
+          <p className="text-white mb-3">Sign in to share with the community</p>
+          <p className="text-white text-sm">
             Join our supportive community to share posts, polls, and affirmations
           </p>
         </CardContent>
@@ -173,7 +173,7 @@ const CommunityPostForm = ({ onPostCreated }: CommunityPostFormProps) => {
               placeholder={postType === 'poll' ? "Poll question..." : "Affirmation title..."}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite"
+              className="bg-womb-charcoal border-womb-deepgrey text-white"
               required={postType === 'poll'}
             />
           )}
@@ -187,21 +187,21 @@ const CommunityPostForm = ({ onPostCreated }: CommunityPostFormProps) => {
             }
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="min-h-[100px] bg-womb-charcoal border-womb-deepgrey text-womb-softwhite placeholder:text-womb-warmgrey resize-none"
+            className="min-h-[100px] bg-womb-charcoal border-womb-deepgrey text-white placeholder:text-white resize-none"
             maxLength={1000}
           />
 
           {/* Poll Options */}
           {postType === 'poll' && (
             <div className="space-y-2">
-              <label className="text-sm text-womb-warmgrey">Poll Options:</label>
+              <label className="text-sm text-white">Poll Options:</label>
               {pollOptions.map((option, index) => (
                 <div key={index} className="flex space-x-2">
                   <Input
                     placeholder={`Option ${index + 1}`}
                     value={option}
                     onChange={(e) => updatePollOption(index, e.target.value)}
-                    className="bg-womb-charcoal border-womb-deepgrey text-womb-softwhite"
+                    className="bg-womb-charcoal border-womb-deepgrey text-white"
                   />
                   {pollOptions.length > 2 && (
                     <Button
@@ -222,7 +222,7 @@ const CommunityPostForm = ({ onPostCreated }: CommunityPostFormProps) => {
                   variant="outline"
                   size="sm"
                   onClick={addPollOption}
-                  className="border-womb-plum text-womb-plum"
+                  className="border-womb-maroon text-womb-maroon"
                 >
                   Add Option
                 </Button>
@@ -231,14 +231,14 @@ const CommunityPostForm = ({ onPostCreated }: CommunityPostFormProps) => {
           )}
 
           <div className="flex items-center justify-between">
-            <div className="text-xs text-womb-warmgrey">
+            <div className="text-xs text-white">
               {content.length}/1000
             </div>
             
             <Button 
               type="submit" 
               disabled={isSubmitting || !content.trim()}
-              className="bg-womb-plum hover:bg-womb-plum/90 text-white"
+              className="bg-womb-maroon hover:bg-womb-maroon/90 text-white"
             >
               {isSubmitting ? "Sharing..." : "Share Post"}
             </Button>

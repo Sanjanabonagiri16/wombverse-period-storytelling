@@ -97,7 +97,7 @@ const CommunityWallPage = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-womb-plum" />
+        <Loader2 className="w-8 h-8 animate-spin text-womb-maroon" />
       </div>
     );
   }
@@ -106,12 +106,12 @@ const CommunityWallPage = () => {
     <div className="space-y-6">
       <div className="text-center mb-8">
         <div className="flex items-center justify-center space-x-2 mb-2">
-          <Users className="w-8 h-8 text-womb-plum" />
-          <h2 className="text-2xl md:text-3xl font-playfair font-bold text-womb-softwhite">
+          <Users className="w-8 h-8 text-womb-maroon" />
+          <h2 className="text-2xl md:text-3xl font-playfair font-bold text-white">
             Community Wall
           </h2>
         </div>
-        <p className="text-womb-warmgrey">
+        <p className="text-white">
           Share posts, polls, and affirmations with our supportive community
         </p>
       </div>
@@ -121,8 +121,8 @@ const CommunityWallPage = () => {
       <div className="space-y-6">
         {posts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-womb-warmgrey text-lg">No community posts yet</p>
-            <p className="text-womb-warmgrey text-sm mt-2">
+            <p className="text-white text-lg">No community posts yet</p>
+            <p className="text-white text-sm mt-2">
               Be the first to share something with the community!
             </p>
           </div>

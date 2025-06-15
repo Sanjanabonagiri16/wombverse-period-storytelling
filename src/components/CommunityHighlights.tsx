@@ -18,10 +18,10 @@ const CommunityHighlights = () => {
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-womb-lightgray mb-4">
+          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-white mb-4">
             Community Pulse
           </h2>
-          <p className="text-lg text-womb-secondarytext max-w-2xl mx-auto">
+          <p className="text-lg text-white max-w-2xl mx-auto">
             See what's trending, discover popular conversations, and connect with our growing community.
           </p>
         </div>
@@ -31,7 +31,7 @@ const CommunityHighlights = () => {
           <div className="bg-womb-charcoal rounded-lg p-6 animate-fade-in">
             <div className="flex items-center space-x-2 mb-6">
               <TrendingUp className="w-5 h-5 text-womb-mediumgray" />
-              <h3 className="text-xl font-playfair font-semibold text-womb-lightgray">
+              <h3 className="text-xl font-playfair font-semibold text-white">
                 Trending Tags
               </h3>
             </div>
@@ -43,14 +43,14 @@ const CommunityHighlights = () => {
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-center space-x-3">
-                    <span className="text-womb-secondarytext text-sm font-medium">
+                    <span className="text-white text-sm font-medium">
                       #{index + 1}
                     </span>
                     <div>
-                      <div className="text-womb-lightgray font-medium">
+                      <div className="text-white font-medium">
                         #{tag.name}
                       </div>
-                      <div className="text-womb-secondarytext text-sm">
+                      <div className="text-white text-sm">
                         {tag.count} stories
                       </div>
                     </div>

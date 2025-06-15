@@ -148,32 +148,32 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
   };
 
   return (
-    <Card className="bg-gradient-to-br from-womb-deepgrey to-womb-charcoal border-womb-deepgrey hover:border-womb-plum/50 transition-all duration-300">
+    <Card className="bg-gradient-to-br from-womb-deepgrey to-womb-charcoal border-womb-deepgrey hover:border-womb-maroon/50 transition-all duration-300">
       <CardContent className="p-6">
         <div className="space-y-4">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-womb-crimson to-womb-plum rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-womb-darkgray to-womb-maroon rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-medium">
                   {post.profiles?.display_name?.charAt(0) || 'U'}
                 </span>
               </div>
               <div>
                 <div className="flex items-center space-x-2">
-                  <p className="text-womb-softwhite font-medium text-sm">
+                  <p className="text-white font-medium text-sm">
                     {post.profiles?.display_name || 'User'}
                   </p>
                   {post.is_pinned && (
-                    <Pin className="w-3 h-3 text-womb-plum" />
+                    <Pin className="w-3 h-3 text-womb-maroon" />
                   )}
                   {getPostTypeIcon() && (
-                    <div className="text-womb-warmgrey">
+                    <div className="text-white">
                       {getPostTypeIcon()}
                     </div>
                   )}
                 </div>
-                <p className="text-womb-warmgrey text-xs">
+                <p className="text-white text-xs">
                   {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
                 </p>
               </div>
@@ -183,7 +183,7 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
               variant="ghost"
               size="sm"
               onClick={handleFlag}
-              className="text-womb-warmgrey hover:text-red-400"
+              className="text-white hover:text-red-400"
             >
               <Flag className="w-4 h-4" />
             </Button>
@@ -191,19 +191,19 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
 
           {/* Content */}
           {post.title && (
-            <h3 className="text-womb-softwhite font-semibold text-lg">
+            <h3 className="text-white font-semibold text-lg">
               {post.title}
             </h3>
           )}
           
-          <p className="text-womb-softwhite leading-relaxed">
+          <p className="text-white leading-relaxed">
             {post.content}
           </p>
 
           {/* Poll Options */}
           {post.type === 'poll' && post.poll_options && (
             <div className="space-y-3">
-              <div className="text-sm text-womb-warmgrey">
+              <div className="text-sm text-white">
                 {getTotalVotes()} votes
               </div>
               {post.poll_options.map((option, index) => {
@@ -219,8 +219,8 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
                       variant="outline"
                       className={`w-full justify-start h-auto p-3 ${
                         userVoted 
-                          ? 'border-womb-plum bg-womb-plum/20 text-womb-plum' 
-                          : 'border-womb-deepgrey hover:border-womb-warmgrey'
+                          ? 'border-womb-maroon bg-womb-maroon/20 text-womb-maroon' 
+                          : 'border-womb-deepgrey hover:border-white'
                       }`}
                       onClick={() => handleVote(index)}
                       disabled={voting}
@@ -232,7 +232,7 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
                         </div>
                         <div className="w-full bg-womb-charcoal rounded-full h-2">
                           <div 
-                            className="bg-womb-plum h-2 rounded-full transition-all duration-300"
+                            className="bg-womb-maroon h-2 rounded-full transition-all duration-300"
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
@@ -249,9 +249,9 @@ const CommunityPostItem = ({ post, onPostUpdated }: CommunityPostItemProps) => {
             <Badge 
               variant="secondary" 
               className={`${
-                post.type === 'affirmation' ? 'bg-pink-500/20 text-pink-400' :
+                post.type === 'affirmation' ? 'bg-red-500/20 text-red-400' :
                 post.type === 'poll' ? 'bg-blue-500/20 text-blue-400' :
-                'bg-womb-warmgrey/20 text-womb-warmgrey'
+                'bg-white/20 text-white'
               }`}
             >
               {post.type.charAt(0).toUpperCase() + post.type.slice(1)}
