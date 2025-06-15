@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users } from 'lucide-react';
+import { Search, Menu, X, Heart, PenTool, User, LogOut, Book, MessageSquare, Users, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
@@ -61,6 +61,8 @@ const Layout = ({ children }: LayoutProps) => {
     { href: '/stories', label: 'Stories', icon: Book },
     { href: '/whispers', label: 'Whispers', icon: MessageSquare },
     { href: '/community', label: 'Community', icon: Users },
+    // Add mood stories for authenticated users
+    ...(user ? [{ href: '/mood-stories', label: 'Mood Stories', icon: Sparkles }] : []),
   ];
 
   return (

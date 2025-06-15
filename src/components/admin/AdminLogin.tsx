@@ -130,7 +130,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
             <p className="text-xs text-womb-warmgrey text-center">
               <strong>Demo Credentials:</strong><br />
               Email: admin@wombverse.com<br />
-              Password: WombVerse2024!
+              Password: WombVerse2025!
             </p>
           </div>
         </CardContent>
