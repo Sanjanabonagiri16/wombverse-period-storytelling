@@ -42,7 +42,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
       console.log('Invalid credentials provided');
       toast({
         title: "Invalid Credentials",
-        description: "Please use the demo credentials provided below.",
+        description: "Please check your email and password.",
         variant: "destructive",
       });
 
@@ -50,7 +50,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
       console.error('Login error:', error);
       toast({
         title: "Login failed",
-        description: "Please use the demo credentials provided below.",
+        description: "Please check your credentials and try again.",
         variant: "destructive",
       });
     } finally {
@@ -71,7 +71,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
             Admin Access
           </CardTitle>
           <p className="text-womb-warmgrey text-sm">
-            Use demo credentials for access
+            Secure administrator login
           </p>
         </CardHeader>
         <CardContent>
@@ -121,14 +121,6 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
               {loading ? 'Authenticating...' : 'Access Dashboard'}
             </Button>
           </form>
-          
-          <div className="mt-6 p-3 bg-womb-charcoal rounded-lg border border-womb-deepgrey">
-            <p className="text-xs text-womb-warmgrey text-center">
-              <strong>Demo Credentials:</strong><br />
-              Email: admin@wombverse.com<br />
-              Password: WombVerse2025!
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
