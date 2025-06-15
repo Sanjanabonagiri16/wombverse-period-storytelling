@@ -1,60 +1,65 @@
 
 import { useState } from 'react';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const SignUpForm = () => {
-  const [formData, setFormData] = useState({
-    displayName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Password mismatch",
-        description: "Please make sure your passwords match.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (!acceptTerms) {
-      toast({
-        title: "Terms required",
-        description: "Please accept our community guidelines to continue.",
-        variant: "destructive"
-      });
-      return;
-    }
-
     setIsLoading(true);
 
-    // Simulate account creation
-    setTimeout(() => {
-      setIsLoading(false);
-      toast({
-        title: "Welcome to WombVerse!",
-        description: "Your account has been created successfully.",
+    try {
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            display_name: displayName,
+          },
+        },
       });
-    }, 1000);
+
+      if (error) {
+        toast({
+          title: "Sign up failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (data.user) {
+        toast({
+          title: "Welcome to WombVerse!",
+          description: "Please check your email to confirm your account.",
+        });
+        navigate('/');
+      }
+    } catch (error) {
+      toast({
+        title: "Sign up failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -69,8 +74,8 @@ const SignUpForm = () => {
           <Input
             id="displayName"
             type="text"
-            value={formData.displayName}
-            onChange={(e) => handleInputChange('displayName', e.target.value)}
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
             placeholder="How should we call you?"
             className="pl-10 bg-womb-charcoal border-womb-charcoal text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson"
             required
@@ -88,8 +93,8 @@ const SignUpForm = () => {
           <Input
             id="email"
             type="email"
-            value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="your.email@example.com"
             className="pl-10 bg-womb-charcoal border-womb-charcoal text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson"
             required
@@ -107,11 +112,12 @@ const SignUpForm = () => {
           <Input
             id="password"
             type={showPassword ? 'text' : 'password'}
-            value={formData.password}
-            onChange={(e) => handleInputChange('password', e.target.value)}
-            placeholder="Create a strong password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Create a secure password"
             className="pl-10 pr-10 bg-womb-charcoal border-womb-charcoal text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson"
             required
+            minLength={6}
           />
           <button
             type="button"
@@ -121,55 +127,9 @@ const SignUpForm = () => {
             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
-      </div>
-
-      {/* Confirm Password Field */}
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword" className="text-womb-softwhite">
-          Confirm Password
-        </Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-womb-warmgrey w-4 h-4" />
-          <Input
-            id="confirmPassword"
-            type={showConfirmPassword ? 'text' : 'password'}
-            value={formData.confirmPassword}
-            onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-            placeholder="Confirm your password"
-            className="pl-10 pr-10 bg-womb-charcoal border-womb-charcoal text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson"
-            required
-          />
-          <button
-            type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-womb-warmgrey hover:text-womb-softwhite transition-colors"
-          >
-            {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Terms and Conditions */}
-      <div className="flex items-start space-x-3">
-        <Checkbox
-          id="terms"
-          checked={acceptTerms}
-          onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
-          className="border-womb-warmgrey data-[state=checked]:bg-womb-crimson data-[state=checked]:border-womb-crimson"
-        />
-        <Label 
-          htmlFor="terms" 
-          className="text-sm text-womb-warmgrey leading-relaxed cursor-pointer"
-        >
-          I accept the{' '}
-          <a href="#" className="text-womb-crimson hover:text-womb-crimson/80 transition-colors">
-            Community Guidelines
-          </a>{' '}
-          and{' '}
-          <a href="#" className="text-womb-crimson hover:text-womb-crimson/80 transition-colors">
-            Privacy Policy
-          </a>
-        </Label>
+        <p className="text-xs text-womb-warmgrey">
+          Password must be at least 6 characters long
+        </p>
       </div>
 
       {/* Submit Button */}
@@ -178,7 +138,7 @@ const SignUpForm = () => {
         disabled={isLoading}
         className="w-full btn-primary h-12 text-base font-medium"
       >
-        {isLoading ? "Creating your account..." : "Join WombVerse"}
+        {isLoading ? "Creating your account..." : "Create Account"}
       </Button>
     </form>
   );

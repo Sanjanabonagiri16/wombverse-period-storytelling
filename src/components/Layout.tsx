@@ -1,8 +1,11 @@
 
 import { useState } from 'react';
-import { Search, Menu, X, Heart, BookOpen, User, PenTool } from 'lucide-react';
+import { Search, Menu, X, Heart, PenTool, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,6 +13,24 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast({
+        title: "Signed out",
+        description: "You've been successfully signed out.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-womb-charcoal">
@@ -46,18 +67,36 @@ const Layout = ({ children }: LayoutProps) => {
               <a href="#" className="text-womb-softwhite hover:text-womb-crimson transition-colors">
                 Community
               </a>
-              <Button className="btn-primary">
-                <PenTool className="w-4 h-4 mr-2" />
-                Share Story
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey"
-                onClick={() => window.location.href = '/auth'}
-              >
-                <User className="w-4 h-4 mr-2" />
-                Sign In
-              </Button>
+              
+              {!loading && (
+                <>
+                  {user ? (
+                    <>
+                      <Button className="btn-primary">
+                        <PenTool className="w-4 h-4 mr-2" />
+                        Share Story
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey"
+                        onClick={handleSignOut}
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out
+                      </Button>
+                    </>
+                  ) : (
+                    <Button 
+                      variant="ghost" 
+                      className="text-womb-softwhite hover:text-womb-crimson hover:bg-womb-deepgrey"
+                      onClick={() => window.location.href = '/auth'}
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Sign In
+                    </Button>
+                  )}
+                </>
+              )}
             </nav>
 
             {/* Mobile Menu Button */}
@@ -93,20 +132,36 @@ const Layout = ({ children }: LayoutProps) => {
               <a href="#" className="block text-womb-softwhite hover:text-womb-crimson transition-colors">
                 Community Wall
               </a>
-              <div className="pt-4 border-t border-womb-deepgrey space-y-2">
-                <Button className="w-full btn-primary">
-                  <PenTool className="w-4 h-4 mr-2" />
-                  Share Your Story
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
-                  onClick={() => window.location.href = '/auth'}
-                >
-                  <User className="w-4 h-4 mr-2" />
-                  Sign In
-                </Button>
-              </div>
+              
+              {!loading && (
+                <div className="pt-4 border-t border-womb-deepgrey space-y-2">
+                  {user ? (
+                    <>
+                      <Button className="w-full btn-primary">
+                        <PenTool className="w-4 h-4 mr-2" />
+                        Share Your Story
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
+                        onClick={handleSignOut}
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out
+                      </Button>
+                    </>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white"
+                      onClick={() => window.location.href = '/auth'}
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Sign In
+                    </Button>
+                  )}
+                </div>
+              )}
             </nav>
           </div>
         )}
