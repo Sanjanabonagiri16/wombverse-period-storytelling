@@ -1,9 +1,9 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import EmojiReactionButton from './EmojiReactionButton';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 interface ReactionCount {
   type: string;
@@ -24,6 +24,10 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
   const [reactionCounts, setReactionCounts] = useState<ReactionCount[]>([]);
   const [userReactions, setUserReactions] = useState<UserReaction[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Ref to track subscription and prevent multiple subscriptions
+  const subscriptionRef = useRef<RealtimeChannel | null>(null);
+  const isSubscribedRef = useRef(false);
 
   const reactionTypes = [
     { type: 'heart', emoji: '❤️', label: 'Love' },
@@ -35,14 +39,23 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
   ];
 
   useEffect(() => {
+    // Prevent multiple subscriptions
+    if (isSubscribedRef.current) {
+      console.log(`ReactionSystem ${storyId}: Subscription already active, skipping setup`);
+      return;
+    }
+
+    console.log(`ReactionSystem ${storyId}: Setting up subscription`);
+    isSubscribedRef.current = true;
+
     fetchReactions();
     if (user) {
       fetchUserReactions();
     }
 
-    // Set up real-time subscription for reactions
-    const channel = supabase
-      .channel('story-reactions')
+    // Set up real-time subscription for reactions with unique channel name
+    subscriptionRef.current = supabase
+      .channel(`reactions_system_${storyId}_${Date.now()}`)
       .on(
         'postgres_changes',
         {
@@ -58,12 +71,31 @@ const ReactionSystem = ({ storyId }: ReactionSystemProps) => {
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log(`ReactionSystem subscription for story ${storyId}:`, status);
+      });
 
     return () => {
-      supabase.removeChannel(channel);
+      console.log(`ReactionSystem ${storyId}: Cleaning up subscription`);
+      isSubscribedRef.current = false;
+      
+      try {
+        if (subscriptionRef.current) {
+          supabase.removeChannel(subscriptionRef.current);
+          subscriptionRef.current = null;
+        }
+      } catch (error) {
+        console.error('Error cleaning up ReactionSystem subscription:', error);
+      }
     };
-  }, [storyId, user]);
+  }, [storyId]); // Only depend on storyId to prevent recreation
+
+  // Separate useEffect for user-dependent operations
+  useEffect(() => {
+    if (user) {
+      fetchUserReactions();
+    }
+  }, [user, storyId]);
 
   const fetchReactions = async () => {
     try {

@@ -39,6 +39,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
   const { toast } = useToast();
   const reactionsSubscriptionRef = useRef<RealtimeChannel | null>(null);
   const commentsSubscriptionRef = useRef<RealtimeChannel | null>(null);
+  const isSubscribedRef = useRef(false);
 
   const checkBookmark = useCallback(async () => {
     if (!user) return;
@@ -96,18 +97,24 @@ const StoryCard = ({ story }: StoryCardProps) => {
   }, [story.id]);
 
   useEffect(() => {
+    // Prevent multiple subscriptions for the same story
+    if (isSubscribedRef.current) {
+      console.log(`StoryCard ${story.id}: Subscriptions already active, skipping setup`);
+      return;
+    }
+
+    console.log(`StoryCard ${story.id}: Setting up subscriptions`);
+    isSubscribedRef.current = true;
+
     if (user) {
       checkBookmark();
     }
     fetchCommentCount();
     fetchReactionCount();
 
-    let reactionsSubscription: RealtimeChannel | null = null;
-    let commentsSubscription: RealtimeChannel | null = null;
-
     try {
       // Set up real-time subscriptions for reactions and comments
-      reactionsSubscription = supabase
+      reactionsSubscriptionRef.current = supabase
         .channel(`reactions_${story.id}_${Date.now()}`)
         .on(
           'postgres_changes',
@@ -125,7 +132,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
           console.log(`Reactions subscription for story ${story.id}:`, status);
         });
 
-      commentsSubscription = supabase
+      commentsSubscriptionRef.current = supabase
         .channel(`comments_${story.id}_${Date.now()}`)
         .on(
           'postgres_changes',
@@ -144,13 +151,13 @@ const StoryCard = ({ story }: StoryCardProps) => {
         });
     } catch (error) {
       console.error('Error setting up StoryCard subscriptions:', error);
+      isSubscribedRef.current = false;
     }
 
-    // Store subscriptions in refs for cleanup
-    reactionsSubscriptionRef.current = reactionsSubscription;
-    commentsSubscriptionRef.current = commentsSubscription;
-
     return () => {
+      console.log(`StoryCard ${story.id}: Cleaning up subscriptions`);
+      isSubscribedRef.current = false;
+      
       try {
         if (reactionsSubscriptionRef.current) {
           supabase.removeChannel(reactionsSubscriptionRef.current);
@@ -164,7 +171,14 @@ const StoryCard = ({ story }: StoryCardProps) => {
         console.error('Error cleaning up StoryCard subscriptions:', error);
       }
     };
-  }, [story.id, user, checkBookmark, fetchCommentCount, fetchReactionCount]);
+  }, [story.id]); // Only depend on story.id to prevent recreation
+
+  // Separate useEffect for user-dependent operations
+  useEffect(() => {
+    if (user) {
+      checkBookmark();
+    }
+  }, [user, story.id, checkBookmark]);
 
   const toggleBookmark = async () => {
     if (!user) {

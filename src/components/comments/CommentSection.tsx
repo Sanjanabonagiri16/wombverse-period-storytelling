@@ -1,9 +1,9 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MessageCircle, Loader2 } from 'lucide-react';
 import CommentItem from './CommentItem';
 import CommentForm from './CommentForm';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 interface Comment {
   id: string;
@@ -25,15 +25,28 @@ const CommentSection = ({ storyId, initialCommentCount = 0 }: CommentSectionProp
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [showComments, setShowComments] = useState(false);
+  
+  // Ref to track subscription and prevent multiple subscriptions
+  const subscriptionRef = useRef<RealtimeChannel | null>(null);
+  const isSubscribedRef = useRef(false);
 
   useEffect(() => {
+    // Prevent multiple subscriptions
+    if (isSubscribedRef.current) {
+      console.log(`CommentSection ${storyId}: Subscription already active, skipping setup`);
+      return;
+    }
+
+    console.log(`CommentSection ${storyId}: Setting up subscription`);
+    isSubscribedRef.current = true;
+
     if (showComments) {
       fetchComments();
     }
 
-    // Set up real-time subscription for comments
-    const channel = supabase
-      .channel('story-comments')
+    // Set up real-time subscription for comments with unique channel name
+    subscriptionRef.current = supabase
+      .channel(`comments_section_${storyId}_${Date.now()}`)
       .on(
         'postgres_changes',
         {
@@ -48,12 +61,31 @@ const CommentSection = ({ storyId, initialCommentCount = 0 }: CommentSectionProp
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log(`CommentSection subscription for story ${storyId}:`, status);
+      });
 
     return () => {
-      supabase.removeChannel(channel);
+      console.log(`CommentSection ${storyId}: Cleaning up subscription`);
+      isSubscribedRef.current = false;
+      
+      try {
+        if (subscriptionRef.current) {
+          supabase.removeChannel(subscriptionRef.current);
+          subscriptionRef.current = null;
+        }
+      } catch (error) {
+        console.error('Error cleaning up CommentSection subscription:', error);
+      }
     };
-  }, [storyId, showComments]);
+  }, [storyId]); // Only depend on storyId to prevent recreation
+
+  // Separate useEffect for showComments-dependent operations
+  useEffect(() => {
+    if (showComments) {
+      fetchComments();
+    }
+  }, [showComments, storyId]);
 
   const fetchComments = async () => {
     try {
