@@ -1,4 +1,3 @@
-
 import { Globe, Users, Lock } from 'lucide-react';
 
 type PrivacyOption = 'public' | 'community' | 'anonymous';
@@ -6,6 +5,7 @@ type PrivacyOption = 'public' | 'community' | 'anonymous';
 interface PrivacySelectorProps {
   value: PrivacyOption;
   onChange: (value: PrivacyOption) => void;
+  disabled?: boolean;
 }
 
 const privacyOptions = [
@@ -29,7 +29,7 @@ const privacyOptions = [
   },
 ];
 
-const PrivacySelector = ({ value, onChange }: PrivacySelectorProps) => {
+const PrivacySelector = ({ value, onChange, disabled = false }: PrivacySelectorProps) => {
   return (
     <div className="space-y-3">
       <p className="text-sm text-womb-warmgrey">
@@ -42,13 +42,15 @@ const PrivacySelector = ({ value, onChange }: PrivacySelectorProps) => {
             <button
               key={option.value}
               type="button"
-              onClick={() => onChange(option.value)}
+              onClick={() => !disabled && onChange(option.value)}
+              disabled={disabled}
               className={`
                 w-full p-4 rounded-lg border text-left transition-all duration-200
                 ${value === option.value
                   ? 'border-womb-crimson bg-womb-crimson/10'
                   : 'border-womb-deepgrey bg-womb-deepgrey hover:border-womb-warmgrey'
                 }
+                ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
               `}
             >
               <div className="flex items-start space-x-3">

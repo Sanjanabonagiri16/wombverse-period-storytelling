@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 
 interface EmotionTag {
@@ -22,10 +21,13 @@ const emotionTags: EmotionTag[] = [
 interface EmotionTagsProps {
   selectedTags: string[];
   onTagsChange: (tags: string[]) => void;
+  disabled?: boolean;
 }
 
-const EmotionTags = ({ selectedTags, onTagsChange }: EmotionTagsProps) => {
+const EmotionTags = ({ selectedTags, onTagsChange, disabled = false }: EmotionTagsProps) => {
   const toggleTag = (tagId: string) => {
+    if (disabled) return;
+    
     if (selectedTags.includes(tagId)) {
       onTagsChange(selectedTags.filter(id => id !== tagId));
     } else {
@@ -44,12 +46,14 @@ const EmotionTags = ({ selectedTags, onTagsChange }: EmotionTagsProps) => {
             key={tag.id}
             type="button"
             onClick={() => toggleTag(tag.id)}
+            disabled={disabled}
             className={`
               px-3 py-2 rounded-lg border transition-all duration-200 text-sm font-medium
               ${selectedTags.includes(tag.id)
                 ? `${tag.bgColor} ${tag.color} border-current`
                 : 'bg-womb-deepgrey border-womb-deepgrey text-womb-warmgrey hover:border-womb-warmgrey'
               }
+              ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
             `}
           >
             {tag.label}

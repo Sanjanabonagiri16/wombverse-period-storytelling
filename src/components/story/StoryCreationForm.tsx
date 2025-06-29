@@ -45,8 +45,20 @@ const StoryCreationForm = () => {
   // Check authentication status on component mount
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      console.log('StoryCreationForm: Checking authentication status...');
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      console.log('StoryCreationForm: Session data:', session);
+      console.log('StoryCreationForm: Auth error:', error);
+      console.log('StoryCreationForm: User from context:', user);
+      
       setAuthStatus(session ? 'authenticated' : 'not-authenticated');
+      
+      if (session) {
+        console.log('StoryCreationForm: User is authenticated:', session.user.email);
+      } else {
+        console.log('StoryCreationForm: No active session found');
+      }
     };
     checkAuth();
   }, [user]);
@@ -382,6 +394,24 @@ const StoryCreationForm = () => {
         </div>
       </div>
 
+      {/* Sign In Prompt */}
+      {authStatus === 'not-authenticated' && (
+        <div className="p-4 bg-womb-crimson/20 border border-womb-crimson rounded-lg">
+          <div className="text-center">
+            <h3 className="text-womb-softwhite font-medium mb-2">Sign In Required</h3>
+            <p className="text-womb-warmgrey text-sm mb-4">
+              You need to sign in to share your story with the community.
+            </p>
+            <button
+              onClick={() => navigate('/auth')}
+              className="px-4 py-2 bg-womb-crimson text-womb-softwhite rounded hover:bg-womb-crimson/80 transition-colors"
+            >
+              Go to Sign In
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Debug Test Buttons - Remove these after testing */}
       <div className="p-4 bg-womb-deepgrey rounded-lg border border-womb-plum">
         <h3 className="text-womb-softwhite font-medium mb-3">Debug Tools</h3>
@@ -432,7 +462,7 @@ const StoryCreationForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 lg:space-y-6">
           {!showPreview ? (
-            <StoryFormFields form={form} />
+            <StoryFormFields form={form} disabled={authStatus !== 'authenticated'} />
           ) : (
             <StoryPreview story={getStoryPreviewData()} />
           )}
@@ -442,6 +472,7 @@ const StoryCreationForm = () => {
             showPreview={showPreview}
             onSaveDraft={saveDraft}
             onTogglePreview={() => setShowPreview(!showPreview)}
+            disabled={authStatus !== 'authenticated'}
           />
         </form>
       </Form>

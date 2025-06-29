@@ -1,4 +1,3 @@
-
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,9 +8,10 @@ import PrivacySelector from './PrivacySelector';
 
 interface StoryFormFieldsProps {
   form: UseFormReturn<StoryFormData>;
+  disabled?: boolean;
 }
 
-const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
+const StoryFormFields = ({ form, disabled = false }: StoryFormFieldsProps) => {
   return (
     <div className="space-y-4 lg:space-y-6">
       {/* Story Title */}
@@ -25,6 +25,7 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
               <Input
                 placeholder="Give your story a meaningful title..."
                 className="bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson text-sm md:text-base h-10 md:h-12"
+                disabled={disabled}
                 {...field}
               />
             </FormControl>
@@ -43,6 +44,7 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
             <FormControl>
               <select
                 className="w-full h-10 md:h-12 rounded-md border border-womb-deepgrey bg-womb-deepgrey px-3 py-2 text-sm md:text-base text-womb-softwhite focus:border-womb-crimson focus:outline-none"
+                disabled={disabled}
                 {...field}
               >
                 <option value="">Select a category</option>
@@ -72,6 +74,7 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
               <Textarea
                 placeholder="Share your experience, thoughts, or advice. Remember, your story matters and can help others feel less alone..."
                 className="min-h-[250px] md:min-h-[300px] bg-womb-deepgrey border-womb-deepgrey text-womb-softwhite placeholder-womb-warmgrey focus:border-womb-crimson resize-none text-sm md:text-base"
+                disabled={disabled}
                 {...field}
               />
             </FormControl>
@@ -94,6 +97,7 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
               <EmotionTags
                 selectedTags={field.value}
                 onTagsChange={field.onChange}
+                disabled={disabled}
               />
             </FormControl>
             <FormMessage />
@@ -113,6 +117,7 @@ const StoryFormFields = ({ form }: StoryFormFieldsProps) => {
                 <PrivacySelector
                   value={field.value}
                   onChange={field.onChange}
+                  disabled={disabled}
                 />
               </FormControl>
               <FormMessage />

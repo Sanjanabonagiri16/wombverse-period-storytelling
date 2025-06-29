@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Save, Send } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +7,7 @@ interface StoryFormActionsProps {
   showPreview: boolean;
   onSaveDraft: () => void;
   onTogglePreview: () => void;
+  disabled?: boolean;
 }
 
 const StoryFormActions = ({ 
@@ -15,6 +15,7 @@ const StoryFormActions = ({
   showPreview, 
   onSaveDraft, 
   onTogglePreview,
+  disabled = false,
 }: StoryFormActionsProps) => {
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ const StoryFormActions = ({
           type="button"
           variant="outline"
           onClick={onSaveDraft}
+          disabled={disabled}
           className="w-full md:w-auto border-womb-plum text-womb-plum hover:bg-womb-plum hover:text-white text-sm md:text-base h-10 md:h-12"
         >
           <Save className="w-4 h-4 mr-2" />
@@ -35,6 +37,7 @@ const StoryFormActions = ({
           type="button"
           variant="outline"
           onClick={onTogglePreview}
+          disabled={disabled}
           className="w-full md:w-auto border-womb-warmgrey text-womb-warmgrey hover:bg-womb-warmgrey hover:text-womb-charcoal text-sm md:text-base h-10 md:h-12"
         >
           {showPreview ? 'Edit' : 'Preview'}
@@ -46,6 +49,7 @@ const StoryFormActions = ({
           type="button"
           variant="ghost"
           onClick={() => navigate('/')}
+          disabled={disabled}
           className="w-full md:w-auto text-womb-warmgrey hover:text-womb-softwhite text-sm md:text-base h-10 md:h-12"
         >
           Cancel
@@ -53,7 +57,7 @@ const StoryFormActions = ({
         
         <Button
           type="submit"
-          disabled={isSaving}
+          disabled={isSaving || disabled}
           className="w-full md:w-auto btn-primary text-sm md:text-base h-10 md:h-12"
         >
           <Send className="w-4 h-4 mr-2" />
