@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import StoryCard from './StoryCard';
@@ -125,39 +125,6 @@ const StoryExplorer = () => {
     };
   }, []); // Empty dependency array - only run once
 
-  const handleRealtimeChange = async (payload: RealtimePostgresChangesPayload<StoryData>) => {
-    const { eventType, new: newRecord, old: oldRecord } = payload;
-    
-    switch (eventType) {
-      case 'INSERT':
-        // New story created - add it to the list if it matches current filters
-        if (newRecord && !newRecord.is_draft) {
-          const shouldInclude = checkStoryFilters(newRecord);
-          if (shouldInclude) {
-            const storyWithProfile = await enrichStoryWithProfile(newRecord);
-            setStories(prev => [storyWithProfile, ...prev.slice(0, -1)]);
-            
-            // Show notification for new story
-            setShowNewStoryNotification(true);
-            setTimeout(() => setShowNewStoryNotification(false), 3000);
-          }
-        }
-        break;
-        
-      case 'UPDATE':
-        // Story updated - refresh the list to get the latest data
-        fetchStories(true);
-        break;
-        
-      case 'DELETE':
-        // Story deleted - remove it from the list
-        if (oldRecord) {
-          setStories(prev => prev.filter(story => story.id !== oldRecord.id));
-        }
-        break;
-    }
-  };
-
   const checkStoryFilters = (story: StoryData) => {
     if (emotionFilter && !story.emotion_tags.includes(emotionFilter)) {
       return false;
@@ -187,7 +154,7 @@ const StoryExplorer = () => {
     };
   };
 
-  const fetchStories = async (reset = false) => {
+  const fetchStories = useCallback(async (reset = false) => {
     console.log('StoryExplorer: fetchStories called with reset:', reset);
     
     if (reset) {
@@ -265,7 +232,40 @@ const StoryExplorer = () => {
       setLoading(false);
       setLoadingMore(false);
     }
-  };
+  }, [emotionFilter, moodFilter, page]);
+
+  const handleRealtimeChange = useCallback(async (payload: RealtimePostgresChangesPayload<StoryData>) => {
+    const { eventType, new: newRecord, old: oldRecord } = payload;
+    
+    switch (eventType) {
+      case 'INSERT':
+        // New story created - add it to the list if it matches current filters
+        if (newRecord && !newRecord.is_draft) {
+          const shouldInclude = checkStoryFilters(newRecord);
+          if (shouldInclude) {
+            const storyWithProfile = await enrichStoryWithProfile(newRecord);
+            setStories(prev => [storyWithProfile, ...prev.slice(0, -1)]);
+            
+            // Show notification for new story
+            setShowNewStoryNotification(true);
+            setTimeout(() => setShowNewStoryNotification(false), 3000);
+          }
+        }
+        break;
+        
+      case 'UPDATE':
+        // Story updated - refresh the list to get the latest data
+        fetchStories(true);
+        break;
+        
+      case 'DELETE':
+        // Story deleted - remove it from the list
+        if (oldRecord) {
+          setStories(prev => prev.filter(story => story.id !== oldRecord.id));
+        }
+        break;
+    }
+  }, [fetchStories]);
 
   const loadMore = () => {
     if (!loadingMore && hasMore) {

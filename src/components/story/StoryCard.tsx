@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Bookmark, Share2, Heart, MessageCircle, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -83,7 +83,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
     };
   }, [story.id, user]);
 
-  const checkBookmark = async () => {
+  const checkBookmark = useCallback(async () => {
     if (!user) return;
     
     // Temporarily disable bookmarks to prevent RLS issues
@@ -110,9 +110,9 @@ const StoryCard = ({ story }: StoryCardProps) => {
       console.log('Bookmark check failed:', error);
       setIsBookmarked(false);
     }
-  };
+  }, [user, story.id]);
 
-  const fetchCommentCount = async () => {
+  const fetchCommentCount = useCallback(async () => {
     try {
       const { count } = await supabase
         .from('comments')
@@ -123,9 +123,9 @@ const StoryCard = ({ story }: StoryCardProps) => {
     } catch (error) {
       console.error('Error fetching comment count:', error);
     }
-  };
+  }, [story.id]);
 
-  const fetchReactionCount = async () => {
+  const fetchReactionCount = useCallback(async () => {
     try {
       const { count } = await supabase
         .from('reactions')
@@ -136,7 +136,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
     } catch (error) {
       console.error('Error fetching reaction count:', error);
     }
-  };
+  }, [story.id]);
 
   const toggleBookmark = async () => {
     if (!user) {
