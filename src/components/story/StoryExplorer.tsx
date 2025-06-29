@@ -76,6 +76,11 @@ const StoryExplorer = () => {
 
   useEffect(() => {
     fetchStories(true);
+  }, [emotionFilter, moodFilter]);
+
+  // Separate useEffect for real-time subscriptions (only run once)
+  useEffect(() => {
+    console.log('StoryExplorer: Setting up real-time subscriptions');
     
     // Set up real-time subscription for stories
     const storiesSubscription = supabase
@@ -114,10 +119,11 @@ const StoryExplorer = () => {
       .subscribe();
 
     return () => {
+      console.log('StoryExplorer: Cleaning up real-time subscriptions');
       supabase.removeChannel(storiesSubscription);
       supabase.removeChannel(profilesSubscription);
     };
-  }, [emotionFilter, moodFilter]);
+  }, []); // Empty dependency array - only run once
 
   const handleRealtimeChange = async (payload: RealtimePostgresChangesPayload<StoryData>) => {
     const { eventType, new: newRecord, old: oldRecord } = payload;

@@ -36,8 +36,47 @@ async function testDatabase() {
     }
     console.log('✅ Stories table exists and is accessible');
     
-    // Test 3: Check RLS policies
-    console.log('\n3. Testing RLS policies (this will fail without auth, which is expected)...');
+    // Test 3: Check if bookmarks table exists
+    console.log('\n3. Checking bookmarks table...');
+    const { data: bookmarksInfo, error: bookmarksError } = await supabase
+      .from('bookmarks')
+      .select('*')
+      .limit(0);
+    
+    if (bookmarksError) {
+      console.log('⚠️  Bookmarks table error (might not exist):', bookmarksError.message);
+    } else {
+      console.log('✅ Bookmarks table exists and is accessible');
+    }
+    
+    // Test 4: Check if reactions table exists
+    console.log('\n4. Checking reactions table...');
+    const { data: reactionsInfo, error: reactionsError } = await supabase
+      .from('reactions')
+      .select('*')
+      .limit(0);
+    
+    if (reactionsError) {
+      console.log('⚠️  Reactions table error (might not exist):', reactionsError.message);
+    } else {
+      console.log('✅ Reactions table exists and is accessible');
+    }
+    
+    // Test 5: Check if comments table exists
+    console.log('\n5. Checking comments table...');
+    const { data: commentsInfo, error: commentsError } = await supabase
+      .from('comments')
+      .select('*')
+      .limit(0);
+    
+    if (commentsError) {
+      console.log('⚠️  Comments table error (might not exist):', commentsError.message);
+    } else {
+      console.log('✅ Comments table exists and is accessible');
+    }
+    
+    // Test 6: Check RLS policies
+    console.log('\n6. Testing RLS policies (this will fail without auth, which is expected)...');
     const { data: insertTest, error: insertError } = await supabase
       .from('stories')
       .insert({
@@ -62,6 +101,7 @@ async function testDatabase() {
     console.log('1. Make sure you are signed in to the app');
     console.log('2. Check browser console for detailed error messages');
     console.log('3. Use the debug tools in the Create Story form');
+    console.log('4. Run the database-setup.sql script if tables are missing');
     
   } catch (err) {
     console.error('❌ Test failed:', err);

@@ -46,7 +46,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
 
     // Set up real-time subscriptions for reactions and comments
     const reactionsSubscription = supabase
-      .channel(`reactions_${story.id}`)
+      .channel(`reactions_${story.id}_${Date.now()}`)
       .on(
         'postgres_changes',
         {
@@ -62,7 +62,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
       .subscribe();
 
     const commentsSubscription = supabase
-      .channel(`comments_${story.id}`)
+      .channel(`comments_${story.id}_${Date.now()}`)
       .on(
         'postgres_changes',
         {
@@ -86,16 +86,28 @@ const StoryCard = ({ story }: StoryCardProps) => {
   const checkBookmark = async () => {
     if (!user) return;
     
+    // Temporarily disable bookmarks to prevent RLS issues
+    console.log('Bookmarks temporarily disabled to prevent RLS issues');
+    setIsBookmarked(false);
+    return;
+    
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('bookmarks')
         .select('id')
         .eq('user_id', user.id)
         .eq('story_id', story.id)
         .single();
       
+      if (error) {
+        console.log('Bookmark check error (table might not exist):', error.message);
+        setIsBookmarked(false);
+        return;
+      }
+      
       setIsBookmarked(!!data);
     } catch (error) {
+      console.log('Bookmark check failed:', error);
       setIsBookmarked(false);
     }
   };
@@ -136,25 +148,55 @@ const StoryCard = ({ story }: StoryCardProps) => {
       return;
     }
 
+    // Temporarily disable bookmarks to prevent RLS issues
+    toast({
+      title: "Bookmarks disabled",
+      description: "Bookmark functionality is temporarily disabled while we fix the database permissions.",
+      variant: "destructive",
+    });
+    return;
+
     try {
       if (isBookmarked) {
-        await supabase
+        const { error } = await supabase
           .from('bookmarks')
           .delete()
           .eq('user_id', user.id)
           .eq('story_id', story.id);
+        
+        if (error) {
+          console.log('Bookmark delete error:', error.message);
+          toast({
+            title: "Error",
+            description: "Failed to remove bookmark. Table might not exist.",
+            variant: "destructive",
+          });
+          return;
+        }
+        
         setIsBookmarked(false);
         toast({
           title: "Bookmark removed",
           description: "Story removed from your bookmarks.",
         });
       } else {
-        await supabase
+        const { error } = await supabase
           .from('bookmarks')
           .insert({
             user_id: user.id,
             story_id: story.id
           });
+        
+        if (error) {
+          console.log('Bookmark insert error:', error.message);
+          toast({
+            title: "Error",
+            description: "Failed to add bookmark. Table might not exist.",
+            variant: "destructive",
+          });
+          return;
+        }
+        
         setIsBookmarked(true);
         toast({
           title: "Story bookmarked",
@@ -281,7 +323,8 @@ const StoryCard = ({ story }: StoryCardProps) => {
           </div>
           
           <div className="flex items-center space-x-2 md:space-x-3">
-            <Button
+            {/* Temporarily disabled bookmark button to prevent 406 errors */}
+            {/* <Button
               variant="ghost"
               size="sm"
               onClick={toggleBookmark}
@@ -292,7 +335,7 @@ const StoryCard = ({ story }: StoryCardProps) => {
               }`}
             >
               <Bookmark className={`w-4 h-4 md:w-5 md:h-5 ${isBookmarked ? 'fill-current' : ''}`} />
-            </Button>
+            </Button> */}
             
             <Button
               variant="ghost"
