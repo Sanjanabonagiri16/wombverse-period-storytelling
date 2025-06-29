@@ -74,77 +74,7 @@ const StoryExplorer = () => {
     { id: 'frustrated', label: 'Frustrated', emoji: '😤' },
   ];
 
-  useEffect(() => {
-    fetchStories(true);
-  }, [emotionFilter, moodFilter]);
-
-  // Separate useEffect for real-time subscriptions (only run once)
-  useEffect(() => {
-    console.log('StoryExplorer: Setting up real-time subscriptions');
-    
-    let storiesSubscription: RealtimeChannel | null = null;
-    let profilesSubscription: RealtimeChannel | null = null;
-    
-    try {
-      // Set up real-time subscription for stories
-      storiesSubscription = supabase
-        .channel(`stories_changes_${Date.now()}`)
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'stories',
-            filter: 'is_draft=eq.false'
-          },
-          (payload: RealtimePostgresChangesPayload<StoryData>) => {
-            console.log('Real-time story change:', payload);
-            handleRealtimeChange(payload);
-          }
-        )
-        .subscribe((status) => {
-          console.log('Stories subscription status:', status);
-        });
-
-      // Set up real-time subscription for profiles (for anonymous stories)
-      profilesSubscription = supabase
-        .channel(`profiles_changes_${Date.now()}`)
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'profiles'
-          },
-          (payload: RealtimePostgresChangesPayload<{ id: string; display_name: string; avatar_url: string }>) => {
-            console.log('Real-time profile change:', payload);
-            // Refresh stories to get updated profile information
-            fetchStories(true);
-          }
-        )
-        .subscribe((status) => {
-          console.log('Profiles subscription status:', status);
-        });
-    } catch (error) {
-      console.error('Error setting up real-time subscriptions:', error);
-    }
-
-    return () => {
-      console.log('StoryExplorer: Cleaning up real-time subscriptions');
-      try {
-        if (storiesSubscription) {
-          supabase.removeChannel(storiesSubscription);
-        }
-        if (profilesSubscription) {
-          supabase.removeChannel(profilesSubscription);
-        }
-      } catch (error) {
-        console.error('Error cleaning up subscriptions:', error);
-      }
-    };
-  }, []); // Empty dependency array - only run once
-
-  const checkStoryFilters = (story: StoryData) => {
+  const checkStoryFilters = useCallback((story: StoryData) => {
     if (emotionFilter && !story.emotion_tags.includes(emotionFilter)) {
       return false;
     }
@@ -152,7 +82,7 @@ const StoryExplorer = () => {
       return false;
     }
     return true;
-  };
+  }, [emotionFilter, moodFilter]);
 
   const enrichStoryWithProfile = async (story: StoryData): Promise<Story> => {
     let profileData = null;
@@ -284,7 +214,78 @@ const StoryExplorer = () => {
         }
         break;
     }
+  }, [fetchStories, checkStoryFilters]);
+
+  // useEffect hooks moved after function declarations
+  useEffect(() => {
+    fetchStories(true);
   }, [fetchStories]);
+
+  // Separate useEffect for real-time subscriptions (only run once)
+  useEffect(() => {
+    console.log('StoryExplorer: Setting up real-time subscriptions');
+    
+    let storiesSubscription: RealtimeChannel | null = null;
+    let profilesSubscription: RealtimeChannel | null = null;
+    
+    try {
+      // Set up real-time subscription for stories
+      storiesSubscription = supabase
+        .channel(`stories_changes_${Date.now()}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'stories',
+            filter: 'is_draft=eq.false'
+          },
+          (payload: RealtimePostgresChangesPayload<StoryData>) => {
+            console.log('Real-time story change:', payload);
+            handleRealtimeChange(payload);
+          }
+        )
+        .subscribe((status) => {
+          console.log('Stories subscription status:', status);
+        });
+
+      // Set up real-time subscription for profiles (for anonymous stories)
+      profilesSubscription = supabase
+        .channel(`profiles_changes_${Date.now()}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'profiles'
+          },
+          (payload: RealtimePostgresChangesPayload<{ id: string; display_name: string; avatar_url: string }>) => {
+            console.log('Real-time profile change:', payload);
+            // Refresh stories to get updated profile information
+            fetchStories(true);
+          }
+        )
+        .subscribe((status) => {
+          console.log('Profiles subscription status:', status);
+        });
+    } catch (error) {
+      console.error('Error setting up real-time subscriptions:', error);
+    }
+
+    return () => {
+      console.log('StoryExplorer: Cleaning up real-time subscriptions');
+      try {
+        if (storiesSubscription) {
+          supabase.removeChannel(storiesSubscription);
+        }
+        if (profilesSubscription) {
+          supabase.removeChannel(profilesSubscription);
+        }
+      } catch (error) {
+        console.error('Error cleaning up subscriptions:', error);
+      }
+    };
+  }, [fetchStories, handleRealtimeChange]);
 
   const loadMore = () => {
     if (!loadingMore && hasMore) {
