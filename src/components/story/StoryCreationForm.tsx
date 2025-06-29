@@ -25,6 +25,7 @@ export type StoryFormData = z.infer<typeof storySchema>;
 const StoryCreationForm = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [authStatus, setAuthStatus] = useState<'checking' | 'authenticated' | 'not-authenticated'>('checking');
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
@@ -40,6 +41,49 @@ const StoryCreationForm = () => {
       isAnonymous: false,
     },
   });
+
+  // Check authentication status on component mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setAuthStatus(session ? 'authenticated' : 'not-authenticated');
+    };
+    checkAuth();
+  }, [user]);
+
+  const testAuthentication = async () => {
+    console.log('Testing authentication...');
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      console.log('Current session:', session);
+      console.log('Current user:', user);
+      
+      if (error) {
+        console.error('Authentication test failed:', error);
+        toast({
+          title: "Authentication Error",
+          description: `Auth test failed: ${error.message}`,
+          variant: "destructive",
+        });
+      } else if (!session) {
+        console.log('No active session found');
+        toast({
+          title: "Not Signed In",
+          description: "You need to sign in to share stories.",
+          variant: "destructive",
+        });
+      } else {
+        console.log('Authentication test successful');
+        toast({
+          title: "Authentication OK",
+          description: `Signed in as: ${session.user.email}`,
+        });
+      }
+    } catch (err) {
+      console.error('Authentication test error:', err);
+    }
+  };
 
   const testFormValidation = () => {
     const formData = form.getValues();
@@ -198,6 +242,19 @@ const StoryCreationForm = () => {
       
       console.log('StoryCreationForm: Attempting to insert story with data:', storyData);
       
+      // First, let's test if we can connect to the database
+      const { data: testData, error: testError } = await supabase
+        .from('stories')
+        .select('count')
+        .limit(1);
+      
+      if (testError) {
+        console.error('StoryCreationForm: Database connection test failed:', testError);
+        throw new Error(`Database connection failed: ${testError.message}`);
+      }
+      
+      console.log('StoryCreationForm: Database connection test successful');
+      
       const { data: insertedStory, error } = await supabase
         .from('stories')
         .insert(storyData)
@@ -207,7 +264,17 @@ const StoryCreationForm = () => {
 
       if (error) {
         console.error('StoryCreationForm: Supabase error:', error);
-        throw error;
+        
+        // Provide more specific error messages
+        if (error.code === '42501') {
+          throw new Error('Permission denied. Please check if you are signed in and have the right permissions.');
+        } else if (error.code === '23505') {
+          throw new Error('A story with this title already exists. Please choose a different title.');
+        } else if (error.code === '23514') {
+          throw new Error('Invalid data provided. Please check your story content and try again.');
+        } else {
+          throw new Error(`Database error: ${error.message}`);
+        }
       }
       
       if (insertedStory && insertedStory.length > 0) {
@@ -224,7 +291,7 @@ const StoryCreationForm = () => {
         // Navigate to stories page to see the new story
         navigate('/stories');
       } else {
-        throw new Error('No story was inserted');
+        throw new Error('No story was inserted. Please try again.');
       }
     } catch (error) {
       console.error('StoryCreationForm: Error sharing story:', error);
@@ -300,10 +367,32 @@ const StoryCreationForm = () => {
 
   return (
     <div className="space-y-6 lg:space-y-8">
+      {/* Status Indicator */}
+      <div className="p-3 bg-womb-deepgrey rounded-lg border border-womb-plum">
+        <div className="flex items-center space-x-2">
+          <div className={`w-3 h-3 rounded-full ${
+            authStatus === 'checking' ? 'bg-yellow-500 animate-pulse' :
+            authStatus === 'authenticated' ? 'bg-green-500' : 'bg-red-500'
+          }`}></div>
+          <span className="text-womb-softwhite text-sm">
+            {authStatus === 'checking' ? 'Checking authentication...' :
+             authStatus === 'authenticated' ? `Signed in as: ${user?.email || 'User'}` :
+             'Not signed in - Please sign in to share stories'}
+          </span>
+        </div>
+      </div>
+
       {/* Debug Test Buttons - Remove these after testing */}
       <div className="p-4 bg-womb-deepgrey rounded-lg border border-womb-plum">
         <h3 className="text-womb-softwhite font-medium mb-3">Debug Tools</h3>
-        <div className="flex space-x-3">
+        <div className="flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={testAuthentication}
+            className="px-3 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
+          >
+            Test Authentication
+          </button>
           <button
             type="button"
             onClick={testDatabaseConnection}
@@ -325,6 +414,18 @@ const StoryCreationForm = () => {
           >
             Test Form Validation
           </button>
+        </div>
+        
+        {/* Troubleshooting Guide */}
+        <div className="mt-4 p-3 bg-womb-charcoal rounded border border-womb-plum">
+          <h4 className="text-womb-softwhite font-medium mb-2">Troubleshooting Guide</h4>
+          <div className="text-xs text-womb-warmgrey space-y-1">
+            <p>1. <strong>Test Authentication</strong> - Check if you're signed in</p>
+            <p>2. <strong>Test Database Connection</strong> - Verify database access</p>
+            <p>3. <strong>Test Story Creation</strong> - Try creating a test story</p>
+            <p>4. <strong>Test Form Validation</strong> - Check if form data is valid</p>
+            <p>5. <strong>Check Console</strong> - Open browser dev tools (F12) for error details</p>
+          </div>
         </div>
       </div>
 
