@@ -7,6 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import ReactionSystem from '@/components/reactions/ReactionSystem';
 import CommentSection from '@/components/comments/CommentSection';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 interface Story {
   id: string;
@@ -30,58 +31,12 @@ interface StoryCardProps {
 }
 
 const StoryCard = ({ story }: StoryCardProps) => {
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const [showFullStory, setShowFullStory] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
   const [reactionCount, setReactionCount] = useState(0);
-  const [showFullStory, setShowFullStory] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      checkBookmark();
-    }
-    fetchCommentCount();
-    fetchReactionCount();
-
-    // Set up real-time subscriptions for reactions and comments
-    const reactionsSubscription = supabase
-      .channel(`reactions_${story.id}_${Date.now()}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'reactions',
-          filter: `story_id=eq.${story.id}`
-        },
-        () => {
-          fetchReactionCount();
-        }
-      )
-      .subscribe();
-
-    const commentsSubscription = supabase
-      .channel(`comments_${story.id}_${Date.now()}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'comments',
-          filter: `story_id=eq.${story.id}`
-        },
-        () => {
-          fetchCommentCount();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(reactionsSubscription);
-      supabase.removeChannel(commentsSubscription);
-    };
-  }, [story.id, user]);
+  const { user } = useAuth();
+  const { toast } = useToast();
 
   const checkBookmark = useCallback(async () => {
     if (!user) return;
@@ -137,6 +92,71 @@ const StoryCard = ({ story }: StoryCardProps) => {
       console.error('Error fetching reaction count:', error);
     }
   }, [story.id]);
+
+  useEffect(() => {
+    if (user) {
+      checkBookmark();
+    }
+    fetchCommentCount();
+    fetchReactionCount();
+
+    let reactionsSubscription: RealtimeChannel | null = null;
+    let commentsSubscription: RealtimeChannel | null = null;
+
+    try {
+      // Set up real-time subscriptions for reactions and comments
+      reactionsSubscription = supabase
+        .channel(`reactions_${story.id}_${Date.now()}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'reactions',
+            filter: `story_id=eq.${story.id}`
+          },
+          () => {
+            fetchReactionCount();
+          }
+        )
+        .subscribe((status) => {
+          console.log(`Reactions subscription for story ${story.id}:`, status);
+        });
+
+      commentsSubscription = supabase
+        .channel(`comments_${story.id}_${Date.now()}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'comments',
+            filter: `story_id=eq.${story.id}`
+          },
+          () => {
+            fetchCommentCount();
+          }
+        )
+        .subscribe((status) => {
+          console.log(`Comments subscription for story ${story.id}:`, status);
+        });
+    } catch (error) {
+      console.error('Error setting up StoryCard subscriptions:', error);
+    }
+
+    return () => {
+      try {
+        if (reactionsSubscription) {
+          supabase.removeChannel(reactionsSubscription);
+        }
+        if (commentsSubscription) {
+          supabase.removeChannel(commentsSubscription);
+        }
+      } catch (error) {
+        console.error('Error cleaning up StoryCard subscriptions:', error);
+      }
+    };
+  }, [story.id, user, checkBookmark, fetchCommentCount, fetchReactionCount]);
 
   const toggleBookmark = async () => {
     if (!user) {

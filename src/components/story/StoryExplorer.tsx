@@ -5,7 +5,7 @@ import StoryCard from './StoryCard';
 import PopularTags from './PopularTags';
 import { Loader2, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
+import { RealtimePostgresChangesPayload, RealtimeChannel } from '@supabase/supabase-js';
 
 interface Story {
   id: string;
@@ -82,46 +82,65 @@ const StoryExplorer = () => {
   useEffect(() => {
     console.log('StoryExplorer: Setting up real-time subscriptions');
     
-    // Set up real-time subscription for stories
-    const storiesSubscription = supabase
-      .channel('stories_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'stories',
-          filter: 'is_draft=eq.false'
-        },
-        (payload: RealtimePostgresChangesPayload<StoryData>) => {
-          console.log('Real-time story change:', payload);
-          handleRealtimeChange(payload);
-        }
-      )
-      .subscribe();
+    let storiesSubscription: RealtimeChannel | null = null;
+    let profilesSubscription: RealtimeChannel | null = null;
+    
+    try {
+      // Set up real-time subscription for stories
+      storiesSubscription = supabase
+        .channel(`stories_changes_${Date.now()}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'stories',
+            filter: 'is_draft=eq.false'
+          },
+          (payload: RealtimePostgresChangesPayload<StoryData>) => {
+            console.log('Real-time story change:', payload);
+            handleRealtimeChange(payload);
+          }
+        )
+        .subscribe((status) => {
+          console.log('Stories subscription status:', status);
+        });
 
-    // Set up real-time subscription for profiles (for anonymous stories)
-    const profilesSubscription = supabase
-      .channel('profiles_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'profiles'
-        },
-        (payload: RealtimePostgresChangesPayload<{ id: string; display_name: string; avatar_url: string }>) => {
-          console.log('Real-time profile change:', payload);
-          // Refresh stories to get updated profile information
-          fetchStories(true);
-        }
-      )
-      .subscribe();
+      // Set up real-time subscription for profiles (for anonymous stories)
+      profilesSubscription = supabase
+        .channel(`profiles_changes_${Date.now()}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'profiles'
+          },
+          (payload: RealtimePostgresChangesPayload<{ id: string; display_name: string; avatar_url: string }>) => {
+            console.log('Real-time profile change:', payload);
+            // Refresh stories to get updated profile information
+            fetchStories(true);
+          }
+        )
+        .subscribe((status) => {
+          console.log('Profiles subscription status:', status);
+        });
+    } catch (error) {
+      console.error('Error setting up real-time subscriptions:', error);
+    }
 
     return () => {
       console.log('StoryExplorer: Cleaning up real-time subscriptions');
-      supabase.removeChannel(storiesSubscription);
-      supabase.removeChannel(profilesSubscription);
+      try {
+        if (storiesSubscription) {
+          supabase.removeChannel(storiesSubscription);
+        }
+        if (profilesSubscription) {
+          supabase.removeChannel(profilesSubscription);
+        }
+      } catch (error) {
+        console.error('Error cleaning up subscriptions:', error);
+      }
     };
   }, []); // Empty dependency array - only run once
 
