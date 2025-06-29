@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Bookmark, Share2, Heart, MessageCircle, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -37,6 +37,8 @@ const StoryCard = ({ story }: StoryCardProps) => {
   const [reactionCount, setReactionCount] = useState(0);
   const { user } = useAuth();
   const { toast } = useToast();
+  const reactionsSubscriptionRef = useRef<RealtimeChannel | null>(null);
+  const commentsSubscriptionRef = useRef<RealtimeChannel | null>(null);
 
   const checkBookmark = useCallback(async () => {
     if (!user) return;
@@ -144,13 +146,19 @@ const StoryCard = ({ story }: StoryCardProps) => {
       console.error('Error setting up StoryCard subscriptions:', error);
     }
 
+    // Store subscriptions in refs for cleanup
+    reactionsSubscriptionRef.current = reactionsSubscription;
+    commentsSubscriptionRef.current = commentsSubscription;
+
     return () => {
       try {
-        if (reactionsSubscription) {
-          supabase.removeChannel(reactionsSubscription);
+        if (reactionsSubscriptionRef.current) {
+          supabase.removeChannel(reactionsSubscriptionRef.current);
+          reactionsSubscriptionRef.current = null;
         }
-        if (commentsSubscription) {
-          supabase.removeChannel(commentsSubscription);
+        if (commentsSubscriptionRef.current) {
+          supabase.removeChannel(commentsSubscriptionRef.current);
+          commentsSubscriptionRef.current = null;
         }
       } catch (error) {
         console.error('Error cleaning up StoryCard subscriptions:', error);

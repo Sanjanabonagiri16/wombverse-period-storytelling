@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import StoryCard from './StoryCard';
@@ -49,6 +49,13 @@ const StoryExplorer = () => {
   const [page, setPage] = useState(0);
   const [showNewStoryNotification, setShowNewStoryNotification] = useState(false);
   const { user } = useAuth();
+  
+  // Refs to track subscriptions and prevent multiple subscriptions
+  const subscriptionsRef = useRef<{
+    stories: RealtimeChannel | null;
+    profiles: RealtimeChannel | null;
+  }>({ stories: null, profiles: null });
+  const isSubscribedRef = useRef(false);
 
   const ITEMS_PER_PAGE = 6;
 
@@ -223,14 +230,18 @@ const StoryExplorer = () => {
 
   // Separate useEffect for real-time subscriptions (only run once)
   useEffect(() => {
+    // Prevent multiple subscriptions
+    if (isSubscribedRef.current) {
+      console.log('StoryExplorer: Subscriptions already active, skipping setup');
+      return;
+    }
+
     console.log('StoryExplorer: Setting up real-time subscriptions');
-    
-    let storiesSubscription: RealtimeChannel | null = null;
-    let profilesSubscription: RealtimeChannel | null = null;
+    isSubscribedRef.current = true;
     
     try {
       // Set up real-time subscription for stories
-      storiesSubscription = supabase
+      subscriptionsRef.current.stories = supabase
         .channel(`stories_changes_${Date.now()}`)
         .on(
           'postgres_changes',
@@ -250,7 +261,7 @@ const StoryExplorer = () => {
         });
 
       // Set up real-time subscription for profiles (for anonymous stories)
-      profilesSubscription = supabase
+      subscriptionsRef.current.profiles = supabase
         .channel(`profiles_changes_${Date.now()}`)
         .on(
           'postgres_changes',
@@ -270,22 +281,27 @@ const StoryExplorer = () => {
         });
     } catch (error) {
       console.error('Error setting up real-time subscriptions:', error);
+      isSubscribedRef.current = false;
     }
 
     return () => {
       console.log('StoryExplorer: Cleaning up real-time subscriptions');
+      isSubscribedRef.current = false;
+      
       try {
-        if (storiesSubscription) {
-          supabase.removeChannel(storiesSubscription);
+        if (subscriptionsRef.current.stories) {
+          supabase.removeChannel(subscriptionsRef.current.stories);
+          subscriptionsRef.current.stories = null;
         }
-        if (profilesSubscription) {
-          supabase.removeChannel(profilesSubscription);
+        if (subscriptionsRef.current.profiles) {
+          supabase.removeChannel(subscriptionsRef.current.profiles);
+          subscriptionsRef.current.profiles = null;
         }
       } catch (error) {
         console.error('Error cleaning up subscriptions:', error);
       }
     };
-  }, [fetchStories, handleRealtimeChange]);
+  }, []); // Empty dependency array - only run once on mount
 
   const loadMore = () => {
     if (!loadingMore && hasMore) {
@@ -303,15 +319,65 @@ const StoryExplorer = () => {
 
   return (
     <div className="space-y-6">
-      {/* New Story Notification */}
-      {showNewStoryNotification && (
-        <div className="fixed top-4 right-4 z-50 bg-womb-crimson text-womb-softwhite px-4 py-2 rounded-lg shadow-lg animate-fade-in">
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span>New story added! 📖</span>
+      {/* Debug Information */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="bg-womb-charcoal/50 border border-womb-crimson rounded-lg p-4 mb-4">
+          <h3 className="text-womb-crimson font-semibold mb-2">🔧 Debug Info</h3>
+          <div className="text-sm text-womb-softwhite space-y-1">
+            <p>Current URL: {window.location.href}</p>
+            <p>User authenticated: {user ? 'Yes' : 'No'}</p>
+            <p>Stories loaded: {stories.length}</p>
+            <p>Loading: {loading ? 'Yes' : 'No'}</p>
+            <p>Subscriptions active: {isSubscribedRef.current ? 'Yes' : 'No'}</p>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="text-womb-crimson border-womb-crimson hover:bg-womb-crimson hover:text-white"
+              onClick={() => {
+                console.log('Current subscriptions:', subscriptionsRef.current);
+                console.log('Current stories:', stories);
+                console.log('Current user:', user);
+              }}
+            >
+              Log Debug Info
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="text-womb-crimson border-womb-crimson hover:bg-womb-crimson hover:text-white ml-2"
+              onClick={() => {
+                // Clear browser cache and reload
+                if ('caches' in window) {
+                  caches.keys().then(names => {
+                    names.forEach(name => {
+                      caches.delete(name);
+                    });
+                  });
+                }
+                // Clear localStorage
+                localStorage.clear();
+                // Reload the page
+                window.location.reload();
+              }}
+            >
+              Clear Cache & Reload
+            </Button>
           </div>
         </div>
       )}
+
+      {/* Live Updates Indicator */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-sm text-womb-softwhite">Live updates enabled</span>
+        </div>
+        {showNewStoryNotification && (
+          <div className="bg-womb-crimson text-white px-3 py-1 rounded-full text-sm animate-bounce">
+            New story added! 🎉
+          </div>
+        )}
+      </div>
 
       {/* Popular Tags Section */}
       <PopularTags />
@@ -386,12 +452,6 @@ const StoryExplorer = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Real-time indicator */}
-      <div className="flex items-center space-x-2 text-womb-warmgrey text-sm">
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-        <span>Live updates enabled</span>
       </div>
 
       {/* Stories Grid */}
