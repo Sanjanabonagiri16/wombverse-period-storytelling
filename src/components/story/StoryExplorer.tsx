@@ -5,6 +5,7 @@ import StoryCard from './StoryCard';
 import PopularTags from './PopularTags';
 import { Loader2, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 
 interface Story {
   id: string;
@@ -17,10 +18,25 @@ interface Story {
   created_at: string;
   user_id: string;
   view_count: number;
+  is_draft: boolean;
   profiles?: {
     display_name: string;
     avatar_url: string;
   } | null;
+}
+
+interface StoryData {
+  id: string;
+  title: string;
+  content: string;
+  emotion_tags: string[];
+  privacy: string;
+  category: string;
+  is_anonymous: boolean;
+  created_at: string;
+  user_id: string;
+  view_count: number;
+  is_draft: boolean;
 }
 
 const StoryExplorer = () => {
@@ -31,7 +47,7 @@ const StoryExplorer = () => {
   const [emotionFilter, setEmotionFilter] = useState('');
   const [moodFilter, setMoodFilter] = useState('');
   const [page, setPage] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+  const [showNewStoryNotification, setShowNewStoryNotification] = useState(false);
   const { user } = useAuth();
 
   const ITEMS_PER_PAGE = 6;
@@ -60,10 +76,114 @@ const StoryExplorer = () => {
 
   useEffect(() => {
     fetchStories(true);
-    setTimeout(() => setIsVisible(true), 100);
+    
+    // Set up real-time subscription for stories
+    const storiesSubscription = supabase
+      .channel('stories_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'stories',
+          filter: 'is_draft=eq.false'
+        },
+        (payload: RealtimePostgresChangesPayload<StoryData>) => {
+          console.log('Real-time story change:', payload);
+          handleRealtimeChange(payload);
+        }
+      )
+      .subscribe();
+
+    // Set up real-time subscription for profiles (for anonymous stories)
+    const profilesSubscription = supabase
+      .channel('profiles_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'profiles'
+        },
+        (payload: RealtimePostgresChangesPayload<{ id: string; display_name: string; avatar_url: string }>) => {
+          console.log('Real-time profile change:', payload);
+          // Refresh stories to get updated profile information
+          fetchStories(true);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(storiesSubscription);
+      supabase.removeChannel(profilesSubscription);
+    };
   }, [emotionFilter, moodFilter]);
 
+  const handleRealtimeChange = async (payload: RealtimePostgresChangesPayload<StoryData>) => {
+    const { eventType, new: newRecord, old: oldRecord } = payload;
+    
+    switch (eventType) {
+      case 'INSERT':
+        // New story created - add it to the list if it matches current filters
+        if (newRecord && !newRecord.is_draft) {
+          const shouldInclude = checkStoryFilters(newRecord);
+          if (shouldInclude) {
+            const storyWithProfile = await enrichStoryWithProfile(newRecord);
+            setStories(prev => [storyWithProfile, ...prev.slice(0, -1)]);
+            
+            // Show notification for new story
+            setShowNewStoryNotification(true);
+            setTimeout(() => setShowNewStoryNotification(false), 3000);
+          }
+        }
+        break;
+        
+      case 'UPDATE':
+        // Story updated - refresh the list to get the latest data
+        fetchStories(true);
+        break;
+        
+      case 'DELETE':
+        // Story deleted - remove it from the list
+        if (oldRecord) {
+          setStories(prev => prev.filter(story => story.id !== oldRecord.id));
+        }
+        break;
+    }
+  };
+
+  const checkStoryFilters = (story: StoryData) => {
+    if (emotionFilter && !story.emotion_tags.includes(emotionFilter)) {
+      return false;
+    }
+    if (moodFilter && !story.emotion_tags.includes(moodFilter)) {
+      return false;
+    }
+    return true;
+  };
+
+  const enrichStoryWithProfile = async (story: StoryData): Promise<Story> => {
+    let profileData = null;
+    
+    if (!story.is_anonymous) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name, avatar_url')
+        .eq('id', story.user_id)
+        .single();
+      
+      profileData = profile;
+    }
+    
+    return {
+      ...story,
+      profiles: profileData
+    };
+  };
+
   const fetchStories = async (reset = false) => {
+    console.log('StoryExplorer: fetchStories called with reset:', reset);
+    
     if (reset) {
       setLoading(true);
       setPage(0);
@@ -88,13 +208,19 @@ const StoryExplorer = () => {
         query = query.contains('emotion_tags', [moodFilter]);
       }
 
+      console.log('StoryExplorer: Executing query with filters:', { emotionFilter, moodFilter });
       const { data: storiesData, error } = await query;
+      console.log('StoryExplorer: Query result:', { storiesData, error });
 
-      if (error) throw error;
+      if (error) {
+        console.error('StoryExplorer: Query error:', error);
+        throw error;
+      }
 
       const stories: Story[] = [];
       
       if (storiesData) {
+        console.log('StoryExplorer: Processing', storiesData.length, 'stories');
         for (const story of storiesData) {
           let profileData = null;
           
@@ -115,6 +241,8 @@ const StoryExplorer = () => {
         }
       }
 
+      console.log('StoryExplorer: Final processed stories:', stories);
+
       if (reset) {
         setStories(stories);
       } else {
@@ -125,7 +253,7 @@ const StoryExplorer = () => {
       setPage(currentPage + 1);
 
     } catch (error) {
-      console.error('Error fetching stories:', error);
+      console.error('StoryExplorer: Error fetching stories:', error);
       if (reset) setStories([]);
     } finally {
       setLoading(false);
@@ -148,29 +276,37 @@ const StoryExplorer = () => {
   }
 
   return (
-    <div className="space-y-6 relative">
-      {/* Popular Tags Section with entrance animation */}
-      <div className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-        <PopularTags />
-      </div>
+    <div className="space-y-6">
+      {/* New Story Notification */}
+      {showNewStoryNotification && (
+        <div className="fixed top-4 right-4 z-50 bg-womb-crimson text-womb-softwhite px-4 py-2 rounded-lg shadow-lg animate-fade-in">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span>New story added! 📖</span>
+          </div>
+        </div>
+      )}
 
-      {/* Filters with staggered animations */}
-      <div className={`space-y-4 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '200ms' }}>
-        <div className="flex items-center space-x-2 animate-slide-in-left">
-          <Filter className="w-5 h-5 text-white transition-all duration-300 hover:text-womb-maroon hover:scale-110" />
-          <h3 className="text-lg font-medium text-white transition-all duration-300 hover:text-womb-mediumgray">Filter by feeling</h3>
+      {/* Popular Tags Section */}
+      <PopularTags />
+
+      {/* Filters */}
+      <div className="space-y-4">
+        <div className="flex items-center space-x-2">
+          <Filter className="w-5 h-5 text-womb-warmgrey" />
+          <h3 className="text-lg font-medium text-womb-softwhite">Filter by feeling</h3>
         </div>
         
         {/* Emotion Tags Filter */}
-        <div className="space-y-2 animate-fade-in" style={{ animationDelay: '400ms' }}>
-          <p className="text-sm text-white transition-all duration-300 hover:text-womb-softgray">Emotional tags:</p>
+        <div className="space-y-2">
+          <p className="text-sm text-womb-warmgrey">Emotional tags:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setEmotionFilter('')}
               className={`px-3 py-1 rounded-full text-sm transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 ${
                 emotionFilter === '' 
-                  ? 'bg-womb-maroon text-white shadow-lg shadow-womb-maroon/30' 
-                  : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray hover:shadow-lg'
+                  ? 'bg-womb-crimson text-womb-softwhite' 
+                  : 'bg-womb-deepgrey border border-womb-plum text-womb-warmgrey hover:text-womb-softwhite hover:border-womb-crimson'
               }`}
             >
               All
@@ -181,8 +317,8 @@ const StoryExplorer = () => {
                 onClick={() => setEmotionFilter(emotion.id)}
                 className={`px-3 py-1 rounded-full text-sm transition-all duration-300 flex items-center space-x-1 transform hover:scale-105 hover:-translate-y-1 ${
                   emotionFilter === emotion.id 
-                    ? 'bg-womb-maroon text-white shadow-lg shadow-womb-maroon/30' 
-                    : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray hover:shadow-lg'
+                    ? 'bg-womb-crimson text-womb-softwhite' 
+                    : 'bg-womb-deepgrey border border-womb-plum text-womb-warmgrey hover:text-womb-softwhite hover:border-womb-crimson'
                 }`}
                 style={{ animationDelay: `${500 + index * 50}ms` }}
               >
@@ -194,15 +330,15 @@ const StoryExplorer = () => {
         </div>
 
         {/* Mood Filter */}
-        <div className="space-y-2 animate-fade-in" style={{ animationDelay: '800ms' }}>
-          <p className="text-sm text-white transition-all duration-300 hover:text-womb-softgray">Moods:</p>
+        <div className="space-y-2">
+          <p className="text-sm text-womb-warmgrey">Moods:</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setMoodFilter('')}
               className={`px-3 py-1 rounded-full text-sm transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 ${
                 moodFilter === '' 
-                  ? 'bg-womb-mediumgray text-womb-charcoal shadow-lg shadow-womb-mediumgray/30' 
-                  : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray hover:shadow-lg'
+                  ? 'bg-womb-crimson text-womb-softwhite' 
+                  : 'bg-womb-deepgrey border border-womb-plum text-womb-warmgrey hover:text-womb-softwhite hover:border-womb-crimson'
               }`}
             >
               All
@@ -213,8 +349,8 @@ const StoryExplorer = () => {
                 onClick={() => setMoodFilter(mood.id)}
                 className={`px-3 py-1 rounded-full text-sm transition-all duration-300 flex items-center space-x-1 transform hover:scale-105 hover:-translate-y-1 ${
                   moodFilter === mood.id 
-                    ? 'bg-womb-mediumgray text-womb-charcoal shadow-lg shadow-womb-mediumgray/30' 
-                    : 'bg-womb-darkgray border border-womb-border text-white hover:text-white hover:border-womb-mediumgray hover:shadow-lg'
+                    ? 'bg-womb-crimson text-womb-softwhite' 
+                    : 'bg-womb-deepgrey border border-womb-plum text-womb-warmgrey hover:text-womb-softwhite hover:border-womb-crimson'
                 }`}
                 style={{ animationDelay: `${900 + index * 50}ms` }}
               >
@@ -226,11 +362,17 @@ const StoryExplorer = () => {
         </div>
       </div>
 
-      {/* Stories Grid with smooth animations */}
+      {/* Real-time indicator */}
+      <div className="flex items-center space-x-2 text-womb-warmgrey text-sm">
+        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <span>Live updates enabled</span>
+      </div>
+
+      {/* Stories Grid */}
       {stories.length === 0 ? (
-        <div className={`text-center py-12 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '600ms' }}>
-          <p className="text-white text-lg mb-4 transition-all duration-300 hover:text-womb-mediumgray">No stories found</p>
-          <p className="text-white text-sm transition-all duration-300 hover:text-womb-softgray">
+        <div className="text-center py-12">
+          <p className="text-womb-softwhite text-lg mb-4">No stories found</p>
+          <p className="text-womb-warmgrey text-sm">
             Try adjusting your filters or be the first to share a story with these tags!
           </p>
         </div>
@@ -240,8 +382,8 @@ const StoryExplorer = () => {
             {stories.map((story, index) => (
               <div
                 key={story.id}
-                className={`transition-all duration-700 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
-                style={{ transitionDelay: `${1000 + index * 100}ms` }}
+                className="transition-all duration-700 transform"
+                style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <StoryCard story={story} />
               </div>
@@ -250,12 +392,12 @@ const StoryExplorer = () => {
 
           {/* Load More Button */}
           {hasMore && (
-            <div className={`text-center pt-6 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '1200ms' }}>
+            <div className="text-center pt-6">
               <Button
                 onClick={loadMore}
                 disabled={loadingMore}
                 variant="outline"
-                className="border-womb-maroon text-womb-maroon hover:bg-womb-maroon hover:text-white transition-all duration-500 hover:scale-110 hover:-translate-y-2 hover:shadow-lg hover:shadow-womb-maroon/30 transform"
+                className="border-womb-crimson text-womb-crimson hover:bg-womb-crimson hover:text-womb-softwhite"
               >
                 {loadingMore ? (
                   <>

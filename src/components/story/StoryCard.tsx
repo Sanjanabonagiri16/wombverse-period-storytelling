@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Bookmark, Share2, Heart, MessageCircle, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -44,6 +43,44 @@ const StoryCard = ({ story }: StoryCardProps) => {
     }
     fetchCommentCount();
     fetchReactionCount();
+
+    // Set up real-time subscriptions for reactions and comments
+    const reactionsSubscription = supabase
+      .channel(`reactions_${story.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'reactions',
+          filter: `story_id=eq.${story.id}`
+        },
+        () => {
+          fetchReactionCount();
+        }
+      )
+      .subscribe();
+
+    const commentsSubscription = supabase
+      .channel(`comments_${story.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'comments',
+          filter: `story_id=eq.${story.id}`
+        },
+        () => {
+          fetchCommentCount();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(reactionsSubscription);
+      supabase.removeChannel(commentsSubscription);
+    };
   }, [story.id, user]);
 
   const checkBookmark = async () => {
