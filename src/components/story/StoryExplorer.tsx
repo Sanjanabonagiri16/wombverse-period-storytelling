@@ -6,6 +6,7 @@ import PopularTags from './PopularTags';
 import { Loader2, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { RealtimePostgresChangesPayload, RealtimeChannel } from '@supabase/supabase-js';
+import { useLocation } from 'react-router-dom';
 
 interface Story {
   id: string;
@@ -39,6 +40,10 @@ interface StoryData {
   is_draft: boolean;
 }
 
+interface StoryWithProfile extends StoryData {
+  profiles?: { display_name: string; avatar_url: string } | null;
+}
+
 const StoryExplorer = () => {
   const [stories, setStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,6 +54,7 @@ const StoryExplorer = () => {
   const [page, setPage] = useState(0);
   const [showNewStoryNotification, setShowNewStoryNotification] = useState(false);
   const { user } = useAuth();
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   
   // Refs to track subscriptions and prevent multiple subscriptions
   const subscriptionsRef = useRef<{
@@ -81,6 +87,8 @@ const StoryExplorer = () => {
     { id: 'frustrated', label: 'Frustrated', emoji: '😤' },
   ];
 
+  const location = useLocation();
+
   const checkStoryFilters = useCallback((story: StoryData) => {
     if (emotionFilter && !story.emotion_tags.includes(emotionFilter)) {
       return false;
@@ -112,20 +120,30 @@ const StoryExplorer = () => {
 
   const fetchStories = useCallback(async (reset = false) => {
     console.log('StoryExplorer: fetchStories called with reset:', reset);
-    
+    console.log('StoryExplorer: Current user:', user);
+    if (user === undefined) {
+      // Don't run until user is loaded
+      console.log('StoryExplorer: user is undefined, aborting fetch');
+      return;
+    }
     if (reset) {
       setLoading(true);
       setPage(0);
+      setErrorMsg(null);
     } else {
       setLoadingMore(true);
     }
 
     try {
       const currentPage = reset ? 0 : page;
+      let orQuery = 'is_draft.eq.false';
+      if (user && user.id) {
+        orQuery += `,user_id.eq.${user.id}`;
+      }
       let query = supabase
         .from('stories')
-        .select('*')
-        .eq('is_draft', false)
+        .select('*, profiles(display_name, avatar_url)')
+        .or(orQuery)
         .order('created_at', { ascending: false })
         .range(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE - 1);
 
@@ -137,37 +155,29 @@ const StoryExplorer = () => {
         query = query.contains('emotion_tags', [moodFilter]);
       }
 
-      console.log('StoryExplorer: Executing query with filters:', { emotionFilter, moodFilter });
+      console.log('StoryExplorer: Executing query with filters:', { emotionFilter, moodFilter, orQuery });
       const { data: storiesData, error } = await query;
       console.log('StoryExplorer: Query result:', { storiesData, error });
 
       if (error) {
         console.error('StoryExplorer: Query error:', error);
+        setErrorMsg('Could not load stories. Please try again later.');
         throw error;
       }
 
-      const stories: Story[] = [];
-      
+      let stories: Story[] = [];
       if (storiesData) {
-        console.log('StoryExplorer: Processing', storiesData.length, 'stories');
-        for (const story of storiesData) {
-          let profileData = null;
-          
-          if (!story.is_anonymous) {
-            const { data: profile } = await supabase
-              .from('profiles')
-              .select('display_name, avatar_url')
-              .eq('id', story.user_id)
-              .single();
-            
-            profileData = profile;
-          }
-          
-          stories.push({
-            ...story,
-            profiles: profileData
-          });
-        }
+        stories = (storiesData as unknown as StoryWithProfile[]).map((story) => ({
+          ...story,
+          profiles:
+            !story.is_anonymous &&
+            story.profiles &&
+            typeof story.profiles === 'object' &&
+            'display_name' in story.profiles &&
+            'avatar_url' in story.profiles
+              ? story.profiles
+              : null,
+        }));
       }
 
       console.log('StoryExplorer: Final processed stories:', stories);
@@ -180,7 +190,7 @@ const StoryExplorer = () => {
 
       setHasMore(stories.length === ITEMS_PER_PAGE);
       setPage(currentPage + 1);
-
+      setErrorMsg(null);
     } catch (error) {
       console.error('StoryExplorer: Error fetching stories:', error);
       if (reset) setStories([]);
@@ -188,45 +198,82 @@ const StoryExplorer = () => {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [emotionFilter, moodFilter, page]);
+  }, [emotionFilter, moodFilter, page, user?.id]);
 
   const handleRealtimeChange = useCallback(async (payload: RealtimePostgresChangesPayload<StoryData>) => {
     const { eventType, new: newRecord, old: oldRecord } = payload;
-    
+    console.log('StoryExplorer: Real-time event', eventType, { newRecord, oldRecord });
     switch (eventType) {
-      case 'INSERT':
-        // New story created - add it to the list if it matches current filters
+      case 'INSERT': {
         if (newRecord && !newRecord.is_draft) {
           const shouldInclude = checkStoryFilters(newRecord);
           if (shouldInclude) {
-            const storyWithProfile = await enrichStoryWithProfile(newRecord);
-            setStories(prev => [storyWithProfile, ...prev.slice(0, -1)]);
-            
-            // Show notification for new story
+            setStories(prev => {
+              if (prev.some(story => story.id === newRecord.id)) return prev;
+              let profileData = null;
+              if (!newRecord.is_anonymous) {
+                const existingProfile = prev.find(story => story.user_id === newRecord.user_id && story.profiles);
+                profileData = existingProfile ? existingProfile.profiles : null;
+              }
+              console.log('StoryExplorer: Adding new real-time story', { ...newRecord, profiles: profileData });
+              return [
+                { ...newRecord, profiles: profileData },
+                ...prev
+              ];
+            });
             setShowNewStoryNotification(true);
             setTimeout(() => setShowNewStoryNotification(false), 3000);
           }
         }
         break;
-        
-      case 'UPDATE':
-        // Story updated - refresh the list to get the latest data
-        fetchStories(true);
+      }
+      case 'UPDATE': {
+        if (newRecord) {
+          const shouldInclude = checkStoryFilters(newRecord);
+          setStories(prev => {
+            const exists = prev.some(story => story.id === newRecord.id);
+            let profileData = null;
+            if (!newRecord.is_anonymous) {
+              const existingProfile = prev.find(story => story.user_id === newRecord.user_id && story.profiles);
+              profileData = existingProfile ? existingProfile.profiles : null;
+            }
+            if (shouldInclude) {
+              if (exists) {
+                console.log('StoryExplorer: Updating real-time story', { ...newRecord, profiles: profileData });
+                return prev.map(story =>
+                  story.id === newRecord.id ? { ...newRecord, profiles: profileData } : story
+                );
+              } else {
+                console.log('StoryExplorer: Adding updated real-time story', { ...newRecord, profiles: profileData });
+                return [{ ...newRecord, profiles: profileData }, ...prev];
+              }
+            } else {
+              console.log('StoryExplorer: Removing real-time story (no longer matches)', newRecord.id);
+              return prev.filter(story => story.id !== newRecord.id);
+            }
+          });
+        }
         break;
-        
-      case 'DELETE':
-        // Story deleted - remove it from the list
+      }
+      case 'DELETE': {
         if (oldRecord) {
+          console.log('StoryExplorer: Deleting real-time story', oldRecord.id);
           setStories(prev => prev.filter(story => story.id !== oldRecord.id));
         }
         break;
+      }
+      default:
+        break;
     }
-  }, [fetchStories, checkStoryFilters]);
+  }, [checkStoryFilters]);
 
   // useEffect hooks moved after function declarations
   useEffect(() => {
-    fetchStories(true);
-  }, [fetchStories]);
+    if (user !== undefined) {
+      fetchStories(true);
+    }
+    // Refetch stories whenever the location changes (e.g., after navigating to /stories)
+  }, [fetchStories, user?.id, location]);
 
   // Separate useEffect for real-time subscriptions (only run once)
   useEffect(() => {
@@ -249,7 +296,7 @@ const StoryExplorer = () => {
             event: '*',
             schema: 'public',
             table: 'stories',
-            filter: 'is_draft=eq.false'
+            // Remove filter so all changes are received, or use a filter that matches the new logic
           },
           (payload: RealtimePostgresChangesPayload<StoryData>) => {
             console.log('Real-time story change:', payload);
@@ -313,6 +360,28 @@ const StoryExplorer = () => {
     return (
       <div className="flex justify-center items-center py-12">
         <Loader2 className="w-8 h-8 animate-spin text-womb-maroon" />
+      </div>
+    );
+  }
+
+  if (errorMsg) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-womb-crimson text-lg mb-4">{errorMsg}</p>
+        <p className="text-white text-sm">Try refreshing the page or check your connection.</p>
+      </div>
+    );
+  }
+
+  if (!loading && !errorMsg && stories.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-white text-lg mb-4">No stories found</p>
+        <p className="text-white text-sm">
+          {emotionFilter || moodFilter
+            ? "Try adjusting your filters or search terms."
+            : "Be the first to share your story!"}
+        </p>
       </div>
     );
   }
