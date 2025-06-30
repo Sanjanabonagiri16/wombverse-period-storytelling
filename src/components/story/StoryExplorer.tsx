@@ -136,14 +136,10 @@ const StoryExplorer = () => {
 
     try {
       const currentPage = reset ? 0 : page;
-      let orQuery = 'is_draft.eq.false';
-      if (user && user.id) {
-        orQuery += `,user_id.eq.${user.id}`;
-      }
       let query = supabase
         .from('stories')
-        .select('*, profiles(display_name, avatar_url)')
-        .or(orQuery)
+        .select('*')
+        .eq('is_draft', false)
         .order('created_at', { ascending: false })
         .range(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE - 1);
 
@@ -155,7 +151,7 @@ const StoryExplorer = () => {
         query = query.contains('emotion_tags', [moodFilter]);
       }
 
-      console.log('StoryExplorer: Executing query with filters:', { emotionFilter, moodFilter, orQuery });
+      console.log('StoryExplorer: Executing query with filters:', { emotionFilter, moodFilter });
       const { data: storiesData, error } = await query;
       console.log('StoryExplorer: Query result:', { storiesData, error });
 
@@ -165,19 +161,26 @@ const StoryExplorer = () => {
         throw error;
       }
 
-      let stories: Story[] = [];
+      const stories: Story[] = [];
       if (storiesData) {
-        stories = (storiesData as unknown as StoryWithProfile[]).map((story) => ({
-          ...story,
-          profiles:
-            !story.is_anonymous &&
-            story.profiles &&
-            typeof story.profiles === 'object' &&
-            'display_name' in story.profiles &&
-            'avatar_url' in story.profiles
-              ? story.profiles
-              : null,
-        }));
+        // Manually fetch profiles to bypass potential join issue
+        for (const story of storiesData) {
+          let profileData = null;
+          if (!story.is_anonymous) {
+            const { data: profile, error: profileError } = await supabase
+              .from('profiles')
+              .select('display_name, avatar_url')
+              .eq('id', story.user_id)
+              .single();
+
+            if (profileError) {
+              console.error(`Failed to fetch profile for story ${story.id}:`, profileError);
+            } else {
+              profileData = profile;
+            }
+          }
+          stories.push({ ...story, profiles: profileData });
+        }
       }
 
       console.log('StoryExplorer: Final processed stories:', stories);
