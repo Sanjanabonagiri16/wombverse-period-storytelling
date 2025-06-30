@@ -278,8 +278,8 @@ const StoryExplorer = () => {
   // Separate useEffect for real-time subscriptions (only run once)
   useEffect(() => {
     // Prevent multiple subscriptions
-    if (isSubscribedRef.current) {
-      console.log('StoryExplorer: Subscriptions already active, skipping setup');
+    if (isSubscribedRef.current || !supabase) {
+      console.log('StoryExplorer: Subscriptions already active or supabase not ready, skipping setup');
       return;
     }
 
@@ -296,7 +296,6 @@ const StoryExplorer = () => {
             event: '*',
             schema: 'public',
             table: 'stories',
-            // Remove filter so all changes are received, or use a filter that matches the new logic
           },
           (payload: RealtimePostgresChangesPayload<StoryData>) => {
             console.log('Real-time story change:', payload);
@@ -335,20 +334,22 @@ const StoryExplorer = () => {
       console.log('StoryExplorer: Cleaning up real-time subscriptions');
       isSubscribedRef.current = false;
       
-      try {
-        if (subscriptionsRef.current.stories) {
-          supabase.removeChannel(subscriptionsRef.current.stories);
-          subscriptionsRef.current.stories = null;
+      if (supabase) {
+        try {
+          if (subscriptionsRef.current.stories) {
+            supabase.removeChannel(subscriptionsRef.current.stories);
+            subscriptionsRef.current.stories = null;
+          }
+          if (subscriptionsRef.current.profiles) {
+            supabase.removeChannel(subscriptionsRef.current.profiles);
+            subscriptionsRef.current.profiles = null;
+          }
+        } catch (error) {
+          console.error('Error cleaning up subscriptions:', error);
         }
-        if (subscriptionsRef.current.profiles) {
-          supabase.removeChannel(subscriptionsRef.current.profiles);
-          subscriptionsRef.current.profiles = null;
-        }
-      } catch (error) {
-        console.error('Error cleaning up subscriptions:', error);
       }
     };
-  }, []); // Empty dependency array - only run once on mount
+  }, [supabase]); // Run only when supabase client is available
 
   const loadMore = () => {
     if (!loadingMore && hasMore) {
@@ -397,40 +398,6 @@ const StoryExplorer = () => {
             <p>User authenticated: {user ? 'Yes' : 'No'}</p>
             <p>Stories loaded: {stories.length}</p>
             <p>Loading: {loading ? 'Yes' : 'No'}</p>
-            <p>Subscriptions active: {isSubscribedRef.current ? 'Yes' : 'No'}</p>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="text-womb-crimson border-womb-crimson hover:bg-womb-crimson hover:text-white"
-              onClick={() => {
-                console.log('Current subscriptions:', subscriptionsRef.current);
-                console.log('Current stories:', stories);
-                console.log('Current user:', user);
-              }}
-            >
-              Log Debug Info
-            </Button>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="text-womb-crimson border-womb-crimson hover:bg-womb-crimson hover:text-white ml-2"
-              onClick={() => {
-                // Clear browser cache and reload
-                if ('caches' in window) {
-                  caches.keys().then(names => {
-                    names.forEach(name => {
-                      caches.delete(name);
-                    });
-                  });
-                }
-                // Clear localStorage
-                localStorage.clear();
-                // Reload the page
-                window.location.reload();
-              }}
-            >
-              Clear Cache & Reload
-            </Button>
           </div>
         </div>
       )}

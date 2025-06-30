@@ -22,6 +22,7 @@ import Resources from "./pages/Resources";
 import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
+import SupabaseStatus from "./components/ui/SupabaseStatus";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => (
       <AuthProvider>
         <Toaster />
         <Sonner />
+        <SupabaseStatus />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
